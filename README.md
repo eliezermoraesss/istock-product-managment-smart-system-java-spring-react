@@ -1,1 +1,1 @@
-# istock-managment-smart-systemjava-spring-react
+# istock-managment-smart-system-java-spring-react
