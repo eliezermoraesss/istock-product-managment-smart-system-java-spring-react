@@ -1,14 +1,15 @@
 package com.eliezer.iestoque.entities;
 
 import com.eliezer.iestoque.enums.ProductStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,47 +22,45 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(name = "CENTRO_DE_CUSTO")
-	private Long costCenter;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
 
 	@Column(name = "CODIGO")
-	private String code;
+	private String productCode;
 
 	@Column(name = "DESCRICAO")
-	private String description;
-
-	@Column(name = "GRUPO")
-	private String group;
+	private String productDescription;
 
 	@Column(name = "QUANTIDADE")
-	private BigDecimal quantity;
+	private BigDecimal productQuantity;
 
 	@Column(name = "PESO")
-	private BigDecimal weigth;
+	private BigDecimal productWeigth;
 
 	@Column(name = "PRECO")
-	private BigDecimal price;
+	private BigDecimal productPrice;
 
 	@Column(name = "DATA_CADASTRO", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant initalDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	private LocalDate productRegistrationDate;
 	
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "STATUS_PRODUTO")
 	private ProductStatus status;
 
+	@ManyToOne
+	@JoinColumn(name = "group_id")
+	private Group group;
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-		Product product = (Product) o;
-		return getId() != null && Objects.equals(getId(), product.getId());
+		if (!(o instanceof Product product)) return false;
+		return getId().equals(product.getId());
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(getId());
 	}
 }

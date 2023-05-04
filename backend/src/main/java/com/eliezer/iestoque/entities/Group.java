@@ -3,8 +3,7 @@ package com.eliezer.iestoque.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -12,19 +11,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_role")
-public class Role {
+@Table(name = "tb_group")
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String authority;
+    private String groupName;
+
+    @OneToMany(mappedBy = "group")
+    private Set<Product> products = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Role role)) return false;
-        return getId().equals(role.getId());
+        if (!(o instanceof Group group)) return false;
+        return getId().equals(group.getId());
     }
 
     @Override

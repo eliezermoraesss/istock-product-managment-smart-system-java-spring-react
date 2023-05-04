@@ -33,14 +33,14 @@ public class ProductService {
 	}
 
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
-		entity.setCode(dto.getCode());
-		entity.setDescription(dto.getDescription());
-		entity.setQuantity(dto.getQuantity());
-		entity.setWeigth(dto.getWeigth());
-		entity.setPrice(dto.getPrice());
-		entity.setInitalDate(dto.getInitalDate());
+		entity.setProductCode(dto.getProductCode());
+		entity.setProductDescription(dto.getProductDescription());
+		entity.setProductQuantity(dto.getProductQuantity());
+		entity.setProductWeigth(dto.getProductWeigth());
+		entity.setProductPrice(dto.getProductPrice());
+		entity.setProductRegistrationDate(dto.getProductRegistrationDate());
 		entity.setStatus(dto.getStatus());
 		entity.setGroup(dto.getGroup());
-		entity.setCostCenter(dto.getCostCenter());
+
 	}
 }
