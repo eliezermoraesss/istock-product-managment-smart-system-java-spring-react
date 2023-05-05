@@ -52,6 +52,10 @@ public class Product implements Serializable {
 	@JoinColumn(name = "group_id")
 	private Group group;
 
+	@ManyToOne
+	@JoinColumn(name = "ncm_id")
+	private Ncm ncm;
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

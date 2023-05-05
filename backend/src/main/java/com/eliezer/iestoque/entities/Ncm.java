@@ -3,7 +3,8 @@ package com.eliezer.iestoque.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,20 +12,20 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_group")
-public class Group {
+@Table(name = "tb_ncm")
+public class Ncm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private Integer groupCode;
-    private String groupName;
+    private String ncmCode;
+    private String ncmDescription;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Group group)) return false;
-        return getId().equals(group.getId());
+        if (!(o instanceof Ncm ncm)) return false;
+        return getId().equals(ncm.getId());
     }
 
     @Override
