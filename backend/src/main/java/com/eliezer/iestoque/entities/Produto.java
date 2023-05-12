@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
 
 @Getter
 @Setter
@@ -17,8 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_product")
-public class Product implements Serializable {
+@Table(name = "tb_produto")
+public class Produto implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -28,7 +29,7 @@ public class Product implements Serializable {
 	@Column(name = "CODIGO")
 	private String productCode;
 
-	@Column(name = "DESCRICAO")
+	@Column(name = "DESCRICAO", columnDefinition = "TEXT")
 	private String productDescription;
 
 	@Column(name = "QUANTIDADE")
@@ -41,26 +42,29 @@ public class Product implements Serializable {
 	private BigDecimal productPrice;
 
 	@Column(name = "DATA_CADASTRO", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-	private LocalDate productRegistrationDate;
+	private Instant productRegistrationDate;
 	
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "STATUS_PRODUTO")
-	private ProductStatus status;
+	private ProductStatus productStatus;
 
-	@ManyToOne
-	@JoinColumn(name = "group_id")
-	private Group group;
+	private String group;
 
-	@ManyToOne
-	@JoinColumn(name = "ncm_id")
-	private Ncm ncm;
+	private String ncm;
+
+	private String centerCost;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_produto_fornecedor",
+			joinColumns = @JoinColumn(name = "produto_id"),
+			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))
+	private Set<Fornecedor> fornecedores = new HashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Product product)) return false;
-		return getId().equals(product.getId());
+		if (!(o instanceof Produto produto)) return false;
+		return getId().equals(produto.getId());
 	}
 
 	@Override
