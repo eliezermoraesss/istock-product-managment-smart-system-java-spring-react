@@ -35,10 +35,11 @@ public class ProductDTO implements Serializable {
 	private BigDecimal productWeigth;
 	private BigDecimal productPrice;
 	private Instant productRegistrationDate;
-	private ProductStatus status;
-	private String group;
-	private String ncm;
-	private String centerCost;
+	private ProductStatus productStatus;
+	private String productGroup;
+	private String productNcm;
+	private String productCenterCost;
+	private String unidadeMedida;
 	private Set<Fornecedor> fornecedores = new HashSet<>();
 
 	public ProductDTO(Produto entity) {

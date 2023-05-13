@@ -48,13 +48,15 @@ public class Produto implements Serializable {
 	@Column(name = "STATUS_PRODUTO")
 	private ProductStatus productStatus;
 
-	private String group;
+	private String productGroup;
 
-	private String ncm;
+	private String productNcm;
 
-	private String centerCost;
+	private String productCenterCost;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	private String unidadeMedida;
+
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_produto_fornecedor",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))

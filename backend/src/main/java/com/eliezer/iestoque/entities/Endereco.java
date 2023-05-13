@@ -1,8 +1,13 @@
 package com.eliezer.iestoque.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Service;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -12,7 +17,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_endereco")
-public class Endereco {
+public class Endereco implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +32,9 @@ public class Endereco {
     private String estado;
     private String pais;
     private String cep;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fornecedor_id")
+    @JsonIgnore
     private Fornecedor fornecedor;
 }

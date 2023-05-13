@@ -3,9 +3,7 @@ package com.eliezer.iestoque.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -22,5 +20,5 @@ public class Departamento {
     private Integer codDepartamento;
     private String descricaoDepartamento;
     @OneToMany(mappedBy = "departamento")
-    private List<Funcionario> funcionario = new ArrayList<>();
+    private Set<Funcionario> funcionarios = new HashSet<>();
 }
