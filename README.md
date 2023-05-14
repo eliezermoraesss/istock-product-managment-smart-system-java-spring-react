@@ -13,8 +13,8 @@
 5. <b>Ao contrário de</b> aplicativos de controle de estoque atuais. <br>
 6. <b>Nosso produto</b>, terá uma assistente virtual muito amigável (chatbot) que fornecerá alertas do nível de estoque crítico dos produtos, enviando um e-mail automático para o comprador lembrando-o de repor produtos que estão em falta ou que estão atingindo a quantidade mínima em estoque. <br>
 
-O sistema de controle de entrada e saída de produtos, que possui como objetivo fornecer ao usuário dados confiáveis, consistêntes e seguros, para tomadas de decisões acertivas.<br>
-Terá uma automação implentada para reduzir trabalhos operacionais repetitivos por parte do usuário, terá simplicidade de operabilidade, no visual para que a experiência do usuário seja muito agradável, e claro, terá como objetivo ajudar as pessoas, pois será open-source em sua versão gratuita, sendo uma ferramenta muito bem-vinda para médias e pequenas empresas.
+Sistema de controle de entrada e saída de produtos, possui como objetivo fornecer ao usuário dados confiáveis, consistêntes e seguros, para tomadas de decisões acertivas.<br>
+Terá uma automação implentada para reduzir trabalhos operacionais repetitivos por parte do usuário, terá simplicidade de operabilidade, para que a experiência do usuário seja muito agradável, e claro, terá como objetivo ajudar o usuário, pois será open-source em sua versão gratuita, sendo uma ferramenta muito bem-vinda para médias e pequenas empresas.
 
 ## Requisitos funcionais:
 Concluído ✅ {em breve irei postar aqui!}
