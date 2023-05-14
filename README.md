@@ -8,7 +8,7 @@ Sistema de controle de entrada e saída de materias, que possui como objetivo fo
 Terá uma automação implentada para reduzir trabalhos operacionais repetitivos por parte do usuário, terá simplicidade de operabilidade, no visual para que a experiência do usuário seja muito agradável, e claro, terá como objetivo ajudar as pessoas, pois será open-source em sua versão gratuita, sendo uma ferramenta muito bem-vinda para médias e pequenas empresas.
 
 
-## 👨🏼‍💻 Tecnologias escolhidas:
+## 👨🏼‍💻 Arquitetura e tecnologias escolhidas:
 
 ✅ Java<br>
 ✅ Spring (Boot, Data JPA, Security, Cloud)<br>
