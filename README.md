@@ -1,4 +1,4 @@
-# 🤓📊👨🏼‍💻 
+# 📊👨🏼‍💻 
 # iStock - Sistema Inteligente de Gerenciamento de Estoque
 # <i>iStock - Managment Warehouse Smart System</i>
 
