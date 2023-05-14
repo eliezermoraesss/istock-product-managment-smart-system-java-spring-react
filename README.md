@@ -16,8 +16,9 @@ Terá uma automação implentada para reduzir trabalhos operacionais repetitivos
 ✅ Arquitetura baseada em Microsservices<br>
 ✅ RabbitMQ (na versão open-source)<br>
 ✅ Kafka (para versão paga no futuro, com maior robustez)<br>
+✅ Git/GitHub para versionamento<br>
 ✅ Banco de dados MySQL<br>
-✅ Docker<br>
+✅ Docker/Docker Compose<br>
 ✅ Kubernetes<br>
 ✅ Deploy CI/CD com Railway<br>
 
