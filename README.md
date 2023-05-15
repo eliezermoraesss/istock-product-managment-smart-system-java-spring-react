@@ -13,16 +13,17 @@
 5. <b>Ao contrário de</b> aplicativos de controle de estoque atuais. <br>
 6. <b>Nosso produto</b>, terá uma assistente virtual muito amigável (chatbot) que fornecerá alertas do nível de estoque crítico dos produtos, enviando um e-mail automático para o comprador lembrando-o de repor produtos que estão em falta ou que estão atingindo a quantidade mínima em estoque. <br>
 
-## Requisitos funcionais:
+## Análise de Requisitos:
+### Requisitos funcionais:
 Concluído ✅ {em breve irei postar aqui!}
-## Requisitos não-funcionais:
+### Requisitos não-funcionais:
 Concluído ✅ {em breve irei postar aqui!}
 ## 👨🏼‍💻 Arquitetura e tecnologias escolhidas:
 
 ✅ Java<br>
 ✅ Spring (Boot, Data JPA, Security, Cloud)<br>
 ✅ Keycloak<br>
-✅ Arquitetura baseada em Microsservices<br>
+✅ Arquitetura de Monorepo<br>
 ✅ RabbitMQ (na versão open-source)<br>
 ✅ Kafka (para versão paga no futuro, com maior robustez)<br>
 ✅ Git/GitHub para versionamento<br>
