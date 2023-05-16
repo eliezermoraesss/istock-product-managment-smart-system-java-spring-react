@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.eliezer.iestoque.entities.Produto;
 
-public interface ProductRepository extends JpaRepository<Produto, Long> {
+import java.util.UUID;
+
+public interface ProductRepository extends JpaRepository<Produto, UUID> {
 
 }

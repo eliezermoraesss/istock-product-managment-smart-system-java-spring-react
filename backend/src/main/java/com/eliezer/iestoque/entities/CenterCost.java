@@ -3,7 +3,6 @@ package com.eliezer.iestoque.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
@@ -14,23 +13,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_ncm")
-public class Ncm implements Serializable {
+@Table(name = "tb_center_cost")
+public class CenterCost implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String ncmCode;
-    private String ncmDescription;
+    private Integer ccCode;
+    private String ccName;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Ncm ncm)) return false;
-        return getId().equals(ncm.getId());
+        if (!(o instanceof CenterCost centerCost)) return false;
+        return getId().equals(centerCost.getId());
     }
 
     @Override

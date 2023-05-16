@@ -8,8 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.eliezer.iestoque.entities.Fornecedor;
-import com.eliezer.iestoque.entities.Produto;
+import com.eliezer.iestoque.entities.*;
 import com.eliezer.iestoque.enums.ProductStatus;
 
 import lombok.AllArgsConstructor;
@@ -36,11 +35,11 @@ public class ProductDTO implements Serializable {
 	private BigDecimal productPrice;
 	private Instant productRegistrationDate;
 	private ProductStatus productStatus;
-	private String productGroup;
-	private String productNcm;
-	private String productCenterCost;
+	private Group productGroup;
+	private Ncm productNcm;
+	private CenterCost productCenterCost;
 	private String unidadeMedida;
-	private Set<Fornecedor> fornecedores = new HashSet<>();
+	private Set<Supplier> fornecedores = new HashSet<>();
 
 	public ProductDTO(Produto entity) {
 		BeanUtils.copyProperties(entity, this);

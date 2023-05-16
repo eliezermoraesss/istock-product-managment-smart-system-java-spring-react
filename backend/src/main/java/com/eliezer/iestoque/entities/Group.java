@@ -3,6 +3,7 @@ package com.eliezer.iestoque.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 @Getter
@@ -12,7 +13,9 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_group")
-public class Group {
+public class Group implements Serializable {
+
+    public static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

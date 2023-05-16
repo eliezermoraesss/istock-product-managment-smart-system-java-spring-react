@@ -1,7 +1,8 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Address;
-import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.entities.Department;
+import com.eliezer.iestoque.entities.Employee;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -16,19 +17,17 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FornecedorDTO implements Serializable {
+public class DepartmentDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private UUID id;
-    private Integer codFornecedor;
-    private String razaoSocial;
-    private String cnpj;
-    private String inscricaoEstadual;
-    private Set<Address> addresses = new HashSet<>();
+    private Integer codDepartamento;
+    private String descricaoDepartamento;
+    private Set<Employee> funcionarios = new HashSet<>();
 
-    public FornecedorDTO(Supplier entity) {
+    public DepartmentDTO(Department entity) {
         BeanUtils.copyProperties(entity, this);
     }
 }

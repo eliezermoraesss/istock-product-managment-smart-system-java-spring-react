@@ -1,6 +1,7 @@
 package com.eliezer.iestoque.dto;
 
 import com.eliezer.iestoque.entities.Group;
+import com.eliezer.iestoque.entities.Ncm;
 import lombok.*;
 
 import java.io.Serial;
@@ -12,16 +13,18 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupDTO implements Serializable {
+public class NcmDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private UUID id;
-    private String groupName;
+    private String ncmCode;
+    private String ncmDescription;
 
-    public GroupDTO(Group entity) {
+    public NcmDTO(Ncm entity) {
         this.id = entity.getId();
-        this.groupName = entity.getGroupName();
+        this.ncmCode = entity.getNcmCode();
+        this.ncmDescription = entity.getNcmDescription();
     }
 }

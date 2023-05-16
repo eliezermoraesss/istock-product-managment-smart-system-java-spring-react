@@ -11,14 +11,14 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_departamento")
-public class Departamento {
+@Table(name = "tb_departament")
+public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private Integer codDepartamento;
     private String descricaoDepartamento;
-    @OneToMany(mappedBy = "departamento")
-    private Set<Funcionario> funcionarios = new HashSet<>();
+    @OneToMany(mappedBy = "department")
+    private Set<Employee> funcionarios = new HashSet<>();
 }

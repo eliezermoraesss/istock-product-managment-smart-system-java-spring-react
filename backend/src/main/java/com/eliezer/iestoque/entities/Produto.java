@@ -1,7 +1,6 @@
 package com.eliezer.iestoque.entities;
 
 import com.eliezer.iestoque.enums.ProductStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -48,19 +47,27 @@ public class Produto implements Serializable {
 	@Column(name = "STATUS_PRODUTO")
 	private ProductStatus productStatus;
 
-	private String productGroup;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "group_id")
+	private Group productGroup;
 
-	private String productNcm;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ncm_id")
+	private Ncm productNcm;
 
-	private String productCenterCost;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "center_cost_id")
+	private CenterCost productCenterCost;
 
-	private String unidadeMedida;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "unity_id")
+	private Unity unidadeMedida;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_produto_fornecedor",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))
-	private Set<Fornecedor> fornecedores = new HashSet<>();
+	private Set<Supplier> fornecedores = new HashSet<>();
 
 	@Override
 	public boolean equals(Object o) {

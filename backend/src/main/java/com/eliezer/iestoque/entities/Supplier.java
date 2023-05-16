@@ -1,8 +1,6 @@
 package com.eliezer.iestoque.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,21 +14,21 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_fornecedor")
-public class Fornecedor implements Serializable {
+@Table(name = "tb_supplier")
+public class Supplier implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Integer codFornecedor;
     private String razaoSocial;
     private String cnpj;
     private String inscricaoEstadual;
 
-    @OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY)
-    private Set<Endereco> enderecos = new HashSet<>();
+    /*@OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
+    private Set<Address> addresses = new HashSet<>();*/
 
     @ManyToMany(mappedBy = "fornecedores")
     @JsonIgnore
