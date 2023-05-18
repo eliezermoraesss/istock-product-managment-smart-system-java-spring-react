@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,8 +18,8 @@ public class CenterCost implements Serializable {
     public static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Integer ccCode;
     private String ccName;
 

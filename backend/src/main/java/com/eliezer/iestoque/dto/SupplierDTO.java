@@ -8,7 +8,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,12 +19,12 @@ public class SupplierDTO implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;
+	private Long id;
 	private Integer codFornecedor;
 	private String razaoSocial;
 	private String cnpj;
 	private String inscricaoEstadual;
-	private Set<Address> addresses = new HashSet<>();
+	private Set<AddressDTO> addresses = new HashSet<>();
 
 	public SupplierDTO(Supplier entity) {
 		BeanUtils.copyProperties(entity, this);

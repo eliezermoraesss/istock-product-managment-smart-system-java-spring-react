@@ -18,7 +18,7 @@ public class NcmDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private UUID id;
+    private Long id;
     private String ncmCode;
     private String ncmDescription;
 

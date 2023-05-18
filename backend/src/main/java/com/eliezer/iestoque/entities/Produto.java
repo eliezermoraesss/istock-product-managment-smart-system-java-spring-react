@@ -22,8 +22,8 @@ public class Produto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(name = "CODIGO")
 	private String productCode;
@@ -67,7 +67,7 @@ public class Produto implements Serializable {
 	@JoinTable(name = "tb_produto_fornecedor",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))
-	private Set<Supplier> fornecedores = new HashSet<>();
+	private Set<Supplier> suppliers = new HashSet<>();
 
 	@Override
 	public boolean equals(Object o) {

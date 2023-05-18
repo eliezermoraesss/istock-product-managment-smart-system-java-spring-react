@@ -3,8 +3,9 @@ package com.eliezer.iestoque.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,11 +14,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_role")
-public class Role {
+public class Role implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String authority;
 
     @Override

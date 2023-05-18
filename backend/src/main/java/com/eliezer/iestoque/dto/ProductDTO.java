@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import com.eliezer.iestoque.entities.*;
 import com.eliezer.iestoque.enums.ProductStatus;
@@ -27,7 +26,7 @@ public class ProductDTO implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;
+	private Long id;
 	private String productCode;
 	private String productDescription;
 	private BigDecimal productQuantity;
@@ -35,11 +34,11 @@ public class ProductDTO implements Serializable {
 	private BigDecimal productPrice;
 	private Instant productRegistrationDate;
 	private ProductStatus productStatus;
-	private Group productGroup;
-	private Ncm productNcm;
-	private CenterCost productCenterCost;
-	private String unidadeMedida;
-	private Set<Supplier> fornecedores = new HashSet<>();
+	private GroupDTO productGroup;
+	private NcmDTO productNcm;
+	private CenterCostDTO productCenterCost;
+	private UnityDTO unidadeMedida;
+	private Set<SupplierDTO> suppliers = new HashSet<>();
 
 	public ProductDTO(Produto entity) {
 		BeanUtils.copyProperties(entity, this);

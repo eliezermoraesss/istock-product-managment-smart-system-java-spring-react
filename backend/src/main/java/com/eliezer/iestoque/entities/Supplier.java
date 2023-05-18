@@ -27,10 +27,10 @@ public class Supplier implements Serializable {
     private String cnpj;
     private String inscricaoEstadual;
 
-    /*@OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
-    private Set<Address> addresses = new HashSet<>();*/
+    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
+    private Set<Address> addresses = new HashSet<>();
 
-    @ManyToMany(mappedBy = "fornecedores")
+    @ManyToMany(mappedBy = "suppliers")
     @JsonIgnore
     private Set<Produto> produtos = new HashSet<>();
     
