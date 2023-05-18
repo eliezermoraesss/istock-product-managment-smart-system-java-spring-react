@@ -18,13 +18,31 @@ public class SupplierResource {
 
     @GetMapping
     public ResponseEntity<List<SupplierDTO>> findAll() {
-        List<SupplierDTO> listDto = service.findAll();
-        return ResponseEntity.ok().body(listDto);
+        List<SupplierDTO> list = service.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<SupplierDTO> findById(@PathVariable Long id) {
+        SupplierDTO dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
     public ResponseEntity<SupplierDTO> insert(@RequestBody SupplierDTO dto) {
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<SupplierDTO> update(@PathVariable Long id, @RequestBody SupplierDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

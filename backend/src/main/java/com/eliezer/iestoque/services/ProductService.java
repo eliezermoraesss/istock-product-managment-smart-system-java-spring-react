@@ -3,9 +3,12 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.eliezer.iestoque.services.exceptions.DataBaseException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -46,11 +49,14 @@ public class ProductService {
 
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
-		Optional<Produto> obj = repository.findById(id);
-		Produto entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-		BeanUtils.copyProperties(dto, entity);
-		entity = repository.save(entity);
-		return new ProductDTO(entity);
+		try {
+			Produto entity = repository.getReferenceById(id);
+			BeanUtils.copyProperties(dto, entity, "id");
+			entity = repository.save(entity);
+			return new ProductDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
+		}
 	}
 
 	public void delete(Long id) {

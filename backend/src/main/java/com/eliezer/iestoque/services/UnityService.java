@@ -1,14 +1,13 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.dto.UnityDTO;
+import com.eliezer.iestoque.entities.Unity;
+import com.eliezer.iestoque.repositories.UnityRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -18,41 +17,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupplierService {
+public class UnityService {
 
-    public static final String MSG_NOT_FOUND = "Supplier Id not found: ";
+    public static final String MSG_NOT_FOUND = "Unity not found: ";
 
     @Autowired
-    public SupplierRepository repository;
+    public UnityRepository unityRepository;
 
     @Transactional
-    public List<SupplierDTO> findAll() {
-        List<Supplier> Suppliers = repository.findAll();
-        return Suppliers.stream().map(x -> new SupplierDTO(x)).toList();
+    public List<UnityDTO> findAll() {
+        List<Unity> list = unityRepository.findAll();
+        return list.stream().map(x -> new UnityDTO(x)).toList();
     }
 
     @Transactional
-    public SupplierDTO findById(Long id) {
-        Optional<Supplier> obj = repository.findById(id);
-        Supplier entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new SupplierDTO(entity);
+    public UnityDTO findById(Long id) {
+        Optional<Unity> obj = unityRepository.findById(id);
+        Unity entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new UnityDTO(entity);
     }
 
     @Transactional
-    public SupplierDTO insert(SupplierDTO dto) {
-        Supplier entity = new Supplier();
+    public UnityDTO insert(UnityDTO dto) {
+        Unity entity = new Unity();
         BeanUtils.copyProperties(dto, entity);
-        entity = repository.save(entity);
-        return new SupplierDTO(entity);
+        entity = unityRepository.save(entity);
+        return new UnityDTO(entity);
     }
 
     @Transactional
-    public SupplierDTO update(Long id, SupplierDTO dto) {
+    public UnityDTO update(Long id, UnityDTO dto) {
         try {
-            Supplier entity = repository.getReferenceById(id);
+            Unity entity = unityRepository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
-            entity = repository.save(entity);
-            return new SupplierDTO(entity);
+            entity = unityRepository.save(entity);
+            return new UnityDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
@@ -60,7 +59,7 @@ public class SupplierService {
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            unityRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
         } catch (DataIntegrityViolationException e) {

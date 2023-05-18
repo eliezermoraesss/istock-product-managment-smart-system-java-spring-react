@@ -1,10 +1,8 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.dto.UserDTO;
+import com.eliezer.iestoque.entities.User;
+import com.eliezer.iestoque.repositories.UserRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -18,41 +16,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupplierService {
+public class UserService {
 
-    public static final String MSG_NOT_FOUND = "Supplier Id not found: ";
+    public static final String MSG_NOT_FOUND = "User not found: ";
 
     @Autowired
-    public SupplierRepository repository;
+    public UserRepository UserRepository;
 
     @Transactional
-    public List<SupplierDTO> findAll() {
-        List<Supplier> Suppliers = repository.findAll();
-        return Suppliers.stream().map(x -> new SupplierDTO(x)).toList();
+    public List<UserDTO> findAll() {
+        List<User> list = UserRepository.findAll();
+        return list.stream().map(x -> new UserDTO(x)).toList();
     }
 
     @Transactional
-    public SupplierDTO findById(Long id) {
-        Optional<Supplier> obj = repository.findById(id);
-        Supplier entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new SupplierDTO(entity);
+    public UserDTO findById(Long id) {
+        Optional<User> obj = UserRepository.findById(id);
+        User entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new UserDTO(entity);
     }
 
     @Transactional
-    public SupplierDTO insert(SupplierDTO dto) {
-        Supplier entity = new Supplier();
+    public UserDTO insert(UserDTO dto) {
+        User entity = new User();
         BeanUtils.copyProperties(dto, entity);
-        entity = repository.save(entity);
-        return new SupplierDTO(entity);
+        entity = UserRepository.save(entity);
+        return new UserDTO(entity);
     }
 
     @Transactional
-    public SupplierDTO update(Long id, SupplierDTO dto) {
+    public UserDTO update(Long id, UserDTO dto) {
         try {
-            Supplier entity = repository.getReferenceById(id);
+            User entity = UserRepository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
-            entity = repository.save(entity);
-            return new SupplierDTO(entity);
+            entity = UserRepository.save(entity);
+            return new UserDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
@@ -60,7 +58,7 @@ public class SupplierService {
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            UserRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
         } catch (DataIntegrityViolationException e) {

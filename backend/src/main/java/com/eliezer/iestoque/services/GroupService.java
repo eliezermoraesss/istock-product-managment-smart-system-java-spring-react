@@ -1,10 +1,8 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.dto.GroupDTO;
+import com.eliezer.iestoque.entities.Group;
+import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -18,41 +16,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupplierService {
+public class GroupService {
 
-    public static final String MSG_NOT_FOUND = "Supplier Id not found: ";
+    public static final String MSG_NOT_FOUND = "Group Id not found: ";
 
     @Autowired
-    public SupplierRepository repository;
+    public GroupRepository repository;
 
     @Transactional
-    public List<SupplierDTO> findAll() {
-        List<Supplier> Suppliers = repository.findAll();
-        return Suppliers.stream().map(x -> new SupplierDTO(x)).toList();
+    public List<GroupDTO> findAll() {
+        List<Group> Groups = repository.findAll();
+        return Groups.stream().map(x -> new GroupDTO(x)).toList();
     }
 
     @Transactional
-    public SupplierDTO findById(Long id) {
-        Optional<Supplier> obj = repository.findById(id);
-        Supplier entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new SupplierDTO(entity);
+    public GroupDTO findById(Long id) {
+        Optional<Group> obj = repository.findById(id);
+        Group entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new GroupDTO(entity);
     }
 
     @Transactional
-    public SupplierDTO insert(SupplierDTO dto) {
-        Supplier entity = new Supplier();
+    public GroupDTO insert(GroupDTO dto) {
+        Group entity = new Group();
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
-        return new SupplierDTO(entity);
+        return new GroupDTO(entity);
     }
 
     @Transactional
-    public SupplierDTO update(Long id, SupplierDTO dto) {
+    public GroupDTO update(Long id, GroupDTO dto) {
         try {
-            Supplier entity = repository.getReferenceById(id);
+            Group entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
-            return new SupplierDTO(entity);
+            return new GroupDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
