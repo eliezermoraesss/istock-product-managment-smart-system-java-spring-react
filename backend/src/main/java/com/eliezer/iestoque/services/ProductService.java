@@ -3,6 +3,7 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.eliezer.iestoque.entities.Group;
 import com.eliezer.iestoque.entities.Product;
 import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.repositories.ProductRepository;
@@ -31,7 +32,7 @@ public class ProductService {
 	@Transactional
 	public List<ProductDTO> findAll() {
 		List<Product> products = productRepository.findAll();
-		return products.stream().map(x -> new ProductDTO(x)).toList();
+		return products.stream().map(x -> new ProductDTO(x, x.getProductGroup())).toList();
 	}
 
 	@Transactional
@@ -44,9 +45,12 @@ public class ProductService {
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
 		Product entity = new Product();
+		Group entityGroup = groupRepository.findById(dto.getProductGroup().getId()).orElseThrow(() ->
+				new ResourceNotFoundException("Group Id not found: " + dto.getProductGroup().getId()));
+		entity.setProductGroup(entityGroup);
 		BeanUtils.copyProperties(dto, entity);
 		entity = productRepository.save(entity);
-		return new ProductDTO(entity);
+		return new ProductDTO(entity, entityGroup);
 	}
 
 	@Transactional

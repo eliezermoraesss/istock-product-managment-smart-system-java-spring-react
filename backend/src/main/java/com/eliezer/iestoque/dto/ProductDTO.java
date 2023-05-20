@@ -43,4 +43,11 @@ public class ProductDTO implements Serializable {
 	public ProductDTO(Product entity) {
 		BeanUtils.copyProperties(entity, this);
 	}
+
+	public ProductDTO(Product entity, Group group) {
+		BeanUtils.copyProperties(entity, this);
+		if(group != null) {
+			productGroup = new GroupDTO(group);
+		}
+	}
 }
