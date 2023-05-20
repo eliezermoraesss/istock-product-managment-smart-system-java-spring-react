@@ -32,6 +32,6 @@ public class Supplier implements Serializable {
 
     @ManyToMany(mappedBy = "suppliers")
     @JsonIgnore
-    private Set<Produto> produtos = new HashSet<>();
+    private Set<Product> products = new HashSet<>();
     
 }

@@ -22,6 +22,8 @@ public class Group implements Serializable {
     private Long id;
     private Integer groupCode;
     private String groupName;
+    @OneToMany(mappedBy = "productGroup")
+    private List<Product> products = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

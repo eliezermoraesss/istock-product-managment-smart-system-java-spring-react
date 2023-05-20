@@ -16,8 +16,8 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_produto")
-public class Produto implements Serializable {
+@Table(name = "tb_product")
+public class Product implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
@@ -72,8 +72,8 @@ public class Produto implements Serializable {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Produto produto)) return false;
-		return getId().equals(produto.getId());
+		if (!(o instanceof Product product)) return false;
+		return getId().equals(product.getId());
 	}
 
 	@Override

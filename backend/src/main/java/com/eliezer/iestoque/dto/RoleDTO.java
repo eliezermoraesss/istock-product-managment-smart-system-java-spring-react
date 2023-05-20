@@ -1,5 +1,7 @@
 package com.eliezer.iestoque.dto;
 
+import com.eliezer.iestoque.entities.Role;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -17,6 +19,11 @@ public class RoleDTO implements Serializable {
     public RoleDTO(Long id, String authority) {
         this.id = id;
         this.authority = authority;
+    }
+
+    public RoleDTO(Role entity) {
+        this.id = entity.getId();
+        this.authority = entity.getAuthority();
     }
 
     public Long getId() {

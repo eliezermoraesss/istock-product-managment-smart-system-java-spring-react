@@ -40,7 +40,7 @@ public class ProductDTO implements Serializable {
 	private UnityDTO unidadeMedida;
 	private Set<SupplierDTO> suppliers = new HashSet<>();
 
-	public ProductDTO(Produto entity) {
+	public ProductDTO(Product entity) {
 		BeanUtils.copyProperties(entity, this);
 	}
 }

@@ -6,3 +6,5 @@ INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) V
 INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 1000, 'Centro', 'Uberlândia', 'AM', 'Brasil', '38400-000');
 INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 777, 'Centro', 'Uberlândia', 'ES', 'Brasil', '38400-000');
 INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 2, 'Centro', 'Uberlândia', 'RS', 'Brasil', '38400-000');
+
+INSERT INTO tb_group (group_code, group_name) VALUES (1, 'EPI');
