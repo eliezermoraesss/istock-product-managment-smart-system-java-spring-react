@@ -2,11 +2,15 @@ package com.eliezer.iestoque.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.eliezer.iestoque.dto.ProductMinDTO;
 import com.eliezer.iestoque.entities.Group;
 import com.eliezer.iestoque.entities.Product;
+import com.eliezer.iestoque.entities.Supplier;
 import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.repositories.ProductRepository;
+import com.eliezer.iestoque.repositories.SupplierRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -27,19 +31,29 @@ public class ProductService {
 	private ProductRepository productRepository;
 
 	@Autowired
+	private SupplierRepository supplierRepository;
+
+	@Autowired
 	private GroupRepository groupRepository;
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<ProductDTO> findAll() {
 		List<Product> products = productRepository.findAll();
-		return products.stream().map(x -> new ProductDTO(x, x.getProductGroup())).toList();
+		return products.stream().map(x -> new ProductDTO(x)).toList();
 	}
 
-	@Transactional
-	public ProductDTO findById(Long id) {
+	@Transactional(readOnly = true)
+	public ProductDTO findByIdWithSupplier(Long id) {
 		Optional<Product> obj = productRepository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
 		return new ProductDTO(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public ProductMinDTO findById(Long id) {
+		Optional<Product> obj = productRepository.findById(id);
+		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+		return new ProductMinDTO(entity);
 	}
 
 	@Transactional
@@ -50,7 +64,7 @@ public class ProductService {
 		entity.setProductGroup(entityGroup);
 		BeanUtils.copyProperties(dto, entity);
 		entity = productRepository.save(entity);
-		return new ProductDTO(entity, entityGroup);
+		return new ProductDTO(entity);
 	}
 
 	@Transactional

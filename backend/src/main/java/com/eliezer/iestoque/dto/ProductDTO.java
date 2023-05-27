@@ -42,12 +42,14 @@ public class ProductDTO implements Serializable {
 
 	public ProductDTO(Product entity) {
 		BeanUtils.copyProperties(entity, this);
+		productGroup = new GroupDTO(entity.getProductGroup());
 	}
 
-	public ProductDTO(Product entity, Group group) {
+	public ProductDTO(Product entity, Group group, Set<Supplier> suppliers) {
 		BeanUtils.copyProperties(entity, this);
 		if(group != null) {
 			productGroup = new GroupDTO(group);
 		}
+		suppliers.forEach(sup -> this.suppliers.add(new SupplierDTO(sup)));
 	}
 }

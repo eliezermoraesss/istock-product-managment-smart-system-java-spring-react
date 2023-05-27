@@ -2,6 +2,7 @@ package com.eliezer.iestoque.resources;
 
 import java.util.List;
 
+import com.eliezer.iestoque.dto.ProductMinDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,15 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+	@GetMapping(value = "/{id}/suppliers")
+	public ResponseEntity<ProductDTO> findByIdWithSupplier(@PathVariable Long id) {
+		ProductDTO dto = service.findByIdWithSupplier(id);
+		return ResponseEntity.ok().body(dto);
+	}
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-		ProductDTO dto = service.findById(id);
+	public ResponseEntity<ProductMinDTO> findById(@PathVariable Long id) {
+		ProductMinDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
