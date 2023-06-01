@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.eliezer.iestoque.dto.ProductMinDTO;
+import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.entities.Group;
 import com.eliezer.iestoque.entities.Product;
 import com.eliezer.iestoque.entities.Supplier;
@@ -39,14 +40,14 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public List<ProductDTO> findAll() {
 		List<Product> products = productRepository.findAll();
-		return products.stream().map(x -> new ProductDTO(x)).toList();
+		return products.stream().map(x -> new ProductDTO(x, x.getSuppliers())).toList();
 	}
 
 	@Transactional(readOnly = true)
 	public ProductDTO findByIdWithSupplier(Long id) {
 		Optional<Product> obj = productRepository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-		return new ProductDTO(entity);
+		return new ProductDTO(entity, entity.getSuppliers());
 	}
 
 	@Transactional(readOnly = true)
@@ -63,17 +64,22 @@ public class ProductService {
 				new ResourceNotFoundException("Group Id not found: " + dto.getProductGroup().getId()));
 		entity.setProductGroup(entityGroup);
 		BeanUtils.copyProperties(dto, entity);
+		copyDtoToEntity(dto, entity);
 		entity = productRepository.save(entity);
-		return new ProductDTO(entity);
+		return new ProductDTO(entity, entity.getSuppliers());
 	}
 
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
 		try {
 			Product entity = productRepository.getReferenceById(id);
+			Group entityGroup = groupRepository.findById(dto.getProductGroup().getId()).orElseThrow(() ->
+					new ResourceNotFoundException("Group Id not found: " + dto.getProductGroup().getId()));
+			entity.setProductGroup(entityGroup);
 			BeanUtils.copyProperties(dto, entity, "id");
+			copyDtoToEntity(dto, entity);
 			entity = productRepository.save(entity);
-			return new ProductDTO(entity);
+			return new ProductDTO(entity, entity.getSuppliers());
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
 		}
@@ -86,6 +92,14 @@ public class ProductService {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
 		} catch (DataIntegrityViolationException e) {
 			throw new ResourceNotFoundException("Integrity violation - " + e.getMessage());
+		}
+	}
+
+	private void copyDtoToEntity(ProductDTO dto, Product entity) {
+		entity.getSuppliers().clear();
+		for (SupplierDTO supplierDTO : dto.getSuppliers()) {
+			Supplier supplier = supplierRepository.getReferenceById(supplierDTO.getId());
+			entity.getSuppliers().add(supplier);
 		}
 	}
 }
