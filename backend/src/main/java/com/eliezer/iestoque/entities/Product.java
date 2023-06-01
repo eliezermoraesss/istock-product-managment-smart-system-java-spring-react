@@ -25,22 +25,22 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "CODIGO")
+	//@Column(name = "CODIGO")
 	private String productCode;
 
-	@Column(name = "DESCRICAO", columnDefinition = "TEXT")
+	//@Column(name = "DESCRICAO", columnDefinition = "TEXT")
 	private String productDescription;
 
-	@Column(name = "QUANTIDADE")
+	//@Column(name = "QUANTIDADE")
 	private BigDecimal productQuantity;
 
-	@Column(name = "PESO")
+	//@Column(name = "PESO")
 	private BigDecimal productWeigth;
 
-	@Column(name = "PRECO")
+	//@Column(name = "PRECO")
 	private BigDecimal productPrice;
 
-	@Column(name = "DATA_CADASTRO", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	//@Column(name = "DATA_CADASTRO", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant productRegistrationDate;
 	
 	@Enumerated(value = EnumType.STRING)
@@ -64,9 +64,9 @@ public class Product implements Serializable {
 	private Unity unidadeMedida;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_produto_fornecedor",
-			joinColumns = @JoinColumn(name = "produto_id"),
-			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))
+	@JoinTable(name = "tb_product_supplier",
+			joinColumns = @JoinColumn(name = "product_id"),
+			inverseJoinColumns = @JoinColumn(name = "supplier_id"))
 	private Set<Supplier> suppliers = new HashSet<>();
 
 	@Override
