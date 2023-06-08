@@ -44,6 +44,12 @@ public class ProductService {
 	}
 
 	@Transactional(readOnly = true)
+	public List<ProductDTO> findByProductDescription(String productdescription) {
+		List<Product> products = productRepository.findByProductDescriptionContainingIgnoreCase(productdescription.trim());
+		return products.stream().map(x -> new ProductDTO(x, x.getSuppliers())).toList();
+	}
+
+	@Transactional(readOnly = true)
 	public ProductDTO findByIdWithSupplier(Long id) {
 		Optional<Product> obj = productRepository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));

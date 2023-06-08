@@ -24,6 +24,12 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+	@GetMapping(value = "/description")
+	public ResponseEntity<List<ProductDTO>> findByProductDescription(@RequestParam(value = "description", defaultValue = "") String productDescription) {
+		List<ProductDTO> list = service.findByProductDescription(productDescription.trim());
+		return ResponseEntity.ok().body(list);
+	}
+
 	@GetMapping(value = "/{id}/suppliers")
 	public ResponseEntity<ProductDTO> findByIdWithSupplier(@PathVariable Long id) {
 		ProductDTO dto = service.findByIdWithSupplier(id);
