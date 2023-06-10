@@ -93,7 +93,11 @@ public class ProductService {
 
 	public void delete(Long id) {
 		try {
-			productRepository.deleteById(id);
+			if(productRepository.findById(id).isPresent()){
+				productRepository.deleteById(id);
+			} else {
+				throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
+			}
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
 		} catch (DataIntegrityViolationException e) {

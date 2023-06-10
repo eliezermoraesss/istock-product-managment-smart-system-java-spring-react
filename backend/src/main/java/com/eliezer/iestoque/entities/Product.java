@@ -28,7 +28,7 @@ public class Product implements Serializable {
 	//@Column(name = "CODIGO")
 	private String productCode;
 
-	//@Column(name = "DESCRICAO", columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String productDescription;
 
 	//@Column(name = "QUANTIDADE")
@@ -40,7 +40,7 @@ public class Product implements Serializable {
 	//@Column(name = "PRECO")
 	private BigDecimal productPrice;
 
-	//@Column(name = "DATA_CADASTRO", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant productRegistrationDate;
 	
 	@Enumerated(value = EnumType.STRING)
