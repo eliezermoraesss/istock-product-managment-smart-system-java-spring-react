@@ -5,6 +5,7 @@ import com.eliezer.iestoque.entities.Address;
 import com.eliezer.iestoque.services.AddressService;
 import com.eliezer.iestoque.services.ViaCepService;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,11 @@ public class AddressResource {
     private ViaCepService viaCepService;
 
     @GetMapping("/api/v1/{cep}")
-    public ResponseEntity<AddressDTO> getCep(@PathVariable String cep) {
+    public AddressDTO getCep(@PathVariable String cep) {
         AddressDTO cepAddress = new AddressDTO();
         if(cep.length() == 8) {
             cepAddress = viaCepService.findAddress(cep);
-            return ResponseEntity.ok(cepAddress);
+            return cepAddress;
         } else {
             throw new ResourceNotFoundException("Invalid CEP");
         }

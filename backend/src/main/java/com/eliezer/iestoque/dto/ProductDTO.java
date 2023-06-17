@@ -55,7 +55,6 @@ public class ProductDTO implements Serializable {
 
 	private GroupDTO productGroup;
 	private NcmDTO productNcm;
-	private CenterCostDTO productCenterCost;
 	private UnityDTO unidadeMedida;
 	private Set<SupplierDTO> suppliers = new HashSet<>();
 

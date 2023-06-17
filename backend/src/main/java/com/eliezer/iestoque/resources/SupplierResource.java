@@ -34,6 +34,15 @@ public class SupplierResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @PostMapping(value = "/address/api/v1")
+    public ResponseEntity<SupplierDTO> insertWithAddress(
+            @RequestBody SupplierDTO dto,
+            @RequestParam(value = "cep") String cep,
+            @RequestParam(value = "number") Integer number) {
+        dto = service.insertWithAddress(dto, cep, number);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<SupplierDTO> update(@PathVariable Long id, @RequestBody SupplierDTO dto) {
         dto = service.update(id, dto);

@@ -6,8 +6,6 @@ import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -24,9 +22,14 @@ public class SupplierDTO implements Serializable {
 	private String razaoSocial;
 	private String cnpj;
 	private String inscricaoEstadual;
-	private Set<AddressDTO> addresses = new HashSet<>();
+	private AddressDTO address;
 
 	public SupplierDTO(Supplier entity) {
 		BeanUtils.copyProperties(entity, this);
+	}
+
+	public SupplierDTO(Supplier supplier, Address address) {
+		this.address = new AddressDTO(address);
+		BeanUtils.copyProperties(supplier, this);
 	}
 }

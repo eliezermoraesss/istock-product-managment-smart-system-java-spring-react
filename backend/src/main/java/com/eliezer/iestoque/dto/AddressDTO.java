@@ -24,7 +24,7 @@ public class AddressDTO implements Serializable {
     private String localidade;
     private String uf;
     private String cep;
-    private SupplierDTO supplierDTO;
+    private SupplierDTO supplier;
 
     public AddressDTO(Address entity) {
         BeanUtils.copyProperties(entity, this);

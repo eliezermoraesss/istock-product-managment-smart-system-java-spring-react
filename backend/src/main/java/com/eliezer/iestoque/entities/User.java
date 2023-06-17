@@ -25,8 +25,12 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String userEmail;
-	private String userPassword;
+	private String firstName;
+	private String lastName;
+
+	@Column(unique = true)
+	private String email;
+	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",

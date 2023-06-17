@@ -1,11 +1,21 @@
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Flores', 300, 'Centro', 'Uberlândia', 'MG', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Avenida Matos', 105, 'Centro', 'Uberlândia', 'MG', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Avenida Floriano', 2106, 'Centro', 'Uberlândia', 'MG', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 800, 'Centro', 'Mogi Mirim', 'SP', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 900, 'Centro', 'Uberlândia', 'RJ', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 1000, 'Centro', 'Uberlândia', 'AM', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 777, 'Centro', 'Uberlândia', 'ES', 'Brasil', '38400-000');
-INSERT INTO tb_address (logradouro, numero, bairro, cidade, estado, pais, cep) VALUES ('Rua das Palmeiras', 2, 'Centro', 'Uberlândia', 'RS', 'Brasil', '38400-000');
+INSERT INTO tb_user (first_name, last_name, email, password) VALUES ('Eliezer', 'Brown', 'alex@gmail.com', '1234567');
+INSERT INTO tb_user (first_name, last_name, email, password) VALUES ('Nádia', 'Green', 'maria@gmail.com', '1234567');
+
+INSERT INTO tb_role (authority) VALUES ('ROLE_OPERATOR');
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+
+INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
+
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Rua das Flores', 300, 'Centro', 'Uberlândia', 'MG', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Avenida Matos', 105, 'Centro', 'Uberlândia', 'MG', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Avenida Floriano', 2106, 'Centro', 'Uberlândia', 'MG', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Rua das Palmeiras', 800, 'Centro', 'Mogi Mirim', 'SP', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Rua das Palmeiras', 900, 'Centro', 'Uberlândia', 'RJ', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Rua das Palmeiras', 1000, 'Centro', 'Uberlândia', 'AM', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Rua das Palmeiras', 777, 'Centro', 'Uberlândia', 'ES', '38400-000');
+INSERT INTO tb_address (logradouro, numero, bairro, localidade, uf, cep) VALUES ('Rua das Palmeiras', 2, 'Centro', 'Uberlândia', 'RS', '38400-000');
 
 INSERT INTO tb_group (group_code, group_name) VALUES (1, 'EPI');
 INSERT INTO tb_group (group_code, group_name) VALUES (2, 'MECANICA');

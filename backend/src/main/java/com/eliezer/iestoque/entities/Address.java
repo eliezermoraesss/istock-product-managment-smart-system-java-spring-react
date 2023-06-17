@@ -29,9 +29,5 @@ public class Address implements Serializable {
     private String localidade;
     private String uf;
     private String cep;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
-    @JsonIgnore
     private Supplier supplier;
 }

@@ -26,9 +26,7 @@ public class Supplier implements Serializable {
     private String razaoSocial;
     private String cnpj;
     private String inscricaoEstadual;
-
-    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
-    private Set<Address> addresses = new HashSet<>();
+    private Address address;
 
     @ManyToMany(mappedBy = "suppliers")
     @JsonIgnore

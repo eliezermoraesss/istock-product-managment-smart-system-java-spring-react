@@ -56,10 +56,6 @@ public class Product implements Serializable {
 	private Ncm productNcm;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "center_cost_id")
-	private CenterCost productCenterCost;
-
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "unity_id")
 	private Unity unidadeMedida;
 
