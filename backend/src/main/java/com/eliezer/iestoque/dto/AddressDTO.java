@@ -19,11 +19,10 @@ public class AddressDTO implements Serializable {
 
     private Long id;
     private String logradouro;
-    private String nomeLogradouro;
-    private Integer numeroLogradouro;
+    private Integer numero;
     private String bairro;
-    private String estado;
-    private String pais;
+    private String localidade;
+    private String uf;
     private String cep;
     private SupplierDTO supplierDTO;
 

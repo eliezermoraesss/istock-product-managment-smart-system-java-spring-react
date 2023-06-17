@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "tb_address")
 public class Address implements Serializable {
@@ -25,9 +26,8 @@ public class Address implements Serializable {
     private String logradouro;
     private Integer numero;
     private String bairro;
-    private String cidade;
-    private String estado;
-    private String pais;
+    private String localidade;
+    private String uf;
     private String cep;
 
     @ManyToOne(fetch = FetchType.LAZY)
