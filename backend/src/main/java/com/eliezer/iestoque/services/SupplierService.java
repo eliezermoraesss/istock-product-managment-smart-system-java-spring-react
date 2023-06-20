@@ -1,12 +1,12 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.AddressDTO;
-import com.eliezer.iestoque.dto.ProductDTO;
-import com.eliezer.iestoque.dto.SupplierDTO;
+import com.eliezer.iestoque.dto.*;
 import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.entities.*;
 import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.projections.SupplierProductProjection;
 import com.eliezer.iestoque.repositories.AddressRepository;
+import com.eliezer.iestoque.repositories.ProductRepository;
 import com.eliezer.iestoque.repositories.SupplierRepository;
 import com.eliezer.iestoque.resources.AddressResource;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
@@ -37,15 +37,24 @@ public class SupplierService {
 
     @Transactional(readOnly = true)
     public List<SupplierDTO> findAll() {
-        List<Supplier> Suppliers = repository.findAll();
-        return Suppliers.stream().map(x -> new SupplierDTO(x)).toList();
+        List<Supplier> suppliers = repository.findAll();
+        return suppliers.stream().map(x -> new SupplierDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<SupplierProductDTO> findSupplierByProduct(String productName) {
+        List<SupplierProductProjection> suppliers = repository.findSupplierByProduct(productName);
+        if(suppliers.isEmpty()) {
+            throw new ResourceNotFoundException("Supplier not found!");
+        }
+        return suppliers.stream().map(SupplierProductDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
     public SupplierDTO findById(Long id) {
         Optional<Supplier> obj = repository.findById(id);
         Supplier entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new SupplierDTO(entity);
+        return new SupplierDTO(entity, entity.getAddress());
     }
 
     @Transactional
@@ -82,7 +91,7 @@ public class SupplierService {
             Supplier entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
-            return new SupplierDTO(entity);
+            return new SupplierDTO(entity, entity.getAddress());
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }

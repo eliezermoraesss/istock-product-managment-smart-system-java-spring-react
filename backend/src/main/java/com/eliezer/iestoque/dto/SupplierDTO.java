@@ -1,6 +1,7 @@
 package com.eliezer.iestoque.dto;
 
 import com.eliezer.iestoque.entities.*;
+import com.eliezer.iestoque.projections.SupplierProductProjection;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -25,6 +26,7 @@ public class SupplierDTO implements Serializable {
 	private AddressDTO address;
 
 	public SupplierDTO(Supplier entity) {
+		this.address = new AddressDTO(entity.getAddress());
 		BeanUtils.copyProperties(entity, this);
 	}
 

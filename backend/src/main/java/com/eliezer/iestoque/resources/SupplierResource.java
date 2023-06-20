@@ -1,6 +1,7 @@
 package com.eliezer.iestoque.resources;
 
 import com.eliezer.iestoque.dto.SupplierDTO;
+import com.eliezer.iestoque.dto.SupplierProductDTO;
 import com.eliezer.iestoque.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,13 @@ public class SupplierResource {
     @GetMapping
     public ResponseEntity<List<SupplierDTO>> findAll() {
         List<SupplierDTO> list = service.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/product")
+    public ResponseEntity<List<SupplierProductDTO>> findSupplierByProduct(
+            @RequestParam(value = "productName", defaultValue = "") String productName) {
+        List<SupplierProductDTO> list = service.findSupplierByProduct(productName);
         return ResponseEntity.ok().body(list);
     }
 

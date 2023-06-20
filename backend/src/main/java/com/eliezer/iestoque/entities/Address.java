@@ -29,5 +29,7 @@ public class Address implements Serializable {
     private String localidade;
     private String uf;
     private String cep;
+
+    @OneToOne(mappedBy = "address")
     private Supplier supplier;
 }

@@ -22,14 +22,14 @@ INSERT INTO tb_group (group_code, group_name) VALUES (2, 'MECANICA');
 INSERT INTO tb_group (group_code, group_name) VALUES (3, 'ELETRICA');
 INSERT INTO tb_group (group_code, group_name) VALUES (4, 'ATIVOS');
 
-INSERT INTO tb_supplier(cod_fornecedor, razao_social, cnpj) VALUES (1, 'Fornecedor 1', '123456789');
-INSERT INTO tb_supplier(cod_fornecedor, razao_social, cnpj) VALUES (2, 'Fornecedor 2', '123456789');
-INSERT INTO tb_supplier(cod_fornecedor, razao_social, cnpj) VALUES (3, 'Fornecedor 3', '123456789');
+INSERT INTO tb_supplier(cod_fornecedor, razao_social, cnpj, address_id) VALUES (1, 'Fornecedor 1', '123456789', 1);
+INSERT INTO tb_supplier(cod_fornecedor, razao_social, cnpj, address_id) VALUES (2, 'Fornecedor 2', '12345', 2);
+INSERT INTO tb_supplier(cod_fornecedor, razao_social, cnpj, address_id) VALUES (3, 'Fornecedor 3', '12', 3);
 
 INSERT INTO tb_product (product_code, product_description, product_registration_date, product_quantity, group_id, product_price) VALUES (1, 'Protetor auricular', NOW(), 5, 1, 10.99);
 INSERT INTO tb_product (product_code, product_description, product_registration_date, product_quantity, group_id, product_price) VALUES (2, 'Parafuso sextavado', NOW(), 60, 2, 6.02);
 INSERT INTO tb_product (product_code, product_description, product_registration_date, product_quantity, group_id, product_price) VALUES (3, 'CLP Siemens', NOW(), 9, 3, 4.01);
-INSERT INTO tb_product (product_code, product_description, product_registration_date, product_quantity, group_id, product_price) VALUES (444, 'Servidor Dell', NOW(), 1, 4, 10000);
+INSERT INTO tb_product (product_code, product_description, product_registration_date, product_quantity, group_id, product_price) VALUES (4, 'Servidor Dell', NOW(), 1, 4, 10000);
 
 INSERT INTO tb_product_supplier (product_id, supplier_id) VALUES (1, 1);
 INSERT INTO tb_product_supplier (product_id, supplier_id) VALUES (1, 2);

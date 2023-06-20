@@ -26,9 +26,10 @@ public class Product implements Serializable {
 	private Long id;
 
 	//@Column(name = "CODIGO")
+	@Column(unique = true)
 	private String productCode;
 
-	@Column(columnDefinition = "TEXT")
+	@Column(unique = true, columnDefinition = "TEXT")
 	private String productDescription;
 
 	//@Column(name = "QUANTIDADE")

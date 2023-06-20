@@ -22,10 +22,20 @@ public class Supplier implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private Integer codFornecedor;
+
     private String razaoSocial;
+
+    @Column(unique = true)
     private String cnpj;
+
+    @Column(unique = true)
     private String inscricaoEstadual;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @ManyToMany(mappedBy = "suppliers")
