@@ -25,20 +25,16 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//@Column(name = "CODIGO")
 	@Column(unique = true)
 	private String productCode;
 
 	@Column(unique = true, columnDefinition = "TEXT")
 	private String productDescription;
 
-	//@Column(name = "QUANTIDADE")
 	private BigDecimal productQuantity;
 
-	//@Column(name = "PESO")
 	private BigDecimal productWeigth;
 
-	//@Column(name = "PRECO")
 	private BigDecimal productPrice;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

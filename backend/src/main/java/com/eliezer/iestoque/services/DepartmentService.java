@@ -25,11 +25,12 @@ public class DepartmentService {
 
     @Transactional
     public List<DepartmentDTO> findAll() {
-        List<Department> Departments = repository.findAll();
-        return Departments.stream().map(x -> new DepartmentDTO(x)).toList();
+        List<Department> departments = repository.findAll();
+        return departments.stream().map(x -> new DepartmentDTO(x)).toList();
     }
 
     @Transactional
+
     public DepartmentDTO findById(Long id) {
         Optional<Department> obj = repository.findById(id);
         Department entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
