@@ -1,16 +1,8 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.*;
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.entities.*;
-import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.projections.SupplierProductProjection;
-import com.eliezer.iestoque.repositories.AddressRepository;
-import com.eliezer.iestoque.repositories.ProductRepository;
-import com.eliezer.iestoque.repositories.SupplierRepository;
-import com.eliezer.iestoque.resources.AddressResource;
-import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,8 +10,18 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.eliezer.iestoque.dto.AddressDTO;
+import com.eliezer.iestoque.dto.SupplierDTO;
+import com.eliezer.iestoque.dto.SupplierProductDTO;
+import com.eliezer.iestoque.entities.Address;
+import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.projections.SupplierProductProjection;
+import com.eliezer.iestoque.repositories.AddressRepository;
+import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.resources.AddressResource;
+import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class SupplierService {

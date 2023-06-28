@@ -2,8 +2,15 @@ package com.eliezer.iestoque.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.eliezer.iestoque.dto.ProductDTO;
 import com.eliezer.iestoque.dto.ProductMinDTO;
 import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.entities.Group;
@@ -13,15 +20,8 @@ import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.repositories.ProductRepository;
 import com.eliezer.iestoque.repositories.SupplierRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 
-import com.eliezer.iestoque.dto.ProductDTO;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
