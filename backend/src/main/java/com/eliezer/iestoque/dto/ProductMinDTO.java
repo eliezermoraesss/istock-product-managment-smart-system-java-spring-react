@@ -1,6 +1,5 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Group;
 import com.eliezer.iestoque.entities.Product;
 import com.eliezer.iestoque.enums.ProductStatus;
 import lombok.*;
@@ -10,8 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter

@@ -1,10 +1,7 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Address;
-import com.eliezer.iestoque.entities.Supplier;
 import com.eliezer.iestoque.projections.SupplierProductProjection;
 import lombok.*;
-import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;

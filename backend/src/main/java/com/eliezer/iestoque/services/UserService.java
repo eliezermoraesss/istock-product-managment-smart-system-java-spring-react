@@ -3,10 +3,12 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
+import com.eliezer.iestoque.dto.UserInsertDTO;
+import com.eliezer.iestoque.repositories.RoleRepository;
+import com.eliezer.iestoque.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +17,6 @@ import com.eliezer.iestoque.dto.RoleDTO;
 import com.eliezer.iestoque.dto.UserDTO;
 import com.eliezer.iestoque.entities.Role;
 import com.eliezer.iestoque.entities.User;
-import com.eliezer.iestoque.repositories.RoleRepository;
-import com.eliezer.iestoque.repositories.UserRepository;
 import com.eliezer.iestoque.services.exceptions.DataBaseException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
@@ -26,6 +26,9 @@ import jakarta.persistence.EntityNotFoundException;
 public class UserService {
 
     public static final String MSG_NOT_FOUND = "User not found: ";
+
+    @Autowired
+    public BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRepository userRepository;
@@ -47,9 +50,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO insert(UserDTO dto) {
+    public UserDTO insert(UserInsertDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = userRepository.save(entity);
         return new UserDTO(entity);
     }

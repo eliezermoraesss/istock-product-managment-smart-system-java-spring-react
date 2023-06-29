@@ -3,6 +3,10 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.eliezer.iestoque.projections.SupplierProductProjection;
+import com.eliezer.iestoque.repositories.AddressRepository;
+import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.resources.AddressResource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,10 +19,6 @@ import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.dto.SupplierProductDTO;
 import com.eliezer.iestoque.entities.Address;
 import com.eliezer.iestoque.entities.Supplier;
-import com.eliezer.iestoque.projections.SupplierProductProjection;
-import com.eliezer.iestoque.repositories.AddressRepository;
-import com.eliezer.iestoque.repositories.SupplierRepository;
-import com.eliezer.iestoque.resources.AddressResource;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;

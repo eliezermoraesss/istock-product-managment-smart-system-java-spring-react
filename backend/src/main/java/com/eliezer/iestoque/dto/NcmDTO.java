@@ -1,12 +1,10 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Group;
 import com.eliezer.iestoque.entities.Ncm;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Getter
 @Setter

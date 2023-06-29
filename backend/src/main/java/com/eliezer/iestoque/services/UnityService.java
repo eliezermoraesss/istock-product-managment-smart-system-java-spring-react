@@ -3,6 +3,7 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.eliezer.iestoque.repositories.UnityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eliezer.iestoque.dto.UnityDTO;
 import com.eliezer.iestoque.entities.Unity;
-import com.eliezer.iestoque.repositories.UnityRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;

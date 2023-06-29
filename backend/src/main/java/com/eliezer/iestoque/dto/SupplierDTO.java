@@ -1,7 +1,6 @@
 package com.eliezer.iestoque.dto;
 
 import com.eliezer.iestoque.entities.*;
-import com.eliezer.iestoque.projections.SupplierProductProjection;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
