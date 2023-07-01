@@ -1,9 +1,11 @@
 package com.eliezer.iestoque.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +15,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.eliezer.iestoque.dto.UserDTO;
+import com.eliezer.iestoque.dto.UserInsertDTO;
+import com.eliezer.iestoque.dto.UserUpdateDTO;
 import com.eliezer.iestoque.services.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -25,8 +32,8 @@ public class UserResource {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        List<UserDTO> list = service.findAll();
+    public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
+        Page<UserDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
@@ -37,15 +44,17 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto) {
-        dto = service.insert(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserInsertDTO dto) {
+        UserDTO newDto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(newDto.getId()).toUri();
+        return ResponseEntity.created(uri).body(newDto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO dto) {
-        dto = service.update(id, dto);
-        return ResponseEntity.ok().body(dto);
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO dto) {
+        UserDTO newDto = service.update(id, dto);
+        return ResponseEntity.ok().body(newDto);
     }
 
     @DeleteMapping(value = "/{id}")

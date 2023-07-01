@@ -5,10 +5,7 @@ import com.eliezer.iestoque.entities.Role;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class RoleDTO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class RoleDTO {
 
     private Long id;
     private String authority;
@@ -22,6 +19,7 @@ public class RoleDTO implements Serializable {
     }
 
     public RoleDTO(Role entity) {
+    	super();
         this.id = entity.getId();
         this.authority = entity.getAuthority();
     }

@@ -1,19 +1,18 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.User;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.beans.BeanUtils;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserDTO implements Serializable {
+import org.springframework.beans.BeanUtils;
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+import com.eliezer.iestoque.entities.User;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public class UserDTO{
 
     private Long id;
 
@@ -24,7 +23,7 @@ public class UserDTO implements Serializable {
     @Email(message = "Digite um e-mail válido")
     private String email;
 
-    private Set<RoleDTO> roles = new HashSet<>();
+    Set<RoleDTO> roles = new HashSet<>();
 
     public UserDTO() {
     }
@@ -37,7 +36,10 @@ public class UserDTO implements Serializable {
     }
 
     public UserDTO(User entity) {
-        BeanUtils.copyProperties(entity, this);
+    	id = entity.getId();
+		firstName = entity.getFirstName();
+		lastName = entity.getLastName();
+		email = entity.getEmail();
         entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
     }
 

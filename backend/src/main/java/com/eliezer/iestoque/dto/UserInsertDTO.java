@@ -1,5 +1,8 @@
 package com.eliezer.iestoque.dto;
 
+import com.eliezer.iestoque.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
 
     private String password;

@@ -3,11 +3,13 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.eliezer.iestoque.dto.UserInsertDTO;
-import com.eliezer.iestoque.repositories.RoleRepository;
-import com.eliezer.iestoque.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,15 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eliezer.iestoque.dto.RoleDTO;
 import com.eliezer.iestoque.dto.UserDTO;
+import com.eliezer.iestoque.dto.UserInsertDTO;
 import com.eliezer.iestoque.entities.Role;
 import com.eliezer.iestoque.entities.User;
+import com.eliezer.iestoque.projections.UserDetailsProjection;
+import com.eliezer.iestoque.repositories.RoleRepository;
+import com.eliezer.iestoque.repositories.UserRepository;
 import com.eliezer.iestoque.services.exceptions.DataBaseException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     public static final String MSG_NOT_FOUND = "User not found: ";
 
@@ -36,13 +42,13 @@ public class UserService {
     @Autowired
     public RoleRepository roleRepository;
 
-    @Transactional
-    public List<UserDTO> findAll() {
-        List<User> list = userRepository.findAll();
-        return list.stream().map(x -> new UserDTO(x)).toList();
+    @Transactional(readOnly = true)
+    public Page<UserDTO> findAllPaged(Pageable pageable) {
+        Page<User> list = userRepository.findAll(pageable);
+        return list.map(x -> new UserDTO(x));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDTO findById(Long id) {
         Optional<User> obj = userRepository.findById(id);
         User entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
@@ -78,7 +84,7 @@ public class UserService {
         try {
         	userRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException("Integrity violation - " + e.getMessage());
+            throw new DataBaseException("Falha de integridade referencial - " + e.getMessage());
         }
     }
     
@@ -93,4 +99,21 @@ public class UserService {
     		entity.getRoles().add(role);
     	}
     }
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		List<UserDetailsProjection> result = userRepository.searchUserAndRolesByEmail(username);
+		if (result.size() == 0) {
+			throw new UsernameNotFoundException("Email not found");
+		}
+		
+		User user = new User();
+		user.setEmail(result.get(0).getUsername());
+		user.setPassword(result.get(0).getPassword());
+		for (UserDetailsProjection projection : result) {
+			user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+		}
+		
+		return user;
+	}
 }
