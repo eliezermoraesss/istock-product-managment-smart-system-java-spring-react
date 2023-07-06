@@ -12,7 +12,7 @@ import com.eliezer.iestoque.entities.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class UserDTO{
+public class UserDTO {
 
     private Long id;
 

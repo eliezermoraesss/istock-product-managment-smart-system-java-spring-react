@@ -2,9 +2,6 @@ package com.eliezer.iestoque.dto;
 
 import com.eliezer.iestoque.entities.Role;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 public class RoleDTO {
 
     private Long id;

@@ -3,10 +3,6 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.eliezer.iestoque.projections.SupplierProductProjection;
-import com.eliezer.iestoque.repositories.AddressRepository;
-import com.eliezer.iestoque.repositories.SupplierRepository;
-import com.eliezer.iestoque.resources.AddressResource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,11 +10,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eliezer.iestoque.dto.AddressDTO;
 import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.dto.SupplierProductDTO;
 import com.eliezer.iestoque.entities.Address;
 import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.projections.SupplierProductProjection;
+import com.eliezer.iestoque.repositories.AddressRepository;
+import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.resources.AddressResource;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -68,23 +67,6 @@ public class SupplierService {
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
         return new SupplierDTO(entity, entity.getAddress());
-    }
-
-    @Transactional
-    public SupplierDTO insertWithAddress(SupplierDTO dto, String cep, Integer number) {
-        AddressDTO address = addressResource.getCep(cep);
-        Address entity = new Address();
-        Supplier supplier = new Supplier();
-        if(address == null) {
-            throw new ResourceNotFoundException("CEP não encontrado");
-        }
-        address.setNumero(number);
-        BeanUtils.copyProperties(address, entity);
-        entity = addressRepository.save(entity);
-        BeanUtils.copyProperties(dto, entity);
-        supplier.setAddress(entity);
-        supplier = repository.save(supplier);
-        return new SupplierDTO(supplier);
     }
 
     @Transactional
