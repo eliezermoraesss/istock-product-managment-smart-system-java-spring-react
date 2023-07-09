@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
     public static final String MSG_NOT_FOUND = "User not found: ";
 
     @Autowired
-    public BCryptPasswordEncoder passwordEncoder;
+    public PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRepository userRepository;
@@ -95,7 +95,7 @@ public class UserService implements UserDetailsService {
     	
     	entity.getRoles().clear();
     	for (RoleDTO roleDTO : dto.getRoles()) {
-    		Role role = roleRepository.getReferenceById(dto.getId());
+    		Role role = roleRepository.getReferenceById(roleDTO.getId());
     		entity.getRoles().add(role);
     	}
     }
