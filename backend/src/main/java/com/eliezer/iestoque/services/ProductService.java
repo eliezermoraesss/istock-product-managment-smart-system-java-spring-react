@@ -47,7 +47,7 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public List<ProductDTO> findByProductDescriptionAndProductPriceSortByPriceAsc(String productName, BigDecimal price) {
 		List<Product> products = productRepository.findByProductDescriptionAndProductPriceSortByPriceAsc(productName, price);
-		return products.stream().map(x -> new ProductDTO(x)).toList();
+		return products.stream().map(x -> new ProductDTO(x, x.getSuppliers())).toList();
 	}
 
 	@Transactional(readOnly = true)
