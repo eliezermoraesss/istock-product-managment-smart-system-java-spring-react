@@ -1,11 +1,9 @@
 package com.eliezer.iestoque.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import com.eliezer.iestoque.repositories.GroupRepository;
-import com.eliezer.iestoque.repositories.ProductRepository;
-import com.eliezer.iestoque.repositories.SupplierRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +17,9 @@ import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.entities.Group;
 import com.eliezer.iestoque.entities.Product;
 import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.repositories.GroupRepository;
+import com.eliezer.iestoque.repositories.ProductRepository;
+import com.eliezer.iestoque.repositories.SupplierRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -41,6 +42,12 @@ public class ProductService {
 	public List<ProductDTO> findAll() {
 		List<Product> products = productRepository.findAll();
 		return products.stream().map(x -> new ProductDTO(x, x.getSuppliers())).toList();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<ProductDTO> findByProductDescriptionAndProductPriceSortByPriceAsc(String productName, BigDecimal price) {
+		List<Product> products = productRepository.findByProductDescriptionAndProductPriceSortByPriceAsc(productName, price);
+		return products.stream().map(x -> new ProductDTO(x)).toList();
 	}
 
 	@Transactional(readOnly = true)
