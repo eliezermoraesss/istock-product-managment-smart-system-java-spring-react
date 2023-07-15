@@ -10,6 +10,6 @@ import com.eliezer.iestoque.entities.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByProductDescriptionContainingIgnoreCase(String productDescription);
-    List<Product> findByProductDescriptionAndProductPriceSortByPriceAsc(String productName, BigDecimal price);
+    List<Product> findByProductDescriptionContainingIgnoreCaseOrProductPriceOrderByProductPriceDesc(String description, BigDecimal price);
 
 }

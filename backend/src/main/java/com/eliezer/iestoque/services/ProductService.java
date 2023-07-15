@@ -20,6 +20,7 @@ import com.eliezer.iestoque.entities.Supplier;
 import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.repositories.ProductRepository;
 import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.services.exceptions.BusinessException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -45,8 +46,8 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<ProductDTO> findByProductDescriptionAndProductPriceSortByPriceAsc(String productName, BigDecimal price) {
-		List<Product> products = productRepository.findByProductDescriptionAndProductPriceSortByPriceAsc(productName, price);
+	public List<ProductDTO> findByProductDescriptionOrProductPrice(String description, BigDecimal price) {
+		List<Product> products = productRepository.findByProductDescriptionContainingIgnoreCaseOrProductPriceOrderByProductPriceDesc(description, price);
 		return products.stream().map(x -> new ProductDTO(x, x.getSuppliers())).toList();
 	}
 
@@ -98,6 +99,7 @@ public class ProductService {
 		}
 	}
 
+	@Transactional
 	public void delete(Long id) {
 		try {
 			if(productRepository.findById(id).isPresent()){
@@ -110,6 +112,31 @@ public class ProductService {
 		} catch (DataIntegrityViolationException e) {
 			throw new ResourceNotFoundException("Integrity violation - " + e.getMessage());
 		}
+	}
+	
+	@Transactional
+	public void adicionarProdutoEstoque(Long id) {
+		Product entity = new Product();
+		ProductMinDTO dto = this.findById(id);
+		dto.setProductQuantity(dto.getProductQuantity().add(BigDecimal.ONE));
+		BeanUtils.copyProperties(dto, entity);
+		entity = productRepository.save(entity);
+		BeanUtils.copyProperties(entity, dto);
+	}
+	
+	@Transactional
+	public void removerProdutoEstoque(Long id) {
+		Product entity = new Product();
+		ProductMinDTO dto = this.findById(id);
+		
+		if (dto.getProductQuantity().compareTo(BigDecimal.ZERO) == 0) {
+			throw new BusinessException("A quantidade não pode ser negativa");
+		}
+		
+		dto.setProductQuantity(dto.getProductQuantity().subtract(BigDecimal.ONE));
+		BeanUtils.copyProperties(dto, entity);
+		entity = productRepository.save(entity);
+		BeanUtils.copyProperties(entity, dto);
 	}
 
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
