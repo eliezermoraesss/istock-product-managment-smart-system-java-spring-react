@@ -14,6 +14,7 @@ import com.eliezer.iestoque.services.exceptions.BusinessException;
 
 @Service
 public class ProductOrderService {
+<<<<<<< HEAD
 
 	@Autowired
 	private ProductOrderRepository repository;
@@ -34,5 +35,31 @@ public class ProductOrderService {
 			order.addItem(item);
 		}
 		return null;
+=======
+	
+	@Autowired
+	private ProductOrderRepository repository;
+	
+	@Autowired
+	private ProductService productService;
+	
+	@Transactional
+	public ProductOrder insertProductOrder(ProductOrder productOrder) {
+		
+		ProductOrder order = new ProductOrder();
+		
+		Set<OrderItem> items = productOrder.getItems();
+		
+		for (OrderItem item : items) {	
+			
+			ProductMinDTO produtoAtual = productService.findById(item.getProduct().getId());		
+			if(produtoAtual.getProductQuantity().compareTo(item.getQuantity()) < 0) {
+				throw new BusinessException("Quantidade solicitada não disponível em estoque");
+			}
+			
+			order.addItem(item);
+					
+		}	
+>>>>>>> ad4ac74fdb6de26c5c9f166972589de60aa1aa86
 	}
 }
