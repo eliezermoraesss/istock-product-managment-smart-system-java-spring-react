@@ -3,6 +3,7 @@ package com.eliezer.iestoque.dto;
 import com.eliezer.iestoque.entities.*;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupplierDTO implements Serializable {
+public class SupplierDTO extends RepresentationModel<SupplierDTO> implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;

@@ -1,11 +1,7 @@
 package com.eliezer.iestoque.dto;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.springframework.beans.BeanUtils;
 
 import com.eliezer.iestoque.entities.User;
 

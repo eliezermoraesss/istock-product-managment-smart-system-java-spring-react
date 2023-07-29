@@ -23,6 +23,9 @@ import com.eliezer.iestoque.services.ProductService;
 
 import jakarta.validation.Valid;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductResource {
@@ -33,6 +36,10 @@ public class ProductResource {
 	@GetMapping
 	public ResponseEntity<List<ProductDTO>> findAll() {
 		List<ProductDTO> list = service.findAll();
+		for(ProductDTO productDTO : list) {		
+			Long id = productDTO.getId();		
+			productDTO.add(linkTo(methodOn(ProductResource.class).findById(id)).withSelfRel());	
+		}		
 		return ResponseEntity.ok().body(list);
 	}
 
@@ -58,7 +65,8 @@ public class ProductResource {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductMinDTO> findById(@PathVariable Long id) {
-		ProductMinDTO dto = service.findById(id);
+		ProductMinDTO dto = service.findById(id);	
+		dto.add(linkTo(methodOn(ProductResource.class).findAll()).withRel("Lista de Produtos"));	
 		return ResponseEntity.ok().body(dto);
 	}
 

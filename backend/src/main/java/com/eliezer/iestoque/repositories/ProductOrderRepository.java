@@ -2,6 +2,8 @@ package com.eliezer.iestoque.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductOrderRepository extends JpaRepository<ProductRepository, Long> {
+import com.eliezer.iestoque.entities.ProductOrder;
+
+public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
 
 }

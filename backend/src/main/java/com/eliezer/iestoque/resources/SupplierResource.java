@@ -19,6 +19,9 @@ import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.dto.SupplierProductDTO;
 import com.eliezer.iestoque.services.SupplierService;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "/suppliers")
 public class SupplierResource {
@@ -29,6 +32,12 @@ public class SupplierResource {
     @GetMapping
     public ResponseEntity<List<SupplierDTO>> findAll() {
         List<SupplierDTO> list = service.findAll();
+        
+        for(SupplierDTO supplierDTO : list) {
+        	Long id = supplierDTO.getId();
+        	supplierDTO.add(linkTo(methodOn(SupplierResource.class).findById(id)).withSelfRel());      	
+        }
+        
         return ResponseEntity.ok().body(list);
     }
 
@@ -41,7 +50,8 @@ public class SupplierResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<SupplierDTO> findById(@PathVariable Long id) {
-        SupplierDTO dto = service.findById(id);
+        SupplierDTO dto = service.findById(id);    
+        dto.add(linkTo(methodOn(SupplierResource.class).findAll()).withRel("Lista de Fornecedores"));      
         return ResponseEntity.ok().body(dto);
     }
 

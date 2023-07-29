@@ -7,23 +7,30 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.eliezer.iestoque.entities.*;
+import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.RepresentationModel;
+
+import com.eliezer.iestoque.entities.Product;
+import com.eliezer.iestoque.entities.Supplier;
 import com.eliezer.iestoque.enums.ProductStatus;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.BeanUtils;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO implements Serializable {
+public class ProductDTO extends RepresentationModel<ProductDTO> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 

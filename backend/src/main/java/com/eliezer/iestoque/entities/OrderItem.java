@@ -5,9 +5,6 @@ import java.util.Objects;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,14 +15,6 @@ public class OrderItem {
 	private OrderItemPK id = new OrderItemPK();
 	private BigDecimal quantity;
 	private BigDecimal subTotal;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_order_id")
-	private ProductOrder productOrder;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id")
-	private Product product;
 
 	public void setProductOrder(ProductOrder productOrder) {
 		id.setProductOrder(productOrder);

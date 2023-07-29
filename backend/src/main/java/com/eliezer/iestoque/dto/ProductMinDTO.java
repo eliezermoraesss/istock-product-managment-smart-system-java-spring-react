@@ -1,26 +1,28 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Product;
-import com.eliezer.iestoque.enums.ProductStatus;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.springframework.beans.BeanUtils;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.RepresentationModel;
+
+import com.eliezer.iestoque.entities.Product;
+import com.eliezer.iestoque.enums.ProductStatus;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductMinDTO implements Serializable {
+public class ProductMinDTO extends RepresentationModel<ProductMinDTO> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 

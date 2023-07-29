@@ -21,18 +21,18 @@ public class ProductOrderService {
 	@Autowired
 	private ProductService productService;
 
-	@Transactional
-	public ProductOrder insertProductOrder(ProductOrder productOrder) {
-
-		ProductOrder order = new ProductOrder();
-		Set<OrderItem> items = productOrder.getItems();
-		for (OrderItem item : items) {
-			ProductMinDTO produtoAtual = productService.findById(item.getProduct().getId());
-			if (produtoAtual.getProductQuantity().compareTo(item.getQuantity()) < 0) {
-				throw new BusinessException("Quantidade solicitada não disponível em estoque");
-			}
-			order.addItem(item);
-		}
-		return null;
-	}
+//	@Transactional
+//	public ProductOrder insertProductOrder(ProductOrder productOrder) {
+//
+//		ProductOrder order = new ProductOrder();
+//		Set<OrderItem> items = productOrder.getItems();
+//		for (OrderItem item : items) {
+//			ProductMinDTO produtoAtual = productService.findById(item.getProduct().getId());
+//			if (produtoAtual.getProductQuantity().compareTo(item.getQuantity()) < 0) {
+//				throw new BusinessException("Quantidade solicitada não disponível em estoque");
+//			}
+//			order.addItem(item);
+//		}
+//		return null;
+//	}
 }
