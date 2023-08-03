@@ -1,47 +1,57 @@
 package com.eliezer.iestoque.entities;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
 import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class OrderItemPK {
 
-    @ManyToOne
-    @JoinColumn(name = "product_order_id")
-    private ProductOrder productOrder;
+	@Column(name = "product_order_id")
+	private Long productOrderId;
+	
+	@Column(name = "product_id")
+	private Long productId;
+	
+	public OrderItemPK() {
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+	public OrderItemPK(Long productOrderId, Long productId) {
+		this.productOrderId = productOrderId;
+		this.productId = productId;
+	}
 
-    public ProductOrder getProductOrder() {
-        return productOrder;
-    }
+	public Long getProductOrderId() {
+		return productOrderId;
+	}
 
-    public void setProductOrder(ProductOrder productOrder) {
-        this.productOrder = productOrder;
-    }
+	public void setProductOrderId(Long productOrderId) {
+		this.productOrderId = productOrderId;
+	}
 
-    public Product getProduct() {
-        return product;
-    }
+	public Long getProductId() {
+		return productId;
+	}
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OrderItemPK that)) return false;
-        return getProductOrder().equals(that.getProductOrder()) && getProduct().equals(that.getProduct());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(productId, productOrderId);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getProductOrder(), getProduct());
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderItemPK other = (OrderItemPK) obj;
+		return Objects.equals(productId, other.productId) && Objects.equals(productOrderId, other.productOrderId);
+	} 
 }

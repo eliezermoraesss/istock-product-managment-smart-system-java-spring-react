@@ -1,10 +1,12 @@
 package com.eliezer.iestoque.entities;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,24 +14,52 @@ import jakarta.persistence.Table;
 public class OrderItem {
 
 	@EmbeddedId
-	private OrderItemPK id = new OrderItemPK();
-	private BigDecimal quantity;
-	private BigDecimal subTotal;
+	private OrderItemPK id;
+	
+	@ManyToOne
+	@MapsId("productOrder")
+    @JoinColumn(name = "product_order_id")
+    private ProductOrder productOrder;
 
-	public void setProductOrder(ProductOrder productOrder) {
-		id.setProductOrder(productOrder);
+    @ManyToOne
+    @MapsId("productId")
+    @JoinColumn(name = "product_id")
+    private Product product;
+    
+    private BigDecimal quantity;
+    
+	public OrderItem() {
+	}
+
+	public OrderItem(OrderItemPK id, ProductOrder productOrder, Product product, BigDecimal quantity) {
+		this.id = id;
+		this.productOrder = productOrder;
+		this.product = product;
+		this.quantity = quantity;
+	}
+
+	public OrderItemPK getId() {
+		return id;
+	}
+
+	public void setId(OrderItemPK id) {
+		this.id = id;
 	}
 
 	public ProductOrder getProductOrder() {
-		return id.getProductOrder();
+		return productOrder;
 	}
 
-	public void setProduct(Product product) {
-		id.setProduct(product);
+	public void setProductOrder(ProductOrder productOrder) {
+		this.productOrder = productOrder;
 	}
 
 	public Product getProduct() {
-		return id.getProduct();
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public BigDecimal getQuantity() {
@@ -38,41 +68,5 @@ public class OrderItem {
 
 	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
-	}
-
-	public BigDecimal getSubTotal() {
-		return subTotal;
-	}
-
-	public void setSubTotal(BigDecimal subTotal) {
-		this.subTotal = subTotal;
-	}
-
-	public boolean quantidadeDisponivelEstoque() {
-		BigDecimal quantidadeAtual = getProduct().getProductQuantity();
-		if (quantity.compareTo(quantidadeAtual) <= 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public BigDecimal calcularSubtotalProduto() {
-		this.subTotal = getProduct().getProductPrice().multiply(quantity);
-		return subTotal;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof OrderItem orderItem))
-			return false;
-		return Objects.equals(id, orderItem.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
 	}
 }
