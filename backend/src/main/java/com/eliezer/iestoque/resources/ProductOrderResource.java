@@ -39,11 +39,10 @@ public class ProductOrderResource {
 			@RequestParam(value = "quant", defaultValue = "0") BigDecimal quantity) {
 		service.addToProductOrder(productOrderId, productId, quantity);
 		return ResponseEntity.noContent().build();
-
 	}
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ROLE_OPERATOR')")
+	@PreAuthorize("hasRole('ROLE_OPERATOR')")
 	public ResponseEntity<List<ProductOrder>> findAll() {
 		List<ProductOrder> list = service.findAll();
 		for (ProductOrder ProductOrder : list) {
@@ -77,16 +76,4 @@ public class ProductOrderResource {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-
-//	@PatchMapping("/{id}/up")
-//	public ResponseEntity<Void> adicionarProdutoEstoque(@PathVariable Long id) {
-//		service.adicionarProdutoEstoque(id);
-//		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//	}
-//	
-//	@PatchMapping("/{id}/down")
-//	public ResponseEntity<Void> removerProdutoEstoque(@PathVariable Long id) {
-//		service.removerProdutoEstoque(id);
-//		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//	}
 }

@@ -2,6 +2,9 @@ package com.eliezer.iestoque.resources;
 
 import com.eliezer.iestoque.dto.DepartmentDTO;
 import com.eliezer.iestoque.services.DepartmentService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Department endpoint")
 @RestController
 @RequestMapping(value = "/department")
 public class DepartmentResource {

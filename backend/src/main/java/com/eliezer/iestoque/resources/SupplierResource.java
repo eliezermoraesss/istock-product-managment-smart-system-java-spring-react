@@ -19,9 +19,12 @@ import com.eliezer.iestoque.dto.SupplierDTO;
 import com.eliezer.iestoque.dto.SupplierProductDTO;
 import com.eliezer.iestoque.services.SupplierService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Tag(name = "Supplier endpoint")
 @RestController
 @RequestMapping(value = "/suppliers")
 public class SupplierResource {

@@ -22,8 +22,10 @@ import com.eliezer.iestoque.dto.UserInsertDTO;
 import com.eliezer.iestoque.dto.UserUpdateDTO;
 import com.eliezer.iestoque.services.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "User endpoint")
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
