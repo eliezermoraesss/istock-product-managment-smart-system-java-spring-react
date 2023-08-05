@@ -1,5 +1,9 @@
  package com.eliezer.iestoque.resources;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.awt.print.Book;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -20,12 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.iestoque.dto.ProductDTO;
 import com.eliezer.iestoque.dto.ProductMinDTO;
+import com.eliezer.iestoque.entities.Product;
 import com.eliezer.iestoque.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -65,8 +73,17 @@ public class ProductResource {
 		return ResponseEntity.ok().body(dto);
 	}
 
+	@Operation(summary = "Encontrar um produto pelo seu ID")
+	@ApiResponses(value = { 
+	  @ApiResponse(responseCode = "200", description = "Produto encontrado", 
+	    content = { @Content(mediaType = "application/json", 
+	      schema = @Schema(implementation = Product.class)) }),
+	  @ApiResponse(responseCode = "400", description = "ID fornecido inválido", 
+	    content = @Content), 
+	  @ApiResponse(responseCode = "404", description = "Produto não encontrado", 
+	    content = @Content) })
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductMinDTO> findById(@PathVariable Long id) {
+	public ResponseEntity<ProductMinDTO> findById(@Parameter(description = "ID do produto a ser encontrado") @PathVariable Long id) {
 		ProductMinDTO dto = service.findById(id);	
 		dto.add(linkTo(methodOn(ProductResource.class).findAll()).withRel("Lista de Produtos"));	
 		return ResponseEntity.ok().body(dto);
@@ -88,17 +105,5 @@ public class ProductResource {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-	
-	@PatchMapping("/{id}/up")
-	public ResponseEntity<Void> adicionarProdutoEstoque(@PathVariable Long id) {
-		service.adicionarProdutoEstoque(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
-	
-	@PatchMapping("/{id}/down")
-	public ResponseEntity<Void> removerProdutoEstoque(@PathVariable Long id) {
-		service.removerProdutoEstoque(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

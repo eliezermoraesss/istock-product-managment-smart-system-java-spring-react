@@ -32,7 +32,7 @@ public class ProductOrderResource {
 	@Autowired
 	private ProductOrderService service;
 
-	@PutMapping(value = "/add")
+	@PostMapping(value = "/add")
 	public ResponseEntity<Void> addToProductOrder(
 			@RequestParam(value = "prodOrder", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId,

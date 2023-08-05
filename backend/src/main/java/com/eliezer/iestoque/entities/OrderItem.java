@@ -30,7 +30,7 @@ public class OrderItem {
     
 	public OrderItem() {
 	}
-
+	
 	public OrderItem(OrderItemPK id, ProductOrder productOrder, Product product, BigDecimal quantity) {
 		this.id = id;
 		this.productOrder = productOrder;
