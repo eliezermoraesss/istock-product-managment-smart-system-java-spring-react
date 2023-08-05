@@ -67,13 +67,9 @@ public class Product implements Serializable {
 	@JoinColumn(name = "group_id")
 	private Group productGroup;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ncm_id")
-	private Ncm productNcm;
+	private String productNcm;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "unity_id")
-	private Unity unidadeMedida;
+	private String unidadeMedida;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_product_supplier",

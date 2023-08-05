@@ -36,11 +36,11 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 
 	private Long id;
 
-	@Size(min = 0, max = 6, message = "Deve ter entre 0 à 6 caracteres ")
+	@Size(min = 0, max = 6, message = "Deve ter entre 0 à 6 caracteres")
 	@NotBlank(message = "Campo requerido")
 	private String productCode;
 
-	@Size(min = 5, max = 50, message = "Deve ter entre 5 à 50 caracteres ")
+	@Size(min = 5, max = 50, message = "Deve ter entre 5 à 50 caracteres")
 	@NotBlank(message = "Campo requerido")
 	private String productDescription;
 
@@ -61,8 +61,14 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 	private ProductStatus productStatus;
 
 	private GroupDTO productGroup;
-	private NcmDTO productNcm;
-	private UnityDTO unidadeMedida;
+	
+	@Size(min = 8, max = 8, message = "Deve ter exatamente 8 caractares")
+	@NotBlank(message = "Campo requerido")
+	private String productNcm;
+	
+	@Size(min = 2, max = 3, message = "Deve ter 2 ou 3 caracteres")
+	@NotNull(message = "Campo requerido")
+	private String unidadeMedida;
 	private Set<SupplierDTO> suppliers = new HashSet<>();
 
 	public ProductDTO(Product entity) {

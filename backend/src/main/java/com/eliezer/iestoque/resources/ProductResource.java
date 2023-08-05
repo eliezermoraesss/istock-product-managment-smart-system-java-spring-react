@@ -43,7 +43,7 @@ public class ProductResource {
 	private ProductService service;
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ROLE_OPERATOR')")
+	@PreAuthorize("hasRole('ROLE_OPERATOR')")
 	public ResponseEntity<List<ProductDTO>> findAll() {
 		List<ProductDTO> list = service.findAll();
 		for(ProductDTO productDTO : list) {		
@@ -83,6 +83,7 @@ public class ProductResource {
 	  @ApiResponse(responseCode = "404", description = "Produto não encontrado", 
 	    content = @Content) })
 	@GetMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ROLE_OPERATOR')")
 	public ResponseEntity<ProductMinDTO> findById(@Parameter(description = "ID do produto a ser encontrado") @PathVariable Long id) {
 		ProductMinDTO dto = service.findById(id);	
 		dto.add(linkTo(methodOn(ProductResource.class).findAll()).withRel("Lista de Produtos"));	
