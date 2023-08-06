@@ -33,6 +33,7 @@ public class Department implements Serializable {
     private Long id;
     private Integer codDepartamento;
     private String descricaoDepartamento;
+    
     @OneToMany(mappedBy = "department")
     private Set<Employee> funcionarios = new HashSet<>();
 }
