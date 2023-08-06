@@ -34,10 +34,18 @@ public class ProductOrderResource {
 
 	@PostMapping(value = "/add")
 	public ResponseEntity<Void> addToProductOrder(
-			@RequestParam(value = "prodOrder", defaultValue = "0") Long productOrderId,
+			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId,
 			@RequestParam(value = "quant", defaultValue = "0") BigDecimal quantity) {
 		service.addToProductOrder(productOrderId, productId, quantity);
+		return ResponseEntity.status(HttpStatus.CREATED).body(null);
+	}
+
+	@DeleteMapping(value = "/remove")
+	public ResponseEntity<Void> removeProductOrder(
+			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
+			@RequestParam(value = "prod", defaultValue = "0") Long productId) {
+		service.removeProductOrder(productOrderId, productId);
 		return ResponseEntity.noContent().build();
 	}
 

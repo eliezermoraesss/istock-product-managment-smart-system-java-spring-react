@@ -23,30 +23,45 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductOrderService {
-	
-	public static final String MSG_NOT_FOUND = "ProductOrder Id not found: ";
+
+	public static final String MSG_NOT_FOUND = "ProductOrder not found: ";
+	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
 
 	@Autowired
 	private ProductOrderRepository prodOrderRepository;
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	
+
 	@Transactional
 	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {
-		ProductOrder order = prodOrderRepository.findById(productOrderId).orElse(null);
-		Product product = productRepository.findById(productId).orElse(null);
-		
-		if(order != null && product != null) {
-			OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
-			OrderItem orderItem = new OrderItem(orderItemPK, order, product, quantity);
-			orderItemRepository.save(orderItem);
-			order.getOrderProducts().add(orderItem);
-			prodOrderRepository.save(order);
-		}
+		ProductOrder order = prodOrderRepository.findById(productOrderId)
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
+		Product product = productRepository.findById(productId)
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+
+		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
+		OrderItem orderItem = new OrderItem(orderItemPK, order, product, quantity);
+		orderItemRepository.save(orderItem);
+		order.getOrderProducts().add(orderItem);
+		prodOrderRepository.save(order);
+	}
+
+	@Transactional
+	public void removeProductOrder(Long productOrderId, Long productId) {
+		ProductOrder order = prodOrderRepository.findById(productOrderId)
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
+		productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+
+		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
+		OrderItem orderItem = orderItemRepository.findById(orderItemPK).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+
+		order.getOrderProducts().remove(orderItem);
+		orderItemRepository.delete(orderItem);
+		prodOrderRepository.save(order);	
 	}
 
 	@Transactional(readOnly = true)
@@ -61,7 +76,7 @@ public class ProductOrderService {
 		ProductOrder entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
 		return entity;
 	}
-	
+
 	@Transactional
 	public ProductOrder insert(ProductOrder productOrder) {
 		return prodOrderRepository.save(productOrder);
