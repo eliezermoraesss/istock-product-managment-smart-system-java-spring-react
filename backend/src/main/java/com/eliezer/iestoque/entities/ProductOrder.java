@@ -32,8 +32,9 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 	public ProductOrder() {
 	}
 
-	public ProductOrder(Long id, Set<OrderItem> orderProducts) {
+	public ProductOrder(Long id, Employee employee, Set<OrderItem> orderProducts) {
 		this.id = id;
+		this.employee = employee;
 		this.orderProducts = orderProducts;
 	}
 
@@ -43,6 +44,14 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	public Set<OrderItem> getOrderProducts() {
