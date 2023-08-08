@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eliezer.iestoque.entities.ProductOrder;
 import com.eliezer.iestoque.services.ProductOrderService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "ProductOrderResource endpoint")
 @RestController
 @RequestMapping(value = "/product-order")
 public class ProductOrderResource {
