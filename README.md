@@ -47,6 +47,7 @@ Concluído ✅ {em breve irei postar aqui!}
 <li>JUnit tests<br></li>
 <li>TDD<br></li>
 </ul>
+
 ## 📌 Status de Desenvolvimento:
 
 Estou desenvolvendo pensando e aplicando a metodologia ágil, framework SCRUM, e os príncipios do desenvolvimento baseados no TDD.
