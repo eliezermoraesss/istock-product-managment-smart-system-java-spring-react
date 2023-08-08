@@ -22,14 +22,31 @@ Concluído ✅ {em breve irei postar aqui!}
 
 ✅ Java<br>
 ✅ Spring (Boot, Data JPA, Validation, Security)<br>
+✅ OAuth2, JWT<br>
 ✅ Arquitetura de Monorepo<br>
 ✅ RabbitMQ (na versão open-source)<br>
-✅ Kafka (para versão paga no futuro, com maior robustez)<br>
-✅ Git/GitHub para versionamento<br>
-✅ Banco de dados PostgreSQL<br>
+✅ Banco de dados H2 - Perfil de testes -> test <br>
+✅ Banco de dados PostgreSQL em container Docker - Perfil de desenvolvimento -> dev <br>
+✅ Banco de dados PostgreSQL em container no Railway - Perfil de produção -> prod <br>
 ✅ Docker/Docker Compose<br>
 ✅ Deploy CI/CD com Railway<br>
 
+## 👨🏼‍💻 Features -> Conhecimentos aplicados:
+<ul>
+<li>DTO (Data Transfer Object) principles<br></li>
+<li>Automaticaly converter DTO to Entity<br></li>
+<li>ORM (Object Relational Mapping)<br></li>
+<li>Resources (REST Controller)<br></li>
+<li>Services<br></li>
+<li>Entities<br></li>
+<li>Respositories<br></li>
+<li>Exceptions<br></li>
+<li>Custom Exception Handler messages<br></li>
+<li>Validation and Authorization<br></li>
+<li>Constraint Validator<br></li>
+<li>JUnit tests<br></li>
+<li>TDD<br></li>
+</ul>
 ## 📌 Status de Desenvolvimento:
 
 Estou desenvolvendo pensando e aplicando a metodologia ágil, framework SCRUM, e os príncipios do desenvolvimento baseados no TDD.
