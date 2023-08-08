@@ -113,31 +113,6 @@ public class ProductService {
 			throw new ResourceNotFoundException("Integrity violation - " + e.getMessage());
 		}
 	}
-	
-	@Transactional
-	public void adicionarProdutoEstoque(Long id) {
-		Product entity = new Product();
-		ProductMinDTO dto = this.findById(id);
-		dto.setProductQuantity(dto.getProductQuantity().add(BigDecimal.ONE));
-		BeanUtils.copyProperties(dto, entity);
-		entity = productRepository.save(entity);
-		BeanUtils.copyProperties(entity, dto);
-	}
-	
-	@Transactional
-	public void removerProdutoEstoque(Long id) {
-		Product entity = new Product();
-		ProductMinDTO dto = this.findById(id);
-		
-		if (dto.getProductQuantity().compareTo(BigDecimal.ZERO) == 0) {
-			throw new BusinessException("A quantidade não pode ser negativa");
-		}
-		
-		dto.setProductQuantity(dto.getProductQuantity().subtract(BigDecimal.ONE));
-		BeanUtils.copyProperties(dto, entity);
-		entity = productRepository.save(entity);
-		BeanUtils.copyProperties(entity, dto);
-	}
 
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
 		entity.getSuppliers().clear();

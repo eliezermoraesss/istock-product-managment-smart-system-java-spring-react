@@ -33,6 +33,7 @@ public class ProductOrderResource {
 	private ProductOrderService service;
 
 	@PostMapping(value = "/add")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
 	public ResponseEntity<Void> addToProductOrder(
 			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId,
@@ -42,6 +43,7 @@ public class ProductOrderResource {
 	}
 
 	@DeleteMapping(value = "/remove")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
 	public ResponseEntity<Void> removeProductOrder(
 			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId) {
@@ -50,7 +52,7 @@ public class ProductOrderResource {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_OPERATOR')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<ProductOrder>> findAll() {
 		List<ProductOrder> list = service.findAll();
 		for (ProductOrder ProductOrder : list) {
@@ -61,6 +63,7 @@ public class ProductOrderResource {
 	}
 
 	@GetMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ProductOrder> findById(@PathVariable Long id) {
 		ProductOrder dto = service.findById(id);
 		dto.add(linkTo(methodOn(ProductOrderResource.class).findAll()).withRel("Lista de Produtos"));
@@ -68,18 +71,21 @@ public class ProductOrderResource {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
 	public ResponseEntity<ProductOrder> insert(@Valid @RequestBody ProductOrder dto) {
 		dto = service.insert(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	}
 
 	@PutMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ProductOrder> update(@PathVariable Long id, @Valid @RequestBody ProductOrder dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
 
 	@DeleteMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
