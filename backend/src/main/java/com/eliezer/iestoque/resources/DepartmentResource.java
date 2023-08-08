@@ -14,7 +14,7 @@ import java.util.List;
 
 @Tag(name = "Department endpoint")
 @RestController
-@RequestMapping(value = "/department")
+@RequestMapping(value = "/departments")
 public class DepartmentResource {
 
     @Autowired
