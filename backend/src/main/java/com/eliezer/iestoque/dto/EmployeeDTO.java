@@ -26,12 +26,12 @@ public class EmployeeDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private UUID id;
+    private Long id;
     private Integer matricula;
     private String nome;
     private DepartmentDTO department;
     private UserDTO usuario;
-    private Set<ProductOrder> orders;
+    private Set<ProductOrderDTO> orders;
 
     public EmployeeDTO(Employee entity) {
         BeanUtils.copyProperties(entity, this);
@@ -43,6 +43,6 @@ public class EmployeeDTO implements Serializable {
         BeanUtils.copyProperties(entity, this);
         department = new DepartmentDTO(entity.getDepartment());
         usuario = new UserDTO(entity.getUsuario());
-        orders.forEach(order -> this.orders.add(order));
+        orders.forEach(order -> this.orders.add(new ProductOrderDTO(order)));
     }
 }
