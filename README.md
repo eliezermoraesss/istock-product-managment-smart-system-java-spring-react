@@ -21,15 +21,13 @@ Concluído ✅ {em breve irei postar aqui!}
 ## 👨🏼‍💻 Arquitetura e tecnologias escolhidas:
 
 ✅ Java<br>
-✅ Spring (Boot, Data JPA, Security, Cloud)<br>
-✅ Keycloak<br>
+✅ Spring (Boot, Data JPA, Validation, Security)<br>
 ✅ Arquitetura de Monorepo<br>
 ✅ RabbitMQ (na versão open-source)<br>
 ✅ Kafka (para versão paga no futuro, com maior robustez)<br>
 ✅ Git/GitHub para versionamento<br>
-✅ Banco de dados MySQL<br>
+✅ Banco de dados PostgreSQL<br>
 ✅ Docker/Docker Compose<br>
-✅ Kubernetes<br>
 ✅ Deploy CI/CD com Railway<br>
 
 ## 📌 Status de Desenvolvimento:
