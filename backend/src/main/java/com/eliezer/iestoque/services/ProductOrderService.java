@@ -17,9 +17,11 @@ import com.eliezer.iestoque.entities.OrderItem;
 import com.eliezer.iestoque.entities.OrderItemPK;
 import com.eliezer.iestoque.entities.Product;
 import com.eliezer.iestoque.entities.ProductOrder;
+import com.eliezer.iestoque.enums.ProductOrderStatus;
 import com.eliezer.iestoque.repositories.OrderItemRepository;
 import com.eliezer.iestoque.repositories.ProductOrderRepository;
 import com.eliezer.iestoque.repositories.ProductRepository;
+import com.eliezer.iestoque.services.exceptions.BusinessException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,28 +31,43 @@ public class ProductOrderService {
 
 	public static final String MSG_NOT_FOUND = "ProductOrder not found: ";
 	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
+	public static final String MSG_SUCCESS = "";
+	public static final String MSG_CANCEL = "";
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private ProductOrderRepository productOrderRepository;
 
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	
+
 	@Transactional
-	public void processProductOrder() {
-				
+	public String updateProduct(ProductOrderStatus status) {
+
+		if (status == ProductOrderStatus.FINISHED) {
+			
+			
+			
+			return "Requisição finalizada com sucesso!";
+		} else if (status == ProductOrderStatus.CANCELLED) {
+
+			
+			
+			return "Requisição cancelada com sucesso!";
+		} else {
+			throw new BusinessException(MSG_NOT_FOUND);
+		}
 	}
 
 	@Transactional
-	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {	
+	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {
 		ProductOrder order = findById(productOrderId);
 		ProductMinDTO productMinDTO = productService.findById(productId);
 		Product product = new Product();
 		BeanUtils.copyProperties(productMinDTO, product);
-		
+
 		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
 		OrderItem orderItem = new OrderItem(orderItemPK, order, product, quantity);
 		orderItemRepository.save(orderItem);
@@ -64,11 +81,12 @@ public class ProductOrderService {
 		productService.findById(productId);
 
 		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
-		OrderItem orderItem = orderItemRepository.findById(orderItemPK).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+		OrderItem orderItem = orderItemRepository.findById(orderItemPK)
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
 
 		order.getOrderProducts().remove(orderItem);
 		orderItemRepository.delete(orderItem);
-		productOrderRepository.save(order);	
+		productOrderRepository.save(order);
 	}
 
 	@Transactional(readOnly = true)

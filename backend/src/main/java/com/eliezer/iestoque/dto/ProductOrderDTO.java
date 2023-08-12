@@ -5,20 +5,28 @@ import java.util.Set;
 
 import com.eliezer.iestoque.entities.OrderItem;
 import com.eliezer.iestoque.entities.ProductOrder;
+import com.eliezer.iestoque.enums.ProductOrderStatus;
 
 public class ProductOrderDTO {
 	
 	private Long id;
 	private EmployeeDTO employee;
+	private ProductOrderStatus status;
 	private Set<OrderItemDTO> orderProducts = new HashSet<>();
 	
 	public ProductOrderDTO() {
 	}
-
+	
 	public ProductOrderDTO(Long id, EmployeeDTO employee, Set<OrderItem> orderProducts) {
-		super();
 		this.id = id;
 		this.employee = employee;
+		orderProducts.forEach(or -> this.orderProducts.add(new OrderItemDTO(or)));
+	}
+
+	public ProductOrderDTO(Long id, EmployeeDTO employee, ProductOrderStatus status, Set<OrderItem> orderProducts) {
+		this.id = id;
+		this.employee = employee;
+		this.status = status;
 		orderProducts.forEach(or -> this.orderProducts.add(new OrderItemDTO(or)));
 	}
 
@@ -47,6 +55,14 @@ public class ProductOrderDTO {
 
 	public void setEmployee(EmployeeDTO employee) {
 		this.employee = employee;
+	}
+
+	public ProductOrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ProductOrderStatus status) {
+		this.status = status;
 	}
 
 	public Set<OrderItemDTO> getOrderProducts() {

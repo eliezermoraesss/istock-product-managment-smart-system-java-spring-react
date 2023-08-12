@@ -46,6 +46,16 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 		this.employee = employee;
 		this.orderProducts = orderProducts;
 	}
+	
+	
+
+	public ProductOrder(Long id, Employee employee, ProductOrderStatus status, Set<OrderItem> orderProducts) {
+		super();
+		this.id = id;
+		this.employee = employee;
+		this.status = status;
+		this.orderProducts = orderProducts;
+	}
 
 	public Long getId() {
 		return id;
@@ -61,6 +71,14 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+	
+	public ProductOrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ProductOrderStatus status) {
+		this.status = status;
 	}
 
 	public Set<OrderItem> getOrderProducts() {
