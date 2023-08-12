@@ -25,6 +25,7 @@ import com.eliezer.iestoque.repositories.RoleRepository;
 import com.eliezer.iestoque.repositories.UserRepository;
 import com.eliezer.iestoque.services.exceptions.DataBaseException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
+import com.eliezer.iestoque.utils.PasswordVerification;
 
 import jakarta.persistence.EntityNotFoundException;
 
