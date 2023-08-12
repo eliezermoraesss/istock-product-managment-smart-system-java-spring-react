@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.query.sqm.sql.FromClauseIndex;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,7 +19,6 @@ import com.eliezer.iestoque.entities.ProductOrder;
 import com.eliezer.iestoque.enums.ProductOrderStatus;
 import com.eliezer.iestoque.repositories.OrderItemRepository;
 import com.eliezer.iestoque.repositories.ProductOrderRepository;
-import com.eliezer.iestoque.repositories.ProductRepository;
 import com.eliezer.iestoque.services.exceptions.BusinessException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
@@ -44,17 +42,12 @@ public class ProductOrderService {
 	private OrderItemRepository orderItemRepository;
 
 	@Transactional
-	public String updateProduct(ProductOrderStatus status) {
-
-		if (status == ProductOrderStatus.FINISHED) {
-			
-			
-			
+	public String updateProductQuantity(Long productOrderId, ProductOrderStatus  status) {
+		if (status == ProductOrderStatus.FINISHED) {		
+			ProductOrder order = findById(productOrderId);			
 			return "Requisição finalizada com sucesso!";
 		} else if (status == ProductOrderStatus.CANCELLED) {
-
-			
-			
+			ProductOrder order = findById(productOrderId);			
 			return "Requisição cancelada com sucesso!";
 		} else {
 			throw new BusinessException(MSG_NOT_FOUND);
@@ -92,7 +85,7 @@ public class ProductOrderService {
 	@Transactional(readOnly = true)
 	public List<ProductOrder> findAll() {
 		List<ProductOrder> productOrders = productOrderRepository.findAll();
-		return productOrders;
+		return productOrders.stream().map(x -> new ProductOrder(x.getId(), x.getEmployee(), x.getOrderProducts())).toList();
 	}
 
 	@Transactional(readOnly = true)

@@ -15,22 +15,22 @@ public class OrderItem {
 
 	@EmbeddedId
 	private OrderItemPK id;
-	
+
 	@ManyToOne
 	@MapsId("productOrder")
-    @JoinColumn(name = "product_order_id")
-    private ProductOrder productOrder;
+	@JoinColumn(name = "product_order_id")
+	private ProductOrder productOrder;
 
-    @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name = "product_id")
-    private Product product;
-    
-    private BigDecimal quantity;
-    
+	@ManyToOne
+	@MapsId("productId")
+	@JoinColumn(name = "product_id")
+	private Product product;
+
+	private BigDecimal quantity;
+
 	public OrderItem() {
 	}
-	
+
 	public OrderItem(OrderItemPK id, ProductOrder productOrder, Product product, BigDecimal quantity) {
 		this.id = id;
 		this.productOrder = productOrder;

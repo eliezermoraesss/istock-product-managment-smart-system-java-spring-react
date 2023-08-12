@@ -3,6 +3,8 @@ package com.eliezer.iestoque.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.eliezer.iestoque.entities.OrderItem;
 import com.eliezer.iestoque.entities.ProductOrder;
 import com.eliezer.iestoque.enums.ProductOrderStatus;

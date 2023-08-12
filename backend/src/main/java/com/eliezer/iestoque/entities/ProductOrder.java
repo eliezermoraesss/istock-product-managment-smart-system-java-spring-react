@@ -44,7 +44,7 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 	public ProductOrder(Long id, Employee employee, Set<OrderItem> orderProducts) {
 		this.id = id;
 		this.employee = employee;
-		this.orderProducts = orderProducts;
+		orderProducts.forEach(orderItem -> this.orderProducts.add(new OrderItem()));
 	}
 	
 	
