@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.query.sqm.sql.FromClauseIndex;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eliezer.iestoque.dto.ProductMinDTO;
 import com.eliezer.iestoque.entities.OrderItem;
 import com.eliezer.iestoque.entities.OrderItemPK;
 import com.eliezer.iestoque.entities.Product;
@@ -28,65 +31,69 @@ public class ProductOrderService {
 	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
 
 	@Autowired
-	private ProductOrderRepository prodOrderRepository;
-
+	private ProductService productService;
+	
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductOrderRepository productOrderRepository;
 
 	@Autowired
 	private OrderItemRepository orderItemRepository;
+	
+	@Transactional
+	public void processProductOrder() {
+				
+	}
 
 	@Transactional
-	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {
-		ProductOrder order = prodOrderRepository.findById(productOrderId)
-				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
-		Product product = productRepository.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
-
+	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {	
+		ProductOrder order = findById(productOrderId);
+		ProductMinDTO productMinDTO = productService.findById(productId);
+		Product product = new Product();
+		BeanUtils.copyProperties(productMinDTO, product);
+		
 		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
 		OrderItem orderItem = new OrderItem(orderItemPK, order, product, quantity);
 		orderItemRepository.save(orderItem);
 		order.getOrderProducts().add(orderItem);
-		prodOrderRepository.save(order);
+		productOrderRepository.save(order);
 	}
 
 	@Transactional
 	public void removeProductOrder(Long productOrderId, Long productId) {
-		ProductOrder order = prodOrderRepository.findById(productOrderId)
-				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
-		productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+		ProductOrder order = findById(productOrderId);
+		productService.findById(productId);
 
 		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
 		OrderItem orderItem = orderItemRepository.findById(orderItemPK).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
 
 		order.getOrderProducts().remove(orderItem);
 		orderItemRepository.delete(orderItem);
-		prodOrderRepository.save(order);	
+		productOrderRepository.save(order);	
 	}
 
 	@Transactional(readOnly = true)
 	public List<ProductOrder> findAll() {
-		List<ProductOrder> productOrders = prodOrderRepository.findAll();
+		List<ProductOrder> productOrders = productOrderRepository.findAll();
 		return productOrders;
 	}
 
 	@Transactional(readOnly = true)
 	public ProductOrder findById(Long id) {
-		Optional<ProductOrder> obj = prodOrderRepository.findById(id);
+		Optional<ProductOrder> obj = productOrderRepository.findById(id);
 		ProductOrder entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
 		return entity;
 	}
 
 	@Transactional
 	public ProductOrder insert(ProductOrder productOrder) {
-		return prodOrderRepository.save(productOrder);
+		return productOrderRepository.save(productOrder);
 	}
 
 	@Transactional
 	public ProductOrder update(Long id, ProductOrder dto) {
 		try {
-			ProductOrder entity = prodOrderRepository.getReferenceById(id);
-			entity = prodOrderRepository.save(entity);
+			ProductOrder entity = productOrderRepository.getReferenceById(id);
+			entity = productOrderRepository.save(entity);
 			return entity;
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
@@ -96,8 +103,8 @@ public class ProductOrderService {
 	@Transactional
 	public void delete(Long id) {
 		try {
-			if (prodOrderRepository.findById(id).isPresent()) {
-				prodOrderRepository.deleteById(id);
+			if (productOrderRepository.findById(id).isPresent()) {
+				productOrderRepository.deleteById(id);
 			} else {
 				throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
 			}

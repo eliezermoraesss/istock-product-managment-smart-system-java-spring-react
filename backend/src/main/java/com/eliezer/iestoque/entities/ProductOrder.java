@@ -5,7 +5,12 @@ import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.eliezer.iestoque.enums.ProductOrderStatus;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,6 +30,10 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 	@ManyToOne
 	@JoinColumn(name = "employee_id")
 	private Employee employee;
+	
+	@Enumerated(value = EnumType.STRING)
+	@Column(name = "STATUS_REQUISICAO")
+	private ProductOrderStatus status;
 
 	@OneToMany(mappedBy = "productOrder")
 	private Set<OrderItem> orderProducts = new HashSet<>();
