@@ -10,18 +10,12 @@ import io.swagger.v3.oas.models.info.License;
 
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "iStock API", version = "v1", description = "Documentação da iStock API"))
-public class OpenApiConfiguration {
+public class OpenApiConfig {
 
 	@Bean
 	public OpenAPI customOpenApi() {
 		return new OpenAPI().components(new Components())
-				.info(
-					new io.swagger.v3.oas.models.info.Info()
-					.title("iStock API")
-					.version("v1")
-					.license(
-							new License()
-							.name("Apache 2.0")
-							.url("http://springdoc.org")));
+				.info(new io.swagger.v3.oas.models.info.Info().title("iStock API").version("v1")
+						.license(new License().name("Apache 2.0").url("http://springdoc.org")));
 	}
 }

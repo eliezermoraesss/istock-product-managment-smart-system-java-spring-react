@@ -1,8 +1,8 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.AddressDTO;
-import com.eliezer.iestoque.entities.Address;
-import com.eliezer.iestoque.repositories.AddressRepository;
+import com.eliezer.iestoque.dto.EnderecoDTO;
+import com.eliezer.iestoque.entities.Endereco;
+import com.eliezer.iestoque.repositories.EnderecoRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -16,41 +16,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AddressService {
+public class EnderecoService {
 
-    public static final String MSG_NOT_FOUND = "Address Id not found: ";
+    public static final String MSG_NOT_FOUND = "Endereco Id not found: ";
 
     @Autowired
-    public AddressRepository repository;
+    public EnderecoRepository repository;
 
     @Transactional
-    public List<AddressDTO> findAll() {
-        List<Address> Addresss = repository.findAll();
-        return Addresss.stream().map(x -> new AddressDTO(x)).toList();
+    public List<EnderecoDTO> findAll() {
+        List<Endereco> endereco = repository.findAll();
+        return endereco.stream().map(x -> new EnderecoDTO(x)).toList();
     }
 
     @Transactional
-    public AddressDTO findById(Long id) {
-        Optional<Address> obj = repository.findById(id);
-        Address entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new AddressDTO(entity);
+    public EnderecoDTO findById(Long id) {
+        Optional<Endereco> obj = repository.findById(id);
+        Endereco entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new EnderecoDTO(entity);
     }
 
     @Transactional
-    public AddressDTO insert(AddressDTO dto) {
-        Address entity = new Address();
+    public EnderecoDTO insert(EnderecoDTO dto) {
+        Endereco entity = new Endereco();
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
-        return new AddressDTO(entity);
+        return new EnderecoDTO(entity);
     }
 
     @Transactional
-    public AddressDTO update(Long id, AddressDTO dto) {
+    public EnderecoDTO update(Long id, EnderecoDTO dto) {
         try {
-            Address entity = repository.getReferenceById(id);
+            Endereco entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
-            return new AddressDTO(entity);
+            return new EnderecoDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }

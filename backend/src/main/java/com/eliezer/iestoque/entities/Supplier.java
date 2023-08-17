@@ -36,7 +36,7 @@ public class Supplier implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
+    private Endereco address;
 
     @ManyToMany(mappedBy = "suppliers")
     @JsonIgnore

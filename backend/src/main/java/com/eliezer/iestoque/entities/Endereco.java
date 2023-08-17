@@ -1,8 +1,7 @@
-package com.eliezer.iestoque.dto;
+package com.eliezer.iestoque.entities;
 
-import com.eliezer.iestoque.entities.Address;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,11 +11,16 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddressDTO implements Serializable {
+@EqualsAndHashCode
+@Entity
+@Table(name = "tb_address")
+public class Endereco implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String logradouro;
     private Integer numero;
@@ -25,7 +29,6 @@ public class AddressDTO implements Serializable {
     private String uf;
     private String cep;
 
-    public AddressDTO(Address entity) {
-        BeanUtils.copyProperties(entity, this);
-    }
+    @OneToOne(mappedBy = "address")
+    private Supplier supplier;
 }

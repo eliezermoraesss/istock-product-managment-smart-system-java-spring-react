@@ -14,39 +14,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eliezer.iestoque.dto.AddressDTO;
-import com.eliezer.iestoque.services.AddressService;
+import com.eliezer.iestoque.dto.EnderecoDTO;
+import com.eliezer.iestoque.services.EnderecoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Address endpoint")
+@Tag(name = "Endereco endpoint")
 @RestController
-@RequestMapping(value = "/address")
-public class AddressResource {
+@RequestMapping(value = "/endereco")
+public class EnderecoResource {
 
     @Autowired
-    private AddressService service;
+    private EnderecoService service;
 
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> findAll() {
-        List<AddressDTO> list = service.findAll();
+    public ResponseEntity<List<EnderecoDTO>> findAll() {
+        List<EnderecoDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AddressDTO> findById(@PathVariable Long id) {
-        AddressDTO dto = service.findById(id);
+    public ResponseEntity<EnderecoDTO> findById(@PathVariable Long id) {
+        EnderecoDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<AddressDTO> insert(@RequestBody AddressDTO dto) {
+    public ResponseEntity<EnderecoDTO> insert(@RequestBody EnderecoDTO dto) {
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AddressDTO> update(@PathVariable Long id, @RequestBody AddressDTO dto) {
+    public ResponseEntity<EnderecoDTO> update(@PathVariable Long id, @RequestBody EnderecoDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }

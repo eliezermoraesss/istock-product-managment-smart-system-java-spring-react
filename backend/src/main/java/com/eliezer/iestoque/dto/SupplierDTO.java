@@ -23,15 +23,15 @@ public class SupplierDTO extends RepresentationModel<SupplierDTO> implements Ser
 	private String razaoSocial;
 	private String cnpj;
 	private String inscricaoEstadual;
-	private AddressDTO address;
+	private EnderecoDTO address;
 
 	public SupplierDTO(Supplier entity) {
-		this.address = new AddressDTO(entity.getAddress());
+		this.address = new EnderecoDTO(entity.getAddress());
 		BeanUtils.copyProperties(entity, this);
 	}
 
-	public SupplierDTO(Supplier supplier, Address address) {
-		this.address = new AddressDTO(address);
+	public SupplierDTO(Supplier supplier, Endereco address) {
+		this.address = new EnderecoDTO(address);
 		BeanUtils.copyProperties(supplier, this);
 	}
 }
