@@ -24,14 +24,14 @@ public class OrderItem {
 	@ManyToOne
 	@MapsId("productId")
 	@JoinColumn(name = "product_id")
-	private Product product;
+	private Produto product;
 
 	private BigDecimal quantity;
 
 	public OrderItem() {
 	}
 
-	public OrderItem(OrderItemPK id, ProductOrder productOrder, Product product, BigDecimal quantity) {
+	public OrderItem(OrderItemPK id, ProductOrder productOrder, Produto product, BigDecimal quantity) {
 		this.id = id;
 		this.productOrder = productOrder;
 		this.product = product;
@@ -54,11 +54,11 @@ public class OrderItem {
 		this.productOrder = productOrder;
 	}
 
-	public Product getProduct() {
+	public Produto getProduct() {
 		return product;
 	}
 
-	public void setProduct(Product product) {
+	public void setProduct(Produto product) {
 		this.product = product;
 	}
 

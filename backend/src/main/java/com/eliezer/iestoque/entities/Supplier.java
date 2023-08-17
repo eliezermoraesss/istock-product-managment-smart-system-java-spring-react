@@ -35,11 +35,11 @@ public class Supplier implements Serializable {
     private String inscricaoEstadual;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Endereco address;
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    private Endereco endereco;
 
-    @ManyToMany(mappedBy = "suppliers")
+    @ManyToMany(mappedBy = "fornecedores")
     @JsonIgnore
-    private Set<Product> products = new HashSet<>();
+    private Set<Produto> produtos = new HashSet<>();
     
 }

@@ -11,10 +11,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eliezer.iestoque.dto.ProductMinDTO;
+import com.eliezer.iestoque.dto.ProdutoMinDTO;
 import com.eliezer.iestoque.entities.OrderItem;
 import com.eliezer.iestoque.entities.OrderItemPK;
-import com.eliezer.iestoque.entities.Product;
+import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.entities.ProductOrder;
 import com.eliezer.iestoque.enums.ProductOrderStatus;
 import com.eliezer.iestoque.repositories.OrderItemRepository;
@@ -33,7 +33,7 @@ public class ProductOrderService {
 	public static final String MSG_CANCEL = "";
 
 	@Autowired
-	private ProductService productService;
+	private ProdutoService productService;
 
 	@Autowired
 	private ProductOrderRepository productOrderRepository;
@@ -57,8 +57,8 @@ public class ProductOrderService {
 	@Transactional
 	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {
 		ProductOrder order = findById(productOrderId);
-		ProductMinDTO productMinDTO = productService.findById(productId);
-		Product product = new Product();
+		ProdutoMinDTO productMinDTO = productService.findById(productId);
+		Produto product = new Produto();
 		BeanUtils.copyProperties(productMinDTO, product);
 
 		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);

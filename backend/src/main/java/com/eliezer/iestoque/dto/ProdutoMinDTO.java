@@ -8,7 +8,7 @@ import java.time.Instant;
 import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
-import com.eliezer.iestoque.entities.Product;
+import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.enums.ProductStatus;
 
 import lombok.AllArgsConstructor;
@@ -22,20 +22,19 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductMinDTO extends RepresentationModel<ProductMinDTO> implements Serializable {
+public class ProdutoMinDTO extends RepresentationModel<ProdutoMinDTO> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private String productCode;
-	private String productDescription;
-	private BigDecimal productQuantity;
-	private BigDecimal productPrice;
-	private Instant productRegistrationDate;
-	private ProductStatus productStatus;
+	private String codigo;
+	private String descricao;
+	private BigDecimal quantidade;
+	private BigDecimal preco;
+	private Instant dataDeCadastro;
+	private ProductStatus status;
 
-	public ProductMinDTO(Product entity) {
-		BeanUtils.copyProperties(entity, this);
+	public ProdutoMinDTO(Produto produto) {
+		BeanUtils.copyProperties(produto, this);
 	}
-
 }

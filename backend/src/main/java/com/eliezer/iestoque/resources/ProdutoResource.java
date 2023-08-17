@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eliezer.iestoque.dto.ProductDTO;
-import com.eliezer.iestoque.dto.ProductMinDTO;
-import com.eliezer.iestoque.entities.Product;
-import com.eliezer.iestoque.services.ProductService;
+import com.eliezer.iestoque.dto.ProdutoDTO;
+import com.eliezer.iestoque.dto.ProdutoMinDTO;
+import com.eliezer.iestoque.entities.Produto;
+import com.eliezer.iestoque.services.ProdutoService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,42 +34,42 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Product endpoint")
+@Tag(name = "Produto endpoint")
 @RestController
-@RequestMapping(value = "/products")
-public class ProductResource {
+@RequestMapping(value = "/produtos")
+public class ProdutoResource {
 
 	@Autowired
-	private ProductService service;
+	private ProdutoService service;
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_OPERATOR')")
-	public ResponseEntity<List<ProductDTO>> findAll() {
-		List<ProductDTO> list = service.findAll();
-		for(ProductDTO productDTO : list) {		
-			Long id = productDTO.getId();		
-			productDTO.add(linkTo(methodOn(ProductResource.class).findById(id)).withSelfRel());	
+	public ResponseEntity<List<ProdutoDTO>> findAll() {
+		List<ProdutoDTO> produtos = service.findAll();
+		for(ProdutoDTO produtoDTO : produtos) {		
+			Long id = produtoDTO.getId();		
+			produtoDTO.add(linkTo(methodOn(ProdutoResource.class).findById(id)).withSelfRel());	
 		}		
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok().body(produtos);
 	}
 
 	@GetMapping(value = "/description")
-	public ResponseEntity<List<ProductDTO>> findByProductDescription(@RequestParam(value = "description", defaultValue = "") String productDescription) {
-		List<ProductDTO> list = service.findByProductDescription(productDescription.trim());
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<List<ProdutoDTO>> findByDescricao(@RequestParam(value = "descricao", defaultValue = "") String descricao) {
+		List<ProdutoDTO> produtos = service.findByDescricao(descricao.trim());
+		return ResponseEntity.ok().body(produtos);
 	}
 	
 	@GetMapping(value = "/find")
-	public ResponseEntity<List<ProductDTO>> findByProductDescriptionOrProductPrice(
-			@RequestParam(value = "description", defaultValue = "") String description,
-			@RequestParam(value = "price", defaultValue = "0") BigDecimal price) {
-		List<ProductDTO> listDto = service.findByProductDescriptionOrProductPrice(description.trim(), price);
-		return ResponseEntity.ok().body(listDto);
+	public ResponseEntity<List<ProdutoDTO>> findByDescricaoOrPreco(
+			@RequestParam(value = "descricao", defaultValue = "") String descricao,
+			@RequestParam(value = "preco", defaultValue = "0") BigDecimal preco) {
+		List<ProdutoDTO> produtosDto = service.findByDescricaoOrPreco(descricao.trim(), preco);
+		return ResponseEntity.ok().body(produtosDto);
 	}
 
 	@GetMapping(value = "/{id}/suppliers")
-	public ResponseEntity<ProductDTO> findByIdWithSupplier(@PathVariable Long id) {
-		ProductDTO dto = service.findByIdWithSupplier(id);
+	public ResponseEntity<ProdutoDTO> findByIdWithSupplier(@PathVariable Long id) {
+		ProdutoDTO dto = service.findByIdWithSupplier(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
@@ -77,27 +77,27 @@ public class ProductResource {
 	@ApiResponses(value = { 
 	  @ApiResponse(responseCode = "200", description = "Produto encontrado", 
 	    content = { @Content(mediaType = "application/json", 
-	      schema = @Schema(implementation = Product.class)) }),
+	      schema = @Schema(implementation = Produto.class)) }),
 	  @ApiResponse(responseCode = "400", description = "ID fornecido inválido", 
 	    content = @Content), 
 	  @ApiResponse(responseCode = "404", description = "Produto não encontrado", 
 	    content = @Content) })
 	@GetMapping(value = "/{id}")
 	@PreAuthorize("hasRole('ROLE_OPERATOR')")
-	public ResponseEntity<ProductMinDTO> findById(@Parameter(description = "ID do produto a ser encontrado") @PathVariable Long id) {
-		ProductMinDTO dto = service.findById(id);	
-		dto.add(linkTo(methodOn(ProductResource.class).findAll()).withRel("Lista de Produtos"));	
+	public ResponseEntity<ProdutoMinDTO> findById(@Parameter(description = "ID do produto a ser encontrado") @PathVariable Long id) {
+		ProdutoMinDTO dto = service.findById(id);	
+		dto.add(linkTo(methodOn(ProdutoResource.class).findAll()).withRel("Lista de Produtos"));	
 		return ResponseEntity.ok().body(dto);
 	}
 
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProdutoDTO> insert(@Valid @RequestBody ProdutoDTO dto) {
 		dto = service.insert(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @Valid @RequestBody ProdutoDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

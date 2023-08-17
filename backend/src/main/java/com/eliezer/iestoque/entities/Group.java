@@ -23,7 +23,7 @@ public class Group implements Serializable {
     private Integer groupCode;
     private String groupName;
     @OneToMany(mappedBy = "productGroup")
-    private List<Product> products = new ArrayList<>();
+    private List<Produto> products = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

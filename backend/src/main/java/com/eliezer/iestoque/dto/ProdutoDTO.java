@@ -10,7 +10,7 @@ import java.util.Set;
 import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
-import com.eliezer.iestoque.entities.Product;
+import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.entities.Supplier;
 import com.eliezer.iestoque.enums.ProductStatus;
 
@@ -30,7 +30,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO extends RepresentationModel<ProductDTO> implements Serializable {
+public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -38,47 +38,44 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 
 	@Size(min = 0, max = 6, message = "Deve ter entre 0 à 6 caracteres")
 	@NotBlank(message = "Campo requerido")
-	private String productCode;
+	private String codigo;
 
 	@Size(min = 5, max = 50, message = "Deve ter entre 5 à 50 caracteres")
 	@NotBlank(message = "Campo requerido")
-	private String productDescription;
+	private String descricao;
 
 	@Positive(message = "A quantidade deve ser um valor positivo")
 	@NotNull(message = "Campo requerido")
-	private BigDecimal productQuantity;
-
-	@Positive(message = "O peso deve ser um valor positivo")
-	private BigDecimal productWeigth;
+	private BigDecimal quantidade;
 
 	@Positive(message = "O preço deve ser um valor positivo")
-	private BigDecimal productPrice;
+	private BigDecimal preco;
 
 	@PastOrPresent(message = "A data de cadastro não pode ser futura")
-	private Instant productRegistrationDate;
+	private Instant dataDeCadastro;
 
 	@NotNull(message = "Campo requerido")
-	private ProductStatus productStatus;
+	private ProductStatus status;
 
-	private GroupDTO productGroup;
+	private GroupDTO grupo;
 	
 	@Size(min = 8, max = 8, message = "Deve ter exatamente 8 caractares")
 	@NotBlank(message = "Campo requerido")
-	private String productNcm;
+	private String codigoNcm;
 	
 	@Size(min = 2, max = 3, message = "Deve ter 2 ou 3 caracteres")
 	@NotNull(message = "Campo requerido")
 	private String unidadeMedida;
 	private Set<SupplierDTO> suppliers = new HashSet<>();
 
-	public ProductDTO(Product entity) {
+	public ProdutoDTO(Produto entity) {
 		BeanUtils.copyProperties(entity, this);
-		productGroup = new GroupDTO(entity.getProductGroup());
+		grupo = new GroupDTO(entity.getGrupo());
 	}
 
-	public ProductDTO(Product entity, Set<Supplier> suppliers) {
+	public ProdutoDTO(Produto entity, Set<Supplier> suppliers) {
 		BeanUtils.copyProperties(entity, this);
-		productGroup = new GroupDTO(entity.getProductGroup());
+		grupo = new GroupDTO(entity.getGrupo());
 		suppliers.forEach(sup -> this.suppliers.add(new SupplierDTO(sup)));
 	}
 }

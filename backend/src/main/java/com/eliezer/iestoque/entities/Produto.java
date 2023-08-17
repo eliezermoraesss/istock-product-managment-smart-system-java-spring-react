@@ -35,8 +35,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_product")
-public class Product implements Serializable {
+@Table(name = "tb_produto")
+public class Produto implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
@@ -45,43 +45,40 @@ public class Product implements Serializable {
 	private Long id;
 
 	@Column(unique = true)
-	private String productCode;
+	private String codigo;
 
 	@Column(unique = true, columnDefinition = "TEXT")
-	private String productDescription;
+	private String descricao;
 
-	private BigDecimal productQuantity;
+	private BigDecimal quantidade;
 
-	private BigDecimal productWeigth;
-
-	private BigDecimal productPrice;
+	private BigDecimal preco;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant productRegistrationDate;
+	private Instant dataDeCadastro;
 	
 	@Enumerated(value = EnumType.STRING)
-	@Column(name = "STATUS_PRODUTO")
-	private ProductStatus productStatus;
+	private ProductStatus status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")
-	private Group productGroup;
+	private Group grupo;
 
-	private String productNcm;
+	private String codigoNcm;
 
 	private String unidadeMedida;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_product_supplier",
-			joinColumns = @JoinColumn(name = "product_id"),
-			inverseJoinColumns = @JoinColumn(name = "supplier_id"))
-	private Set<Supplier> suppliers = new HashSet<>();
+	@JoinTable(name = "tb_produto_fornecedor",
+			joinColumns = @JoinColumn(name = "produto_id"),
+			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))
+	private Set<Supplier> fornecedores = new HashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Product product)) return false;
-		return getId().equals(product.getId());
+		if (!(o instanceof Produto produto)) return false;
+		return getId().equals(produto.getId());
 	}
 
 	@Override
