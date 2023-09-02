@@ -1,6 +1,6 @@
 package com.eliezer.iestoque.resources;
 
-import com.eliezer.iestoque.dto.DepartmentDTO;
+import com.eliezer.iestoque.dto.DepartamentoDTO;
 import com.eliezer.iestoque.services.DepartmentService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,25 +21,25 @@ public class DepartmentResource {
     private DepartmentService service;
 
     @GetMapping
-    public ResponseEntity<List<DepartmentDTO>> findAll() {
-        List<DepartmentDTO> list = service.findAll();
+    public ResponseEntity<List<DepartamentoDTO>> findAll() {
+        List<DepartamentoDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DepartmentDTO> findById(@PathVariable Long id) {
-        DepartmentDTO dto = service.findById(id);
+    public ResponseEntity<DepartamentoDTO> findById(@PathVariable Long id) {
+        DepartamentoDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<DepartmentDTO> insert(@RequestBody DepartmentDTO dto) {
+    public ResponseEntity<DepartamentoDTO> insert(@RequestBody DepartamentoDTO dto) {
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<DepartmentDTO> update(@PathVariable Long id, @RequestBody DepartmentDTO dto) {
+    public ResponseEntity<DepartamentoDTO> update(@PathVariable Long id, @RequestBody DepartamentoDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }

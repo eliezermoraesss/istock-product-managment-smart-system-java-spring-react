@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_product_order")
-public class ProductOrder extends RepresentationModel<ProductOrder> {
+public class Requisicao extends RepresentationModel<Requisicao> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,27 +29,27 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 	
 	@ManyToOne
 	@JoinColumn(name = "employee_id")
-	private Employee employee;
+	private Funcionario employee;
 	
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "STATUS_REQUISICAO")
 	private ProductOrderStatus status;
 
 	@OneToMany(mappedBy = "productOrder")
-	private Set<OrderItem> orderProducts = new HashSet<>();
+	private Set<ItemRequisicao> orderProducts = new HashSet<>();
 
-	public ProductOrder() {
+	public Requisicao() {
 	}
 
-	public ProductOrder(Long id, Employee employee, Set<OrderItem> orderProducts) {
+	public Requisicao(Long id, Funcionario employee, Set<ItemRequisicao> orderProducts) {
 		this.id = id;
 		this.employee = employee;
-		orderProducts.forEach(orderItem -> this.orderProducts.add(new OrderItem()));
+		orderProducts.forEach(orderItem -> this.orderProducts.add(new ItemRequisicao()));
 	}
 	
 	
 
-	public ProductOrder(Long id, Employee employee, ProductOrderStatus status, Set<OrderItem> orderProducts) {
+	public Requisicao(Long id, Funcionario employee, ProductOrderStatus status, Set<ItemRequisicao> orderProducts) {
 		super();
 		this.id = id;
 		this.employee = employee;
@@ -65,11 +65,11 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 		this.id = id;
 	}
 	
-	public Employee getEmployee() {
+	public Funcionario getEmployee() {
 		return employee;
 	}
 
-	public void setEmployee(Employee employee) {
+	public void setEmployee(Funcionario employee) {
 		this.employee = employee;
 	}
 	
@@ -81,11 +81,11 @@ public class ProductOrder extends RepresentationModel<ProductOrder> {
 		this.status = status;
 	}
 
-	public Set<OrderItem> getOrderProducts() {
+	public Set<ItemRequisicao> getOrderProducts() {
 		return orderProducts;
 	}
 
-	public void setOrderProducts(Set<OrderItem> orderProducts) {
+	public void setOrderProducts(Set<ItemRequisicao> orderProducts) {
 		this.orderProducts = orderProducts;
 	}
 }

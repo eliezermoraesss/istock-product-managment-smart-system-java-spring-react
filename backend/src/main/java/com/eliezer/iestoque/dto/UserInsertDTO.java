@@ -2,9 +2,6 @@ package com.eliezer.iestoque.dto;
 
 import com.eliezer.iestoque.services.validation.UserInsertValid;
 
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-
 @UserInsertValid
 public class UserInsertDTO extends UserDTO {
 

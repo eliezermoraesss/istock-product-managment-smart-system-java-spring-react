@@ -1,6 +1,6 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Group;
+import com.eliezer.iestoque.entities.Grupo;
 import lombok.*;
 
 import java.io.Serial;
@@ -21,7 +21,7 @@ public class GroupDTO implements Serializable {
     private String groupName;
     //private List<Produto> produtos = new ArrayList<>();
 
-    public GroupDTO(Group entity) {
+    public GroupDTO(Grupo entity) {
         this.id = entity.getId();
         this.groupCode = entity.getGroupCode();
         this.groupName = entity.getGroupName();

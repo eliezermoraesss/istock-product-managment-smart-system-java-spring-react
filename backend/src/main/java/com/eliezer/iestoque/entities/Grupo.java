@@ -13,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_group")
-public class Group implements Serializable {
+public class Grupo implements Serializable {
 
     public static final long serialVersionUID = 1L;
 
@@ -22,13 +22,13 @@ public class Group implements Serializable {
     private Long id;
     private Integer groupCode;
     private String groupName;
-    @OneToMany(mappedBy = "productGroup")
-    private List<Produto> products = new ArrayList<>();
+    @OneToMany(mappedBy = "grupo")
+    private List<Produto> produtos = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Group group)) return false;
+        if (!(o instanceof Grupo group)) return false;
         return getId().equals(group.getId());
     }
 

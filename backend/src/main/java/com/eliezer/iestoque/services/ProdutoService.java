@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eliezer.iestoque.dto.ProdutoDTO;
 import com.eliezer.iestoque.dto.ProdutoMinDTO;
-import com.eliezer.iestoque.dto.SupplierDTO;
-import com.eliezer.iestoque.entities.Group;
+import com.eliezer.iestoque.dto.FornecedorDTO;
+import com.eliezer.iestoque.entities.Grupo;
 import com.eliezer.iestoque.entities.Produto;
-import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.repositories.ProdutoRepository;
 import com.eliezer.iestoque.repositories.SupplierRepository;
@@ -33,7 +33,7 @@ public class ProdutoService {
 	private ProdutoRepository produtoRepository;
 
 	@Autowired
-	private SupplierRepository supplierRepository;
+	private SupplierRepository fornecedorRepository;
 
 	@Autowired
 	private GroupRepository groupRepository;
@@ -41,26 +41,26 @@ public class ProdutoService {
 	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findAll() {
 		List<Produto> produtos = produtoRepository.findAll();
-		return produtos.stream().map(x -> new ProdutoDTO(x, x.getSuppliers())).toList();
+		return produtos.stream().map(x -> new ProdutoDTO(x, x.getFornecedores())).toList();
 	}
 	
 	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findByDescricaoOrPreco(String descricao, BigDecimal price) {
 		List<Produto> produtos = produtoRepository.findByDescricaoContainingIgnoreCaseOrPrecoOrderByPrecoDesc(descricao, price);
-		return produtos.stream().map(x -> new ProdutoDTO(x, x.getSuppliers())).toList();
+		return produtos.stream().map(x -> new ProdutoDTO(x, x.getFornecedores())).toList();
 	}
 
 	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findByDescricao(String descricao) {
 		List<Produto> produtos = produtoRepository.findByDescricaoContainingIgnoreCase(descricao.trim());
-		return produtos.stream().map(x -> new ProdutoDTO(x, x.getSuppliers())).toList();
+		return produtos.stream().map(x -> new ProdutoDTO(x, x.getFornecedores())).toList();
 	}
 
 	@Transactional(readOnly = true)
 	public ProdutoDTO findByIdWithSupplier(Long id) {
 		Optional<Produto> produtoOptional = produtoRepository.findById(id);
 		Produto produto = produtoOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-		return new ProdutoDTO(produto, produto.getSuppliers());
+		return new ProdutoDTO(produto, produto.getFornecedores());
 	}
 
 	@Transactional(readOnly = true)
@@ -73,26 +73,26 @@ public class ProdutoService {
 	@Transactional
 	public ProdutoDTO insert(ProdutoDTO dto) {
 		Produto produto = new Produto();
-		Group produtoGroup = groupRepository.findById(dto.getGrupo().getId()).orElseThrow(() ->
+		Grupo produtoGroup = groupRepository.findById(dto.getGrupo().getId()).orElseThrow(() ->
 				new ResourceNotFoundException("Group Id not found: " + dto.getGrupo().getId()));
 		produto.setGrupo(produtoGroup);
 		BeanUtils.copyProperties(dto, produto);
 		copyDtoToEntity(dto, produto);
 		produto = produtoRepository.save(produto);
-		return new ProdutoDTO(produto, produto.getSuppliers());
+		return new ProdutoDTO(produto, produto.getFornecedores());
 	}
 
 	@Transactional
 	public ProdutoDTO update(Long id, ProdutoDTO dto) {
 		try {
 			Produto produto = produtoRepository.getReferenceById(id);
-			Group produtoGroup = groupRepository.findById(dto.getGrupo().getId()).orElseThrow(() ->
+			Grupo produtoGroup = groupRepository.findById(dto.getGrupo().getId()).orElseThrow(() ->
 					new ResourceNotFoundException("Group Id not found: " + dto.getGrupo().getId()));
 			produto.setGrupo(produtoGroup);
 			BeanUtils.copyProperties(dto, produto, "id");
 			copyDtoToEntity(dto, produto);
 			produto = produtoRepository.save(produto);
-			return new ProdutoDTO(produto, produto.getSuppliers());
+			return new ProdutoDTO(produto, produto.getFornecedores());
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
 		}
@@ -114,10 +114,10 @@ public class ProdutoService {
 	}
 
 	private void copyDtoToEntity(ProdutoDTO dto, Produto produto) {
-		produto.getSuppliers().clear();
-		for (SupplierDTO supplierDTO : dto.getSuppliers()) {
-			Supplier supplier = supplierRepository.getReferenceById(supplierDTO.getId());
-			produto.getSuppliers().add(supplier);
+		produto.getFornecedores().clear();
+		for (FornecedorDTO fornecedorDTO : dto.getFornecedores()) {
+			Fornecedor fornecedor = fornecedorRepository.getReferenceById(fornecedorDTO.getId());
+			produto.getFornecedores().add(fornecedor);
 		}
 	}
 }

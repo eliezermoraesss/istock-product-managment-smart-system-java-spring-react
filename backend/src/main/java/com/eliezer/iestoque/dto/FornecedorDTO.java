@@ -13,25 +13,25 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupplierDTO extends RepresentationModel<SupplierDTO> implements Serializable {
+public class FornecedorDTO extends RepresentationModel<FornecedorDTO> implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Integer codFornecedor;
+	private Integer codigo;
 	private String razaoSocial;
 	private String cnpj;
 	private String inscricaoEstadual;
-	private EnderecoDTO address;
+	private EnderecoDTO endereco;
 
-	public SupplierDTO(Supplier entity) {
-		this.address = new EnderecoDTO(entity.getAddress());
-		BeanUtils.copyProperties(entity, this);
+	public FornecedorDTO(Fornecedor fornecedor) {
+		this.endereco = new EnderecoDTO(fornecedor.getEndereco());
+		BeanUtils.copyProperties(fornecedor, this);
 	}
 
-	public SupplierDTO(Supplier supplier, Endereco address) {
-		this.address = new EnderecoDTO(address);
-		BeanUtils.copyProperties(supplier, this);
+	public FornecedorDTO(Fornecedor fornecedor, Endereco endereco) {
+		this.endereco = new EnderecoDTO(endereco);
+		BeanUtils.copyProperties(fornecedor, this);
 	}
 }

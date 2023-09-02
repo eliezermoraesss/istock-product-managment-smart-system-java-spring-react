@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eliezer.iestoque.dto.ProdutoMinDTO;
-import com.eliezer.iestoque.entities.OrderItem;
-import com.eliezer.iestoque.entities.OrderItemPK;
+import com.eliezer.iestoque.entities.ItemRequisicao;
+import com.eliezer.iestoque.entities.ItemRequisicaoPK;
 import com.eliezer.iestoque.entities.Produto;
-import com.eliezer.iestoque.entities.ProductOrder;
+import com.eliezer.iestoque.entities.Requisicao;
 import com.eliezer.iestoque.enums.ProductOrderStatus;
 import com.eliezer.iestoque.repositories.OrderItemRepository;
 import com.eliezer.iestoque.repositories.ProductOrderRepository;
@@ -44,10 +44,10 @@ public class ProductOrderService {
 	@Transactional
 	public String updateProductQuantity(Long productOrderId, ProductOrderStatus  status) {
 		if (status == ProductOrderStatus.FINISHED) {		
-			ProductOrder order = findById(productOrderId);			
+			Requisicao order = findById(productOrderId);			
 			return "Requisição finalizada com sucesso!";
 		} else if (status == ProductOrderStatus.CANCELLED) {
-			ProductOrder order = findById(productOrderId);			
+			Requisicao order = findById(productOrderId);			
 			return "Requisição cancelada com sucesso!";
 		} else {
 			throw new BusinessException(MSG_NOT_FOUND);
@@ -56,13 +56,13 @@ public class ProductOrderService {
 
 	@Transactional
 	public void addToProductOrder(Long productOrderId, Long productId, BigDecimal quantity) {
-		ProductOrder order = findById(productOrderId);
+		Requisicao order = findById(productOrderId);
 		ProdutoMinDTO productMinDTO = productService.findById(productId);
 		Produto product = new Produto();
 		BeanUtils.copyProperties(productMinDTO, product);
 
-		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
-		OrderItem orderItem = new OrderItem(orderItemPK, order, product, quantity);
+		ItemRequisicaoPK orderItemPK = new ItemRequisicaoPK(productOrderId, productId);
+		ItemRequisicao orderItem = new ItemRequisicao(orderItemPK, order, product, quantity);
 		orderItemRepository.save(orderItem);
 		order.getOrderProducts().add(orderItem);
 		productOrderRepository.save(order);
@@ -70,11 +70,11 @@ public class ProductOrderService {
 
 	@Transactional
 	public void removeProductOrder(Long productOrderId, Long productId) {
-		ProductOrder order = findById(productOrderId);
+		Requisicao order = findById(productOrderId);
 		productService.findById(productId);
 
-		OrderItemPK orderItemPK = new OrderItemPK(productOrderId, productId);
-		OrderItem orderItem = orderItemRepository.findById(orderItemPK)
+		ItemRequisicaoPK orderItemPK = new ItemRequisicaoPK(productOrderId, productId);
+		ItemRequisicao orderItem = orderItemRepository.findById(orderItemPK)
 				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
 
 		order.getOrderProducts().remove(orderItem);
@@ -83,27 +83,27 @@ public class ProductOrderService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<ProductOrder> findAll() {
-		List<ProductOrder> productOrders = productOrderRepository.findAll();
-		return productOrders.stream().map(x -> new ProductOrder(x.getId(), x.getEmployee(), x.getOrderProducts())).toList();
+	public List<Requisicao> findAll() {
+		List<Requisicao> productOrders = productOrderRepository.findAll();
+		return productOrders.stream().map(x -> new Requisicao(x.getId(), x.getEmployee(), x.getOrderProducts())).toList();
 	}
 
 	@Transactional(readOnly = true)
-	public ProductOrder findById(Long id) {
-		Optional<ProductOrder> obj = productOrderRepository.findById(id);
-		ProductOrder entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+	public Requisicao findById(Long id) {
+		Optional<Requisicao> obj = productOrderRepository.findById(id);
+		Requisicao entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
 		return entity;
 	}
 
 	@Transactional
-	public ProductOrder insert(ProductOrder productOrder) {
+	public Requisicao insert(Requisicao productOrder) {
 		return productOrderRepository.save(productOrder);
 	}
 
 	@Transactional
-	public ProductOrder update(Long id, ProductOrder dto) {
+	public Requisicao update(Long id, Requisicao dto) {
 		try {
-			ProductOrder entity = productOrderRepository.getReferenceById(id);
+			Requisicao entity = productOrderRepository.getReferenceById(id);
 			entity = productOrderRepository.save(entity);
 			return entity;
 		} catch (EntityNotFoundException e) {

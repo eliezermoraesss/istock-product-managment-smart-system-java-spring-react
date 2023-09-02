@@ -62,7 +62,7 @@ public class Produto implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")
-	private Group grupo;
+	private Grupo grupo;
 
 	private String codigoNcm;
 
@@ -72,7 +72,7 @@ public class Produto implements Serializable {
 	@JoinTable(name = "tb_produto_fornecedor",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "fornecedor_id"))
-	private Set<Supplier> fornecedores = new HashSet<>();
+	private Set<Fornecedor> fornecedores = new HashSet<>();
 
 	@Override
 	public boolean equals(Object o) {

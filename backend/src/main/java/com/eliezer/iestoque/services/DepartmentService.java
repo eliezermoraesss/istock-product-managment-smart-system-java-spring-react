@@ -1,8 +1,8 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.DepartmentDTO;
-import com.eliezer.iestoque.entities.Department;
-import com.eliezer.iestoque.repositories.DepartmentRepository;
+import com.eliezer.iestoque.dto.DepartamentoDTO;
+import com.eliezer.iestoque.entities.Departamento;
+import com.eliezer.iestoque.repositories.DepartamentoRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -21,37 +21,37 @@ public class DepartmentService {
     public static final String MSG_NOT_FOUND = "Department Id not found: ";
 
     @Autowired
-    public DepartmentRepository repository;
+    public DepartamentoRepository repository;
 
     @Transactional
-    public List<DepartmentDTO> findAll() {
-        List<Department> departments = repository.findAll();
-        return departments.stream().map(x -> new DepartmentDTO(x)).toList();
+    public List<DepartamentoDTO> findAll() {
+        List<Departamento> departments = repository.findAll();
+        return departments.stream().map(x -> new DepartamentoDTO(x)).toList();
     }
 
     @Transactional
 
-    public DepartmentDTO findById(Long id) {
-        Optional<Department> obj = repository.findById(id);
-        Department entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new DepartmentDTO(entity);
+    public DepartamentoDTO findById(Long id) {
+        Optional<Departamento> obj = repository.findById(id);
+        Departamento entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new DepartamentoDTO(entity);
     }
 
     @Transactional
-    public DepartmentDTO insert(DepartmentDTO dto) {
-        Department entity = new Department();
+    public DepartamentoDTO insert(DepartamentoDTO dto) {
+        Departamento entity = new Departamento();
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
-        return new DepartmentDTO(entity);
+        return new DepartamentoDTO(entity);
     }
 
     @Transactional
-    public DepartmentDTO update(Long id, DepartmentDTO dto) {
+    public DepartamentoDTO update(Long id, DepartamentoDTO dto) {
         try {
-            Department entity = repository.getReferenceById(id);
+            Departamento entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
-            return new DepartmentDTO(entity);
+            return new DepartamentoDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }

@@ -23,17 +23,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_departament")
-public class Department implements Serializable {
+@Table(name = "tb_departamento")
+public class Departamento implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer codDepartamento;
-    private String descricaoDepartamento;
+    private Integer codigo;
+    private String descricao;
     
-    @OneToMany(mappedBy = "department")
-    private Set<Employee> funcionarios = new HashSet<>();
+    @OneToMany(mappedBy = "departamento")
+    private Set<Funcionario> funcionarios = new HashSet<>();
 }

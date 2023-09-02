@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "tb_address")
+@Table(name = "tb_endereco")
 public class Endereco implements Serializable {
 
     @Serial
@@ -29,6 +29,6 @@ public class Endereco implements Serializable {
     private String uf;
     private String cep;
 
-    @OneToOne(mappedBy = "address")
-    private Supplier supplier;
+    @OneToOne(mappedBy = "endereco")
+    private Fornecedor fornecedor;
 }

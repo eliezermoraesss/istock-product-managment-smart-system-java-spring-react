@@ -10,8 +10,8 @@ import java.util.Set;
 import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
+import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.entities.Produto;
-import com.eliezer.iestoque.entities.Supplier;
 import com.eliezer.iestoque.enums.ProductStatus;
 
 import jakarta.validation.constraints.NotBlank;
@@ -66,16 +66,16 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 	@Size(min = 2, max = 3, message = "Deve ter 2 ou 3 caracteres")
 	@NotNull(message = "Campo requerido")
 	private String unidadeMedida;
-	private Set<SupplierDTO> suppliers = new HashSet<>();
+	private Set<FornecedorDTO> fornecedores = new HashSet<>();
 
 	public ProdutoDTO(Produto entity) {
 		BeanUtils.copyProperties(entity, this);
 		grupo = new GroupDTO(entity.getGrupo());
 	}
 
-	public ProdutoDTO(Produto entity, Set<Supplier> suppliers) {
+	public ProdutoDTO(Produto entity, Set<Fornecedor> suppliers) {
 		BeanUtils.copyProperties(entity, this);
 		grupo = new GroupDTO(entity.getGrupo());
-		suppliers.forEach(sup -> this.suppliers.add(new SupplierDTO(sup)));
+		suppliers.forEach(sup -> this.fornecedores.add(new FornecedorDTO(sup)));
 	}
 }

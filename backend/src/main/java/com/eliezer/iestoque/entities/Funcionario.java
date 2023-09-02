@@ -13,8 +13,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_employee")
-public class Employee implements Serializable {
+@Table(name = "tb_funcionario")
+public class Funcionario implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,15 +26,15 @@ public class Employee implements Serializable {
     private String nome;
     
     @ManyToOne
-    @JoinColumn(name = "departament_id")
-    private Department department;
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User usuario;
     
-    @OneToOne(mappedBy = "employee")
-    private ProductOrder productOrder;
+    @OneToOne(mappedBy = "funcionario")
+    private Requisicao requisicao;
 
 	@Override
 	public int hashCode() {
@@ -49,7 +49,7 @@ public class Employee implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Employee other = (Employee) obj;
+		Funcionario other = (Funcionario) obj;
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
 }

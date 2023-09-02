@@ -7,8 +7,8 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 
-import com.eliezer.iestoque.entities.Employee;
-import com.eliezer.iestoque.entities.ProductOrder;
+import com.eliezer.iestoque.entities.Funcionario;
+import com.eliezer.iestoque.entities.Requisicao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,19 +29,19 @@ public class EmployeeDTO implements Serializable {
     private Long id;
     private Integer matricula;
     private String nome;
-    private DepartmentDTO department;
+    private DepartamentoDTO department;
     private UserDTO usuario;
     private Set<ProductOrderDTO> orders;
 
-    public EmployeeDTO(Employee entity) {
+    public EmployeeDTO(Funcionario entity) {
         BeanUtils.copyProperties(entity, this);
-        department = new DepartmentDTO(entity.getDepartment());
+        department = new DepartamentoDTO(entity.getDepartamento());
         usuario = new UserDTO(entity.getUsuario());
     }
     
-    public EmployeeDTO(Employee entity, Set<ProductOrder> orders) {
+    public EmployeeDTO(Funcionario entity, Set<Requisicao> orders) {
         BeanUtils.copyProperties(entity, this);
-        department = new DepartmentDTO(entity.getDepartment());
+        department = new DepartamentoDTO(entity.getDepartamento());
         usuario = new UserDTO(entity.getUsuario());
         orders.forEach(order -> this.orders.add(new ProductOrderDTO(order)));
     }

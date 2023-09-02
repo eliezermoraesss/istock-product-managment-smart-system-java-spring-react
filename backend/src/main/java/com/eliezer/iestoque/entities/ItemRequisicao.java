@@ -11,15 +11,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_order_item")
-public class OrderItem {
+public class ItemRequisicao {
 
 	@EmbeddedId
-	private OrderItemPK id;
+	private ItemRequisicaoPK id;
 
 	@ManyToOne
 	@MapsId("productOrder")
 	@JoinColumn(name = "product_order_id")
-	private ProductOrder productOrder;
+	private Requisicao productOrder;
 
 	@ManyToOne
 	@MapsId("productId")
@@ -28,29 +28,29 @@ public class OrderItem {
 
 	private BigDecimal quantity;
 
-	public OrderItem() {
+	public ItemRequisicao() {
 	}
 
-	public OrderItem(OrderItemPK id, ProductOrder productOrder, Produto product, BigDecimal quantity) {
+	public ItemRequisicao(ItemRequisicaoPK id, Requisicao productOrder, Produto product, BigDecimal quantity) {
 		this.id = id;
 		this.productOrder = productOrder;
 		this.product = product;
 		this.quantity = quantity;
 	}
 
-	public OrderItemPK getId() {
+	public ItemRequisicaoPK getId() {
 		return id;
 	}
 
-	public void setId(OrderItemPK id) {
+	public void setId(ItemRequisicaoPK id) {
 		this.id = id;
 	}
 
-	public ProductOrder getProductOrder() {
+	public Requisicao getProductOrder() {
 		return productOrder;
 	}
 
-	public void setProductOrder(ProductOrder productOrder) {
+	public void setProductOrder(Requisicao productOrder) {
 		this.productOrder = productOrder;
 	}
 

@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.eliezer.iestoque.entities.OrderItem;
-import com.eliezer.iestoque.entities.OrderItemPK;
+import com.eliezer.iestoque.entities.ItemRequisicao;
+import com.eliezer.iestoque.entities.ItemRequisicaoPK;
 
-public interface OrderItemRepository extends JpaRepository<OrderItem, OrderItemPK> {
+public interface OrderItemRepository extends JpaRepository<ItemRequisicao, ItemRequisicaoPK> {
 
-	Optional<OrderItem> findById(OrderItemPK orderItemPK);
+	Optional<ItemRequisicao> findById(ItemRequisicaoPK orderItemPK);
 
 }

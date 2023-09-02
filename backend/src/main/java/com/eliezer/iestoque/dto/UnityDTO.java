@@ -1,6 +1,6 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.entities.Unity;
+import com.eliezer.iestoque.entities.Unidade;
 import lombok.*;
 
 import java.io.Serial;
@@ -20,7 +20,7 @@ public class UnityDTO implements Serializable {
     private String unityCode;
     private String unityDescription;
 
-    public UnityDTO(Unity entity) {
+    public UnityDTO(Unidade entity) {
         this.id = entity.getId();
         this.unityCode = entity.getUnityCode();
         this.unityDescription = entity.getUnityDescription();

@@ -3,10 +3,8 @@ package com.eliezer.iestoque.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.hateoas.RepresentationModel;
-
-import com.eliezer.iestoque.entities.OrderItem;
-import com.eliezer.iestoque.entities.ProductOrder;
+import com.eliezer.iestoque.entities.ItemRequisicao;
+import com.eliezer.iestoque.entities.Requisicao;
 import com.eliezer.iestoque.enums.ProductOrderStatus;
 
 public class ProductOrderDTO {
@@ -19,25 +17,25 @@ public class ProductOrderDTO {
 	public ProductOrderDTO() {
 	}
 	
-	public ProductOrderDTO(Long id, EmployeeDTO employee, Set<OrderItem> orderProducts) {
+	public ProductOrderDTO(Long id, EmployeeDTO employee, Set<ItemRequisicao> orderProducts) {
 		this.id = id;
 		this.employee = employee;
 		orderProducts.forEach(or -> this.orderProducts.add(new OrderItemDTO(or)));
 	}
 
-	public ProductOrderDTO(Long id, EmployeeDTO employee, ProductOrderStatus status, Set<OrderItem> orderProducts) {
+	public ProductOrderDTO(Long id, EmployeeDTO employee, ProductOrderStatus status, Set<ItemRequisicao> orderProducts) {
 		this.id = id;
 		this.employee = employee;
 		this.status = status;
 		orderProducts.forEach(or -> this.orderProducts.add(new OrderItemDTO(or)));
 	}
 
-	public ProductOrderDTO(ProductOrder productOrder) {
+	public ProductOrderDTO(Requisicao productOrder) {
 		id = productOrder.getId();
 		employee = new EmployeeDTO(productOrder.getEmployee());	
 	}
 	
-	public ProductOrderDTO(ProductOrder productOrder, Set<OrderItem> items) {
+	public ProductOrderDTO(Requisicao productOrder, Set<ItemRequisicao> items) {
 		id = productOrder.getId();
 		employee = new EmployeeDTO(productOrder.getEmployee());
 		items.forEach(item -> this.orderProducts.add(new OrderItemDTO(item)));

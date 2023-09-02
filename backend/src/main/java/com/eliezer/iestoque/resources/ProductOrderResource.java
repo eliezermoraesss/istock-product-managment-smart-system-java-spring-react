@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eliezer.iestoque.entities.ProductOrder;
+import com.eliezer.iestoque.entities.Requisicao;
 import com.eliezer.iestoque.services.ProductOrderService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,9 +55,9 @@ public class ProductOrderResource {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<List<ProductOrder>> findAll() {
-		List<ProductOrder> list = service.findAll();
-		for (ProductOrder ProductOrder : list) {
+	public ResponseEntity<List<Requisicao>> findAll() {
+		List<Requisicao> list = service.findAll();
+		for (Requisicao ProductOrder : list) {
 			Long id = ProductOrder.getId();
 			ProductOrder.add(linkTo(methodOn(ProductOrderResource.class).findById(id)).withSelfRel());
 		}
@@ -66,22 +66,22 @@ public class ProductOrderResource {
 
 	@GetMapping(value = "/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<ProductOrder> findById(@PathVariable Long id) {
-		ProductOrder dto = service.findById(id);
+	public ResponseEntity<Requisicao> findById(@PathVariable Long id) {
+		Requisicao dto = service.findById(id);
 		dto.add(linkTo(methodOn(ProductOrderResource.class).findAll()).withRel("Lista de Produtos"));
 		return ResponseEntity.ok().body(dto);
 	}
 
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<ProductOrder> insert(@Valid @RequestBody ProductOrder dto) {
+	public ResponseEntity<Requisicao> insert(@Valid @RequestBody Requisicao dto) {
 		dto = service.insert(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	}
 
 	@PutMapping(value = "/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<ProductOrder> update(@PathVariable Long id, @Valid @RequestBody ProductOrder dto) {
+	public ResponseEntity<Requisicao> update(@PathVariable Long id, @Valid @RequestBody Requisicao dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

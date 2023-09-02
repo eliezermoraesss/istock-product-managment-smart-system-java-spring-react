@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eliezer.iestoque.dto.UnityDTO;
-import com.eliezer.iestoque.entities.Unity;
+import com.eliezer.iestoque.entities.Unidade;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -27,20 +27,20 @@ public class UnityService {
 
     @Transactional
     public List<UnityDTO> findAll() {
-        List<Unity> list = unityRepository.findAll();
+        List<Unidade> list = unityRepository.findAll();
         return list.stream().map(x -> new UnityDTO(x)).toList();
     }
 
     @Transactional
     public UnityDTO findById(Long id) {
-        Optional<Unity> obj = unityRepository.findById(id);
-        Unity entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        Optional<Unidade> obj = unityRepository.findById(id);
+        Unidade entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
         return new UnityDTO(entity);
     }
 
     @Transactional
     public UnityDTO insert(UnityDTO dto) {
-        Unity entity = new Unity();
+        Unidade entity = new Unidade();
         BeanUtils.copyProperties(dto, entity);
         entity = unityRepository.save(entity);
         return new UnityDTO(entity);
@@ -49,7 +49,7 @@ public class UnityService {
     @Transactional
     public UnityDTO update(Long id, UnityDTO dto) {
         try {
-            Unity entity = unityRepository.getReferenceById(id);
+            Unidade entity = unityRepository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = unityRepository.save(entity);
             return new UnityDTO(entity);

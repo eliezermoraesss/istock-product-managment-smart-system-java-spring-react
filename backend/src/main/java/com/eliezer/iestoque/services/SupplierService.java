@@ -10,10 +10,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eliezer.iestoque.dto.SupplierDTO;
+import com.eliezer.iestoque.dto.FornecedorDTO;
 import com.eliezer.iestoque.dto.SupplierProductDTO;
 import com.eliezer.iestoque.entities.Endereco;
-import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.projections.SupplierProductProjection;
 import com.eliezer.iestoque.repositories.EnderecoRepository;
 import com.eliezer.iestoque.repositories.SupplierRepository;
@@ -25,21 +25,18 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class SupplierService {
 
-    public static final String MSG_NOT_FOUND = "Supplier Id not found: ";
+    public static final String MSG_NOT_FOUND = "ID do Fornecedor não encontrado: ";
 
     @Autowired
     private SupplierRepository repository;
 
     @Autowired
-    private EnderecoRepository addressRepository;
-
-    @Autowired
-    private EnderecoResource addressResource;
+    private EnderecoRepository enderecoRepository;
 
     @Transactional(readOnly = true)
-    public List<SupplierDTO> findAll() {
-        List<Supplier> suppliers = repository.findAll();
-        return suppliers.stream().map(x -> new SupplierDTO(x)).toList();
+    public List<FornecedorDTO> findAll() {
+        List<Fornecedor> suppliers = repository.findAll();
+        return suppliers.stream().map(x -> new FornecedorDTO(x)).toList();
     }
 
     @Transactional(readOnly = true)
@@ -52,30 +49,30 @@ public class SupplierService {
     }
 
     @Transactional(readOnly = true)
-    public SupplierDTO findById(Long id) {
-        Optional<Supplier> obj = repository.findById(id);
-        Supplier entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new SupplierDTO(entity, entity.getAddress());
+    public FornecedorDTO findById(Long id) {
+        Optional<Fornecedor> obj = repository.findById(id);
+        Fornecedor entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new FornecedorDTO(entity, entity.getEndereco());
     }
 
     @Transactional
-    public SupplierDTO insert(SupplierDTO dto) {
-        Supplier entity = new Supplier();
-        Endereco entityAddress = addressRepository.findById(dto.getAddress().getId()).orElseThrow(() ->
-                new ResourceNotFoundException("Address Id not found: " + dto.getAddress().getId()));
-        entity.setAddress(entityAddress);
+    public FornecedorDTO insert(FornecedorDTO dto) {
+        Fornecedor entity = new Fornecedor();
+        Endereco entityAddress = enderecoRepository.findById(dto.getEndereco().getId()).orElseThrow(() ->
+                new ResourceNotFoundException("Address Id not found: " + dto.getEndereco().getId()));
+        entity.setEndereco(entityAddress);
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
-        return new SupplierDTO(entity, entity.getAddress());
+        return new FornecedorDTO(entity, entity.getEndereco());
     }
 
     @Transactional
-    public SupplierDTO update(Long id, SupplierDTO dto) {
+    public FornecedorDTO update(Long id, FornecedorDTO dto) {
         try {
-            Supplier entity = repository.getReferenceById(id);
+            Fornecedor entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
-            return new SupplierDTO(entity, entity.getAddress());
+            return new FornecedorDTO(entity, entity.getEndereco());
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }

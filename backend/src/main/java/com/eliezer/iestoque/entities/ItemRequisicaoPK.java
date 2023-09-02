@@ -6,7 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class OrderItemPK {
+public class ItemRequisicaoPK {
 
 	@Column(name = "product_order_id")
 	private Long productOrderId;
@@ -14,10 +14,10 @@ public class OrderItemPK {
 	@Column(name = "product_id")
 	private Long productId;
 	
-	public OrderItemPK() {
+	public ItemRequisicaoPK() {
 	}
 
-	public OrderItemPK(Long productOrderId, Long productId) {
+	public ItemRequisicaoPK(Long productOrderId, Long productId) {
 		this.productOrderId = productOrderId;
 		this.productId = productId;
 	}
@@ -51,7 +51,7 @@ public class OrderItemPK {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OrderItemPK other = (OrderItemPK) obj;
+		ItemRequisicaoPK other = (ItemRequisicaoPK) obj;
 		return Objects.equals(productId, other.productId) && Objects.equals(productOrderId, other.productOrderId);
 	} 
 }

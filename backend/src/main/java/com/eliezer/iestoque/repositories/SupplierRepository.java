@@ -1,13 +1,13 @@
 package com.eliezer.iestoque.repositories;
 
-import com.eliezer.iestoque.entities.Supplier;
+import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.projections.SupplierProductProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface SupplierRepository extends JpaRepository<Supplier, Long> {
+public interface SupplierRepository extends JpaRepository<Fornecedor, Long> {
 
     @Query(nativeQuery = true, value = """
             SELECT tb_product.product_description AS productDescription, tb_supplier.id, tb_supplier.razao_social AS razaoSocial

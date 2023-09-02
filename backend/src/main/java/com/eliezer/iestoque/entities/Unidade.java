@@ -14,7 +14,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "tb_unity")
-public class Unity implements Serializable {
+public class Unidade implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class Unity implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Unity unity)) return false;
+        if (!(o instanceof Unidade unity)) return false;
         return getId().equals(unity.getId());
     }
 

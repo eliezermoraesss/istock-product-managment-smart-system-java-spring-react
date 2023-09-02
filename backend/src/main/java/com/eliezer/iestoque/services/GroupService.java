@@ -1,7 +1,7 @@
 package com.eliezer.iestoque.services;
 
 import com.eliezer.iestoque.dto.GroupDTO;
-import com.eliezer.iestoque.entities.Group;
+import com.eliezer.iestoque.entities.Grupo;
 import com.eliezer.iestoque.repositories.GroupRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,20 +25,20 @@ public class GroupService {
 
     @Transactional
     public List<GroupDTO> findAll() {
-        List<Group> Groups = repository.findAll();
+        List<Grupo> Groups = repository.findAll();
         return Groups.stream().map(x -> new GroupDTO(x)).toList();
     }
 
     @Transactional
     public GroupDTO findById(Long id) {
-        Optional<Group> obj = repository.findById(id);
-        Group entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        Optional<Grupo> obj = repository.findById(id);
+        Grupo entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
         return new GroupDTO(entity);
     }
 
     @Transactional
     public GroupDTO insert(GroupDTO dto) {
-        Group entity = new Group();
+        Grupo entity = new Grupo();
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
         return new GroupDTO(entity);
@@ -47,7 +47,7 @@ public class GroupService {
     @Transactional
     public GroupDTO update(Long id, GroupDTO dto) {
         try {
-            Group entity = repository.getReferenceById(id);
+            Grupo entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
             return new GroupDTO(entity);
