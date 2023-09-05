@@ -57,7 +57,7 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 	@NotNull(message = "Campo requerido")
 	private ProductStatus status;
 
-	private GroupDTO grupo;
+	private GrupoDTO grupo;
 	
 	@Size(min = 8, max = 8, message = "Deve ter exatamente 8 caractares")
 	@NotBlank(message = "Campo requerido")
@@ -70,12 +70,12 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 
 	public ProdutoDTO(Produto entity) {
 		BeanUtils.copyProperties(entity, this);
-		grupo = new GroupDTO(entity.getGrupo());
+		grupo = new GrupoDTO(entity.getGrupo());
 	}
 
 	public ProdutoDTO(Produto entity, Set<Fornecedor> suppliers) {
 		BeanUtils.copyProperties(entity, this);
-		grupo = new GroupDTO(entity.getGrupo());
+		grupo = new GrupoDTO(entity.getGrupo());
 		suppliers.forEach(sup -> this.fornecedores.add(new FornecedorDTO(sup)));
 	}
 }

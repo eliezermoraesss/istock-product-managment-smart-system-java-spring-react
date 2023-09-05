@@ -1,6 +1,6 @@
 package com.eliezer.iestoque.resources;
 
-import com.eliezer.iestoque.dto.GroupDTO;
+import com.eliezer.iestoque.dto.GrupoDTO;
 import com.eliezer.iestoque.services.GroupService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,25 +21,25 @@ public class GroupResource {
     private GroupService service;
 
     @GetMapping
-    public ResponseEntity<List<GroupDTO>> findAll() {
-        List<GroupDTO> list = service.findAll();
+    public ResponseEntity<List<GrupoDTO>> findAll() {
+        List<GrupoDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GroupDTO> findById(@PathVariable Long id) {
-        GroupDTO dto = service.findById(id);
+    public ResponseEntity<GrupoDTO> findById(@PathVariable Long id) {
+        GrupoDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<GroupDTO> insert(@RequestBody GroupDTO dto) {
+    public ResponseEntity<GrupoDTO> insert(@RequestBody GrupoDTO dto) {
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GroupDTO> update(@PathVariable Long id, @RequestBody GroupDTO dto) {
+    public ResponseEntity<GrupoDTO> update(@PathVariable Long id, @RequestBody GrupoDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }

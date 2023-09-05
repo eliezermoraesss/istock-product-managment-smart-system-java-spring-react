@@ -10,7 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eliezer.iestoque.dto.EmployeeDTO;
+import com.eliezer.iestoque.dto.FuncionarioDTO;
 import com.eliezer.iestoque.entities.Departamento;
 import com.eliezer.iestoque.entities.Funcionario;
 import com.eliezer.iestoque.entities.User;
@@ -36,20 +36,20 @@ public class EmployeeService {
 	public UserRepository userRepository;
 
 	@Transactional
-	public List<EmployeeDTO> findAll() {
+	public List<FuncionarioDTO> findAll() {
 		List<Funcionario> Employees = repository.findAll();
-		return Employees.stream().map(x -> new EmployeeDTO(x)).toList();
+		return Employees.stream().map(x -> new FuncionarioDTO(x)).toList();
 	}
 
 	@Transactional
-	public EmployeeDTO findById(Long id) {
+	public FuncionarioDTO findById(Long id) {
 		Optional<Funcionario> obj = repository.findById(id);
 		Funcionario entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-		return new EmployeeDTO(entity);
+		return new FuncionarioDTO(entity);
 	}
 
 	@Transactional
-	public EmployeeDTO insert(EmployeeDTO dto) {
+	public FuncionarioDTO insert(FuncionarioDTO dto) {
 		Funcionario entity = new Funcionario();
 		Departamento entityDepartment = departmentRepository.findById(dto.getDepartment().getId()).orElseThrow(
 				() -> new ResourceNotFoundException("Department Id not found: " + dto.getDepartment().getId()));
@@ -59,16 +59,16 @@ public class EmployeeService {
 		entity.setUsuario(entityUser);
 		BeanUtils.copyProperties(dto, entity);
 		entity = repository.save(entity);
-		return new EmployeeDTO(entity);
+		return new FuncionarioDTO(entity);
 	}
 
 	@Transactional
-	public EmployeeDTO update(Long id, EmployeeDTO dto) {
+	public FuncionarioDTO update(Long id, FuncionarioDTO dto) {
 		try {
 			Funcionario entity = repository.getReferenceById(id);
 			BeanUtils.copyProperties(dto, entity, "id");
 			entity = repository.save(entity);
-			return new EmployeeDTO(entity);
+			return new FuncionarioDTO(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
 		}

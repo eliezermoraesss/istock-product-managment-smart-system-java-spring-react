@@ -20,7 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_product_order")
+@Table(name = "tb_requisicao")
 public class Requisicao extends RepresentationModel<Requisicao> {
 
 	@Id
@@ -28,33 +28,31 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "employee_id")
-	private Funcionario employee;
+	@JoinColumn(name = "funcionario_id")
+	private Funcionario funcionario;
 	
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "STATUS_REQUISICAO")
 	private ProductOrderStatus status;
 
-	@OneToMany(mappedBy = "productOrder")
-	private Set<ItemRequisicao> orderProducts = new HashSet<>();
+	@OneToMany(mappedBy = "requisicao")
+	private Set<ItemRequisicao> itemRequisicao = new HashSet<>();
 
 	public Requisicao() {
 	}
 
-	public Requisicao(Long id, Funcionario employee, Set<ItemRequisicao> orderProducts) {
+	public Requisicao(Long id, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao) {
 		this.id = id;
-		this.employee = employee;
-		orderProducts.forEach(orderItem -> this.orderProducts.add(new ItemRequisicao()));
+		this.funcionario = funcionario;
+		itemRequisicao.forEach(orderItem -> this.itemRequisicao.add(new ItemRequisicao()));
 	}
-	
-	
 
-	public Requisicao(Long id, Funcionario employee, ProductOrderStatus status, Set<ItemRequisicao> orderProducts) {
+	public Requisicao(Long id, Funcionario funcionario, ProductOrderStatus status, Set<ItemRequisicao> itemRequisicao) {
 		super();
 		this.id = id;
-		this.employee = employee;
+		this.funcionario = funcionario;
 		this.status = status;
-		this.orderProducts = orderProducts;
+		this.itemRequisicao = itemRequisicao;
 	}
 
 	public Long getId() {
@@ -66,11 +64,11 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	}
 	
 	public Funcionario getEmployee() {
-		return employee;
+		return funcionario;
 	}
 
 	public void setEmployee(Funcionario employee) {
-		this.employee = employee;
+		this.funcionario = employee;
 	}
 	
 	public ProductOrderStatus getStatus() {
@@ -82,10 +80,10 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	}
 
 	public Set<ItemRequisicao> getOrderProducts() {
-		return orderProducts;
+		return itemRequisicao;
 	}
 
 	public void setOrderProducts(Set<ItemRequisicao> orderProducts) {
-		this.orderProducts = orderProducts;
+		this.itemRequisicao = orderProducts;
 	}
 }
