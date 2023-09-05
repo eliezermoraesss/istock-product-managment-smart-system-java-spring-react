@@ -2,7 +2,7 @@ package com.eliezer.iestoque.services;
 
 import com.eliezer.iestoque.dto.GrupoDTO;
 import com.eliezer.iestoque.entities.Grupo;
-import com.eliezer.iestoque.repositories.GroupRepository;
+import com.eliezer.iestoque.repositories.GrupoRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +21,7 @@ public class GroupService {
     public static final String MSG_NOT_FOUND = "Group Id not found: ";
 
     @Autowired
-    public GroupRepository repository;
+    public GrupoRepository repository;
 
     @Transactional
     public List<GrupoDTO> findAll() {

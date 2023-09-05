@@ -12,7 +12,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.entities.Produto;
-import com.eliezer.iestoque.enums.ProductStatus;
+import com.eliezer.iestoque.enums.StatusProduto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -55,7 +55,7 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 	private Instant dataDeCadastro;
 
 	@NotNull(message = "Campo requerido")
-	private ProductStatus status;
+	private StatusProduto status;
 
 	private GrupoDTO grupo;
 	
@@ -68,14 +68,14 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 	private String unidadeMedida;
 	private Set<FornecedorDTO> fornecedores = new HashSet<>();
 
-	public ProdutoDTO(Produto entity) {
-		BeanUtils.copyProperties(entity, this);
-		grupo = new GrupoDTO(entity.getGrupo());
+	public ProdutoDTO(Produto produto) {
+		BeanUtils.copyProperties(produto, this);
+		grupo = new GrupoDTO(produto.getGrupo());
 	}
 
-	public ProdutoDTO(Produto entity, Set<Fornecedor> suppliers) {
-		BeanUtils.copyProperties(entity, this);
-		grupo = new GrupoDTO(entity.getGrupo());
-		suppliers.forEach(sup -> this.fornecedores.add(new FornecedorDTO(sup)));
+	public ProdutoDTO(Produto produto, Set<Fornecedor> fornecedores) {
+		BeanUtils.copyProperties(produto, this);
+		grupo = new GrupoDTO(produto.getGrupo());
+		fornecedores.forEach(fornecedor -> this.fornecedores.add(new FornecedorDTO(fornecedor)));
 	}
 }

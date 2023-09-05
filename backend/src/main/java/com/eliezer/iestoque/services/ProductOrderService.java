@@ -16,9 +16,9 @@ import com.eliezer.iestoque.entities.ItemRequisicao;
 import com.eliezer.iestoque.entities.ItemRequisicaoPK;
 import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.entities.Requisicao;
-import com.eliezer.iestoque.enums.ProductOrderStatus;
-import com.eliezer.iestoque.repositories.OrderItemRepository;
-import com.eliezer.iestoque.repositories.ProductOrderRepository;
+import com.eliezer.iestoque.enums.StatusRequisicao;
+import com.eliezer.iestoque.repositories.ItemRequisicaoRepository;
+import com.eliezer.iestoque.repositories.RequisicaoRepository;
 import com.eliezer.iestoque.services.exceptions.BusinessException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
@@ -36,17 +36,17 @@ public class ProductOrderService {
 	private ProdutoService productService;
 
 	@Autowired
-	private ProductOrderRepository productOrderRepository;
+	private RequisicaoRepository productOrderRepository;
 
 	@Autowired
-	private OrderItemRepository orderItemRepository;
+	private ItemRequisicaoRepository orderItemRepository;
 
 	@Transactional
-	public String updateProductQuantity(Long productOrderId, ProductOrderStatus  status) {
-		if (status == ProductOrderStatus.FINISHED) {		
+	public String updateProductQuantity(Long productOrderId, StatusRequisicao  status) {
+		if (status == StatusRequisicao.FINISHED) {		
 			Requisicao order = findById(productOrderId);			
 			return "Requisição finalizada com sucesso!";
-		} else if (status == ProductOrderStatus.CANCELLED) {
+		} else if (status == StatusRequisicao.CANCELLED) {
 			Requisicao order = findById(productOrderId);			
 			return "Requisição cancelada com sucesso!";
 		} else {

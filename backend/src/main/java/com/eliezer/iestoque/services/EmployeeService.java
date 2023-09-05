@@ -15,7 +15,7 @@ import com.eliezer.iestoque.entities.Departamento;
 import com.eliezer.iestoque.entities.Funcionario;
 import com.eliezer.iestoque.entities.User;
 import com.eliezer.iestoque.repositories.DepartamentoRepository;
-import com.eliezer.iestoque.repositories.EmployeeRepository;
+import com.eliezer.iestoque.repositories.FuncionarioRepository;
 import com.eliezer.iestoque.repositories.UserRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
@@ -27,7 +27,7 @@ public class EmployeeService {
 	public static final String MSG_NOT_FOUND = "Employee Id not found: ";
 
 	@Autowired
-	public EmployeeRepository repository;
+	public FuncionarioRepository repository;
 
 	@Autowired
 	public DepartamentoRepository departmentRepository;

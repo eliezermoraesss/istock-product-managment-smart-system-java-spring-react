@@ -17,25 +17,25 @@ public class ItemRequisicaoPK {
 	public ItemRequisicaoPK() {
 	}
 
-	public ItemRequisicaoPK(Long productOrderId, Long productId) {
-		this.requisicaoId = productOrderId;
-		this.produtoId = productId;
+	public ItemRequisicaoPK(Long requisicaoId, Long produtoId) {
+		this.requisicaoId = requisicaoId;
+		this.produtoId = produtoId;
 	}
 
-	public Long getProductOrderId() {
+	public Long getRequisicaoId() {
 		return requisicaoId;
 	}
 
-	public void setProductOrderId(Long productOrderId) {
-		this.requisicaoId = productOrderId;
+	public void setRequisicaoId(Long requisicaoId) {
+		this.requisicaoId = requisicaoId;
 	}
 
-	public Long getProductId() {
+	public Long getProdutoId() {
 		return produtoId;
 	}
 
-	public void setProductId(Long productId) {
-		this.produtoId = productId;
+	public void setProdutoId(Long produtoId) {
+		this.produtoId = produtoId;
 	}
 
 	@Override

@@ -11,18 +11,18 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UnityDTO implements Serializable {
+public class UnidadeDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String unityCode;
-    private String unityDescription;
+    private String codigo;
+    private String descricao;
 
-    public UnityDTO(Unidade entity) {
-        this.id = entity.getId();
-        this.unityCode = entity.getUnityCode();
-        this.unityDescription = entity.getUnityDescription();
+    public UnidadeDTO(Unidade unidade) {
+        this.id = unidade.getId();
+        this.codigo = unidade.getCodigo();
+        this.descricao = unidade.getDescription();
     }
 }

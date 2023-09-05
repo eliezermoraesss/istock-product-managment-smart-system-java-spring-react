@@ -39,27 +39,27 @@ public class ItemRequisicaoDTO {
 		this.id = id;
 	}
 
-	public RequisicaoDTO getProductOrder() {
+	public RequisicaoDTO getRequisicao() {
 		return requisicao;
 	}
 
-	public void setProductOrder(RequisicaoDTO requisicao) {
+	public void setRequisicao(RequisicaoDTO requisicao) {
 		this.requisicao = requisicao;
 	}
 
-	public ProdutoDTO getProduct() {
+	public ProdutoDTO getProduto() {
 		return produto;
 	}
 
-	public void setProduct(ProdutoDTO produto) {
+	public void setProduto(ProdutoDTO produto) {
 		this.produto = produto;
 	}
 
-	public BigDecimal getQuantity() {
+	public BigDecimal getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantity(BigDecimal quantidade) {
+	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
 }

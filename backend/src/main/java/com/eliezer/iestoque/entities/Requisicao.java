@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.eliezer.iestoque.enums.ProductOrderStatus;
+import com.eliezer.iestoque.enums.StatusRequisicao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,10 +33,10 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "STATUS_REQUISICAO")
-	private ProductOrderStatus status;
+	private StatusRequisicao status;
 
 	@OneToMany(mappedBy = "requisicao")
-	private Set<ItemRequisicao> itemRequisicao = new HashSet<>();
+	private Set<ItemRequisicao> itensRequisicao = new HashSet<>();
 
 	public Requisicao() {
 	}
@@ -44,15 +44,15 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	public Requisicao(Long id, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao) {
 		this.id = id;
 		this.funcionario = funcionario;
-		itemRequisicao.forEach(orderItem -> this.itemRequisicao.add(new ItemRequisicao()));
+		itemRequisicao.forEach(orderItem -> this.itensRequisicao.add(new ItemRequisicao()));
 	}
 
-	public Requisicao(Long id, Funcionario funcionario, ProductOrderStatus status, Set<ItemRequisicao> itemRequisicao) {
+	public Requisicao(Long id, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itemRequisicao) {
 		super();
 		this.id = id;
 		this.funcionario = funcionario;
 		this.status = status;
-		this.itemRequisicao = itemRequisicao;
+		this.itensRequisicao = itemRequisicao;
 	}
 
 	public Long getId() {
@@ -62,28 +62,28 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public Funcionario getEmployee() {
+
+	public Funcionario getFuncionario() {
 		return funcionario;
 	}
 
-	public void setEmployee(Funcionario employee) {
-		this.funcionario = employee;
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
-	
-	public ProductOrderStatus getStatus() {
+
+	public StatusRequisicao getStatus() {
 		return status;
 	}
 
-	public void setStatus(ProductOrderStatus status) {
+	public void setStatus(StatusRequisicao status) {
 		this.status = status;
 	}
 
-	public Set<ItemRequisicao> getOrderProducts() {
-		return itemRequisicao;
+	public Set<ItemRequisicao> getItensRequisicao() {
+		return itensRequisicao;
 	}
 
-	public void setOrderProducts(Set<ItemRequisicao> orderProducts) {
-		this.itemRequisicao = orderProducts;
+	public void setItensRequisicao(Set<ItemRequisicao> itensRequisicao) {
+		this.itensRequisicao = itensRequisicao;
 	}
 }

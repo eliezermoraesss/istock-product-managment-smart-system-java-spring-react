@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eliezer.iestoque.dto.FornecedorDTO;
-import com.eliezer.iestoque.dto.SupplierProductDTO;
+import com.eliezer.iestoque.dto.FornecedorProdutoDTO;
 import com.eliezer.iestoque.entities.Endereco;
 import com.eliezer.iestoque.entities.Fornecedor;
-import com.eliezer.iestoque.projections.SupplierProductProjection;
+import com.eliezer.iestoque.projections.FornecedorProdutoProjection;
 import com.eliezer.iestoque.repositories.EnderecoRepository;
-import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.repositories.FornecedorRepository;
 import com.eliezer.iestoque.resources.EnderecoResource;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
@@ -28,7 +28,7 @@ public class SupplierService {
     public static final String MSG_NOT_FOUND = "ID do Fornecedor não encontrado: ";
 
     @Autowired
-    private SupplierRepository repository;
+    private FornecedorRepository repository;
 
     @Autowired
     private EnderecoRepository enderecoRepository;
@@ -40,12 +40,12 @@ public class SupplierService {
     }
 
     @Transactional(readOnly = true)
-    public List<SupplierProductDTO> findSupplierByProduct(String productName) {
-        List<SupplierProductProjection> suppliers = repository.findSupplierByProduct(productName);
+    public List<FornecedorProdutoDTO> findSupplierByProduct(String productName) {
+        List<FornecedorProdutoProjection> suppliers = repository.findSupplierByProduct(productName);
         if(suppliers.isEmpty()) {
             throw new ResourceNotFoundException("Supplier not found!");
         }
-        return suppliers.stream().map(SupplierProductDTO::new).toList();
+        return suppliers.stream().map(FornecedorProdutoDTO::new).toList();
     }
 
     @Transactional(readOnly = true)

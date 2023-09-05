@@ -3,7 +3,7 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.eliezer.iestoque.repositories.UnityRepository;
+import com.eliezer.iestoque.repositories.UnidadeRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,7 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eliezer.iestoque.dto.UnityDTO;
+import com.eliezer.iestoque.dto.UnidadeDTO;
 import com.eliezer.iestoque.entities.Unidade;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
@@ -23,36 +23,36 @@ public class UnityService {
     public static final String MSG_NOT_FOUND = "Unity not found: ";
 
     @Autowired
-    public UnityRepository unityRepository;
+    public UnidadeRepository unityRepository;
 
     @Transactional
-    public List<UnityDTO> findAll() {
+    public List<UnidadeDTO> findAll() {
         List<Unidade> list = unityRepository.findAll();
-        return list.stream().map(x -> new UnityDTO(x)).toList();
+        return list.stream().map(x -> new UnidadeDTO(x)).toList();
     }
 
     @Transactional
-    public UnityDTO findById(Long id) {
+    public UnidadeDTO findById(Long id) {
         Optional<Unidade> obj = unityRepository.findById(id);
         Unidade entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new UnityDTO(entity);
+        return new UnidadeDTO(entity);
     }
 
     @Transactional
-    public UnityDTO insert(UnityDTO dto) {
+    public UnidadeDTO insert(UnidadeDTO dto) {
         Unidade entity = new Unidade();
         BeanUtils.copyProperties(dto, entity);
         entity = unityRepository.save(entity);
-        return new UnityDTO(entity);
+        return new UnidadeDTO(entity);
     }
 
     @Transactional
-    public UnityDTO update(Long id, UnityDTO dto) {
+    public UnidadeDTO update(Long id, UnidadeDTO dto) {
         try {
             Unidade entity = unityRepository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = unityRepository.save(entity);
-            return new UnityDTO(entity);
+            return new UnidadeDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
