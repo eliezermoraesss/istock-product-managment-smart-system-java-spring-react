@@ -1,6 +1,7 @@
 package com.eliezer.iestoque.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -85,5 +86,18 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 
 	public void setItensRequisicao(Set<ItemRequisicao> itensRequisicao) {
 		this.itensRequisicao = itensRequisicao;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Requisicao that)) return false;
+		if (!super.equals(o)) return false;
+		return Objects.equals(getId(), that.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), getId());
 	}
 }
