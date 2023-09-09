@@ -18,41 +18,41 @@ import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UnityService {
+public class UnidadeService {
 
-    public static final String MSG_NOT_FOUND = "Unity not found: ";
+    public static final String MSG_NOT_FOUND = "Unidade não encontrada: ";
 
     @Autowired
-    public UnidadeRepository unityRepository;
+    public UnidadeRepository unidadeRepository;
 
     @Transactional
     public List<UnidadeDTO> findAll() {
-        List<Unidade> list = unityRepository.findAll();
+        List<Unidade> list = unidadeRepository.findAll();
         return list.stream().map(x -> new UnidadeDTO(x)).toList();
     }
 
     @Transactional
     public UnidadeDTO findById(Long id) {
-        Optional<Unidade> obj = unityRepository.findById(id);
-        Unidade entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new UnidadeDTO(entity);
+        Optional<Unidade> unidadeOptional = unidadeRepository.findById(id);
+        Unidade unidade = unidadeOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new UnidadeDTO(unidade);
     }
 
     @Transactional
     public UnidadeDTO insert(UnidadeDTO dto) {
-        Unidade entity = new Unidade();
-        BeanUtils.copyProperties(dto, entity);
-        entity = unityRepository.save(entity);
-        return new UnidadeDTO(entity);
+        Unidade unidade = new Unidade();
+        BeanUtils.copyProperties(dto, unidade);
+        unidade = unidadeRepository.save(unidade);
+        return new UnidadeDTO(unidade);
     }
 
     @Transactional
     public UnidadeDTO update(Long id, UnidadeDTO dto) {
         try {
-            Unidade entity = unityRepository.getReferenceById(id);
-            BeanUtils.copyProperties(dto, entity, "id");
-            entity = unityRepository.save(entity);
-            return new UnidadeDTO(entity);
+            Unidade unidade = unidadeRepository.getReferenceById(id);
+            BeanUtils.copyProperties(dto, unidade, "id");
+            unidade = unidadeRepository.save(unidade);
+            return new UnidadeDTO(unidade);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
@@ -60,7 +60,7 @@ public class UnityService {
 
     public void delete(Long id) {
         try {
-            unityRepository.deleteById(id);
+            unidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
         } catch (DataIntegrityViolationException e) {

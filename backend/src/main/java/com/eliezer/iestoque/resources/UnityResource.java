@@ -1,7 +1,7 @@
 package com.eliezer.iestoque.resources;
 
 import com.eliezer.iestoque.dto.UnidadeDTO;
-import com.eliezer.iestoque.services.UnityService;
+import com.eliezer.iestoque.services.UnidadeService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class UnityResource {
 
     @Autowired
-    private UnityService service;
+    private UnidadeService service;
 
     @GetMapping
     public ResponseEntity<List<UnidadeDTO>> findAll() {
