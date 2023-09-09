@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.eliezer.iestoque.enums.ProductStatus;
+import com.eliezer.iestoque.enums.StatusProduto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,7 +58,7 @@ public class Produto implements Serializable {
 	private Instant dataDeCadastro;
 	
 	@Enumerated(value = EnumType.STRING)
-	private ProductStatus status;
+	private StatusProduto status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")

@@ -1,6 +1,6 @@
 package com.eliezer.iestoque.resources;
 
-import com.eliezer.iestoque.dto.EmployeeDTO;
+import com.eliezer.iestoque.dto.FuncionarioDTO;
 import com.eliezer.iestoque.services.EmployeeService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,25 +21,25 @@ public class EmployeeResource {
     private EmployeeService service;
 
     @GetMapping
-    public ResponseEntity<List<EmployeeDTO>> findAll() {
-        List<EmployeeDTO> list = service.findAll();
+    public ResponseEntity<List<FuncionarioDTO>> findAll() {
+        List<FuncionarioDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EmployeeDTO> findById(@PathVariable Long id) {
-        EmployeeDTO dto = service.findById(id);
+    public ResponseEntity<FuncionarioDTO> findById(@PathVariable Long id) {
+        FuncionarioDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> insert(@RequestBody EmployeeDTO dto) {
+    public ResponseEntity<FuncionarioDTO> insert(@RequestBody FuncionarioDTO dto) {
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EmployeeDTO> update(@PathVariable Long id, @RequestBody EmployeeDTO dto) {
+    public ResponseEntity<FuncionarioDTO> update(@PathVariable Long id, @RequestBody FuncionarioDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }

@@ -1,8 +1,8 @@
 package com.eliezer.iestoque.services;
 
-import com.eliezer.iestoque.dto.GroupDTO;
+import com.eliezer.iestoque.dto.GrupoDTO;
 import com.eliezer.iestoque.entities.Grupo;
-import com.eliezer.iestoque.repositories.GroupRepository;
+import com.eliezer.iestoque.repositories.GrupoRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -21,36 +21,36 @@ public class GroupService {
     public static final String MSG_NOT_FOUND = "Group Id not found: ";
 
     @Autowired
-    public GroupRepository repository;
+    public GrupoRepository repository;
 
     @Transactional
-    public List<GroupDTO> findAll() {
+    public List<GrupoDTO> findAll() {
         List<Grupo> Groups = repository.findAll();
-        return Groups.stream().map(x -> new GroupDTO(x)).toList();
+        return Groups.stream().map(x -> new GrupoDTO(x)).toList();
     }
 
     @Transactional
-    public GroupDTO findById(Long id) {
+    public GrupoDTO findById(Long id) {
         Optional<Grupo> obj = repository.findById(id);
         Grupo entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new GroupDTO(entity);
+        return new GrupoDTO(entity);
     }
 
     @Transactional
-    public GroupDTO insert(GroupDTO dto) {
+    public GrupoDTO insert(GrupoDTO dto) {
         Grupo entity = new Grupo();
         BeanUtils.copyProperties(dto, entity);
         entity = repository.save(entity);
-        return new GroupDTO(entity);
+        return new GrupoDTO(entity);
     }
 
     @Transactional
-    public GroupDTO update(Long id, GroupDTO dto) {
+    public GrupoDTO update(Long id, GrupoDTO dto) {
         try {
             Grupo entity = repository.getReferenceById(id);
             BeanUtils.copyProperties(dto, entity, "id");
             entity = repository.save(entity);
-            return new GroupDTO(entity);
+            return new GrupoDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }

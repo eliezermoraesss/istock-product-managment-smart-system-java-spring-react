@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.iestoque.dto.FornecedorDTO;
-import com.eliezer.iestoque.dto.SupplierProductDTO;
-import com.eliezer.iestoque.services.SupplierService;
+import com.eliezer.iestoque.dto.FornecedorProdutoDTO;
+import com.eliezer.iestoque.services.FornecedorService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -30,7 +30,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class SupplierResource {
 
     @Autowired
-    private SupplierService service;
+    private FornecedorService service;
 
     @GetMapping
     public ResponseEntity<List<FornecedorDTO>> findAll() {
@@ -45,9 +45,9 @@ public class SupplierResource {
     }
 
     @GetMapping("/product")
-    public ResponseEntity<List<SupplierProductDTO>> findSupplierByProduct(
+    public ResponseEntity<List<FornecedorProdutoDTO>> findSupplierByProduct(
             @RequestParam(value = "productName", defaultValue = "") String productName) {
-        List<SupplierProductDTO> list = service.findSupplierByProduct(productName);
+        List<FornecedorProdutoDTO> list = service.findSupplierByProduct(productName);
         return ResponseEntity.ok().body(list);
     }
 

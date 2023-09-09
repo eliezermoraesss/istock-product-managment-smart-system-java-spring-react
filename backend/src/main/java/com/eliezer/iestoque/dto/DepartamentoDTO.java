@@ -28,8 +28,8 @@ public class DepartamentoDTO implements Serializable {
     private Long id;
     private Integer codigo;
     private String descricao;
-    private Set<EmployeeDTO> funcionarios = new HashSet<>();
-
+    private Set<FuncionarioDTO> funcionarios = new HashSet<>();
+  
     public DepartamentoDTO(Departamento entity) {
         BeanUtils.copyProperties(entity, this);
     }

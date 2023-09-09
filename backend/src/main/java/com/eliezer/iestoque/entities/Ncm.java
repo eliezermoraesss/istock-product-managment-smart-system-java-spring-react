@@ -23,8 +23,8 @@ public class Ncm implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer posicao;
-    private String ncmCode;
-    private String ncmDescription;
+    private String codigo;
+    private String descricao;
 
     @Override
     public boolean equals(Object o) {

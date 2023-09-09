@@ -1,11 +1,12 @@
 package com.eliezer.iestoque.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.eliezer.iestoque.enums.ProductOrderStatus;
+import com.eliezer.iestoque.enums.StatusRequisicao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_product_order")
+@Table(name = "tb_requisicao")
 public class Requisicao extends RepresentationModel<Requisicao> {
 
 	@Id
@@ -28,33 +29,31 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "employee_id")
-	private Funcionario employee;
+	@JoinColumn(name = "funcionario_id")
+	private Funcionario funcionario;
 	
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "STATUS_REQUISICAO")
-	private ProductOrderStatus status;
+	private StatusRequisicao status;
 
-	@OneToMany(mappedBy = "productOrder")
-	private Set<ItemRequisicao> orderProducts = new HashSet<>();
+	@OneToMany(mappedBy = "requisicao")
+	private Set<ItemRequisicao> itensRequisicao = new HashSet<>();
 
 	public Requisicao() {
 	}
 
-	public Requisicao(Long id, Funcionario employee, Set<ItemRequisicao> orderProducts) {
+	public Requisicao(Long id, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao) {
 		this.id = id;
-		this.employee = employee;
-		orderProducts.forEach(orderItem -> this.orderProducts.add(new ItemRequisicao()));
+		this.funcionario = funcionario;
+		itemRequisicao.forEach(orderItem -> this.itensRequisicao.add(new ItemRequisicao()));
 	}
-	
-	
 
-	public Requisicao(Long id, Funcionario employee, ProductOrderStatus status, Set<ItemRequisicao> orderProducts) {
+	public Requisicao(Long id, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itemRequisicao) {
 		super();
 		this.id = id;
-		this.employee = employee;
+		this.funcionario = funcionario;
 		this.status = status;
-		this.orderProducts = orderProducts;
+		this.itensRequisicao = itemRequisicao;
 	}
 
 	public Long getId() {
@@ -64,28 +63,41 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public Funcionario getEmployee() {
-		return employee;
+
+	public Funcionario getFuncionario() {
+		return funcionario;
 	}
 
-	public void setEmployee(Funcionario employee) {
-		this.employee = employee;
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
-	
-	public ProductOrderStatus getStatus() {
+
+	public StatusRequisicao getStatus() {
 		return status;
 	}
 
-	public void setStatus(ProductOrderStatus status) {
+	public void setStatus(StatusRequisicao status) {
 		this.status = status;
 	}
 
-	public Set<ItemRequisicao> getOrderProducts() {
-		return orderProducts;
+	public Set<ItemRequisicao> getItensRequisicao() {
+		return itensRequisicao;
 	}
 
-	public void setOrderProducts(Set<ItemRequisicao> orderProducts) {
-		this.orderProducts = orderProducts;
+	public void setItensRequisicao(Set<ItemRequisicao> itensRequisicao) {
+		this.itensRequisicao = itensRequisicao;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Requisicao that)) return false;
+		if (!super.equals(o)) return false;
+		return Objects.equals(getId(), that.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), getId());
 	}
 }

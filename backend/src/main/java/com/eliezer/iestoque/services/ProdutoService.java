@@ -17,9 +17,9 @@ import com.eliezer.iestoque.dto.FornecedorDTO;
 import com.eliezer.iestoque.entities.Grupo;
 import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.entities.Fornecedor;
-import com.eliezer.iestoque.repositories.GroupRepository;
+import com.eliezer.iestoque.repositories.GrupoRepository;
 import com.eliezer.iestoque.repositories.ProdutoRepository;
-import com.eliezer.iestoque.repositories.SupplierRepository;
+import com.eliezer.iestoque.repositories.FornecedorRepository;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -33,10 +33,10 @@ public class ProdutoService {
 	private ProdutoRepository produtoRepository;
 
 	@Autowired
-	private SupplierRepository fornecedorRepository;
+	private FornecedorRepository fornecedorRepository;
 
 	@Autowired
-	private GroupRepository groupRepository;
+	private GrupoRepository groupRepository;
 
 	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findAll() {

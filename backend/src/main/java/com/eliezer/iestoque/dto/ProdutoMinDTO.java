@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.eliezer.iestoque.entities.Produto;
-import com.eliezer.iestoque.enums.ProductStatus;
+import com.eliezer.iestoque.enums.StatusProduto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +32,7 @@ public class ProdutoMinDTO extends RepresentationModel<ProdutoMinDTO> implements
 	private BigDecimal quantidade;
 	private BigDecimal preco;
 	private Instant dataDeCadastro;
-	private ProductStatus status;
+	private StatusProduto status;
 
 	public ProdutoMinDTO(Produto produto) {
 		BeanUtils.copyProperties(produto, this);

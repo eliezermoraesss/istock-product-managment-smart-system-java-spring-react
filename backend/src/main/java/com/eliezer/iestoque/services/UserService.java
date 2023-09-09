@@ -3,6 +3,7 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.eliezer.iestoque.dto.UserUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -66,7 +67,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO dto) {
+    public UserDTO update(Long id, UserUpdateDTO dto) {
         try {
             User entity = userRepository.getReferenceById(id);
             copyDtoToEntity(dto, entity);

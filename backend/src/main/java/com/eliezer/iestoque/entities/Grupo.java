@@ -12,7 +12,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_group")
+@Table(name = "tb_grupo")
 public class Grupo implements Serializable {
 
     public static final long serialVersionUID = 1L;
@@ -20,8 +20,8 @@ public class Grupo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer groupCode;
-    private String groupName;
+    private Integer codigo;
+    private String descricao;
     @OneToMany(mappedBy = "grupo")
     private List<Produto> produtos = new ArrayList<>();
 

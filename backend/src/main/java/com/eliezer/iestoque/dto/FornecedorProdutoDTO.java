@@ -1,6 +1,6 @@
 package com.eliezer.iestoque.dto;
 
-import com.eliezer.iestoque.projections.SupplierProductProjection;
+import com.eliezer.iestoque.projections.FornecedorProdutoProjection;
 import lombok.*;
 
 import java.io.Serial;
@@ -11,18 +11,18 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupplierProductDTO implements Serializable {
+public class FornecedorProdutoDTO implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private String razaoSocial;
-	private String productDescription;
+	private String descricaoDoProduto;
 
-	public SupplierProductDTO(SupplierProductProjection projection) {
+	public FornecedorProdutoDTO(FornecedorProdutoProjection projection) {
 		id = projection.getId();
 		razaoSocial = projection.getRazaoSocial();
-		productDescription = projection.getProductDescription();
+		descricaoDoProduto = projection.getDescricao();
 	}
 }

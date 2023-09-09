@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_unity")
+@Table(name = "tb_unidade")
 public class Unidade implements Serializable {
 
     @Serial
@@ -22,8 +22,8 @@ public class Unidade implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String unityCode;
-    private String unityDescription;
+    private String codigo;
+    private String description;
 
     @Override
     public boolean equals(Object o) {

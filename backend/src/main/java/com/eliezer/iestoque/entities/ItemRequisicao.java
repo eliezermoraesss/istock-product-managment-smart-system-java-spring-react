@@ -10,32 +10,32 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_order_item")
+@Table(name = "tb_item_requisicao")
 public class ItemRequisicao {
 
 	@EmbeddedId
 	private ItemRequisicaoPK id;
 
 	@ManyToOne
-	@MapsId("productOrder")
-	@JoinColumn(name = "product_order_id")
-	private Requisicao productOrder;
+	@MapsId("requisicao")
+	@JoinColumn(name = "requisicao_id")
+	private Requisicao requisicao;
 
 	@ManyToOne
-	@MapsId("productId")
-	@JoinColumn(name = "product_id")
-	private Produto product;
+	@MapsId("produto")
+	@JoinColumn(name = "produto_id")
+	private Produto produto;
 
-	private BigDecimal quantity;
+	private BigDecimal quantidade;
 
 	public ItemRequisicao() {
 	}
 
 	public ItemRequisicao(ItemRequisicaoPK id, Requisicao productOrder, Produto product, BigDecimal quantity) {
 		this.id = id;
-		this.productOrder = productOrder;
-		this.product = product;
-		this.quantity = quantity;
+		this.requisicao = productOrder;
+		this.produto = product;
+		this.quantidade = quantity;
 	}
 
 	public ItemRequisicaoPK getId() {
@@ -46,27 +46,27 @@ public class ItemRequisicao {
 		this.id = id;
 	}
 
-	public Requisicao getProductOrder() {
-		return productOrder;
+	public Requisicao getRequisicao() {
+		return requisicao;
 	}
 
-	public void setProductOrder(Requisicao productOrder) {
-		this.productOrder = productOrder;
+	public void setRequisicao(Requisicao requisicao) {
+		this.requisicao = requisicao;
 	}
 
-	public Produto getProduct() {
-		return product;
+	public Produto getProduto() {
+		return produto;
 	}
 
-	public void setProduct(Produto product) {
-		this.product = product;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 
-	public BigDecimal getQuantity() {
-		return quantity;
+	public BigDecimal getQuantidade() {
+		return quantidade;
 	}
 
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
+	public void setQuantidade(BigDecimal quantidade) {
+		this.quantidade = quantidade;
 	}
 }

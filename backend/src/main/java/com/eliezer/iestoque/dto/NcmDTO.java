@@ -13,17 +13,17 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class NcmDTO implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    private Long id;
-    private Integer posicao;
-    private String ncmCode;
-    private String ncmDescription;
+	private Long id;
+	private Integer posicao;
+	private String codigo;
+	private String descricao;
 
-    public NcmDTO(Ncm entity) {
-        this.id = entity.getId();
-        this.ncmCode = entity.getNcmCode();
-        this.ncmDescription = entity.getNcmDescription();
-    }
+	public NcmDTO(Ncm ncm) {
+		this.id = ncm.getId();
+		this.codigo = ncm.getCodigo();
+		this.descricao = ncm.getDescricao();
+	}
 }

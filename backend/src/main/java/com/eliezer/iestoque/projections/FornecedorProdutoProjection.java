@@ -1,9 +1,7 @@
 package com.eliezer.iestoque.projections;
 
-public interface SupplierProductProjection {
-
+public interface FornecedorProdutoProjection {
     Long getId();
     String getRazaoSocial();
-    String getProductDescription();
-
+    String getDescricao();
 }
