@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Tag(name = "Funcionario endpoint")
 @RestController
-@RequestMapping(value = "/funcionarios")
+@RequestMapping(value = "/fornecedores")
 public class FornecedorResource {
 
     @Autowired
@@ -44,7 +44,7 @@ public class FornecedorResource {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping("/product")
+    @GetMapping("/produtos")
     public ResponseEntity<List<FornecedorProdutoDTO>> findSupplierByProduct(
             @RequestParam(value = "productName", defaultValue = "") String productName) {
         List<FornecedorProdutoDTO> list = service.findSupplierByProduct(productName);

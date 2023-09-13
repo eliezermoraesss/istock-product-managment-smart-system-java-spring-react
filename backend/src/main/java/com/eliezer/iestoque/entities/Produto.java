@@ -61,7 +61,7 @@ public class Produto implements Serializable {
 	private StatusProduto status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "group_id")
+	@JoinColumn(name = "grupo_id")
 	private Grupo grupo;
 
 	private String codigoNcm;

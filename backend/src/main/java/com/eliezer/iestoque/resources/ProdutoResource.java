@@ -53,13 +53,13 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(produtos);
 	}
 
-	@GetMapping(value = "/description")
+	@GetMapping(value = "/descricao")
 	public ResponseEntity<List<ProdutoDTO>> findByDescricao(@RequestParam(value = "descricao", defaultValue = "") String descricao) {
 		List<ProdutoDTO> produtos = service.findByDescricao(descricao.trim());
 		return ResponseEntity.ok().body(produtos);
 	}
 	
-	@GetMapping(value = "/find")
+	@GetMapping(value = "/descricao-preco")
 	public ResponseEntity<List<ProdutoDTO>> findByDescricaoOrPreco(
 			@RequestParam(value = "descricao", defaultValue = "") String descricao,
 			@RequestParam(value = "preco", defaultValue = "0") BigDecimal preco) {
@@ -67,7 +67,7 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(produtosDto);
 	}
 
-	@GetMapping(value = "/{id}/suppliers")
+	@GetMapping(value = "/{id}/fornecedores")
 	public ResponseEntity<ProdutoDTO> findByIdWithSupplier(@PathVariable Long id) {
 		ProdutoDTO dto = service.findByIdWithSupplier(id);
 		return ResponseEntity.ok().body(dto);
