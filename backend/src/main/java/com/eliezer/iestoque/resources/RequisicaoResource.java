@@ -26,17 +26,17 @@ import com.eliezer.iestoque.services.RequisicaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "ProductOrderResource endpoint")
+@Tag(name = "Requisicao endpoint")
 @RestController
-@RequestMapping(value = "/product-order")
-public class ProductOrderResource {
+@RequestMapping(value = "/requisicoes")
+public class RequisicaoResource {
 
 	@Autowired
 	private RequisicaoService service;
 
 	@PostMapping(value = "/add")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Void> addToProductOrder(
+	public ResponseEntity<Void> addToRequisicao(
 			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId,
 			@RequestParam(value = "quant", defaultValue = "0") BigDecimal quantity) {
@@ -46,7 +46,7 @@ public class ProductOrderResource {
 
 	@DeleteMapping(value = "/remove")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Void> removeProductOrder(
+	public ResponseEntity<Void> removeRequisicao(
 			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId) {
 		service.removeRequisicao(productOrderId, productId);
@@ -56,19 +56,19 @@ public class ProductOrderResource {
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<Requisicao>> findAll() {
-		List<Requisicao> list = service.findAll();
-		for (Requisicao ProductOrder : list) {
-			Long id = ProductOrder.getId();
-			ProductOrder.add(linkTo(methodOn(ProductOrderResource.class).findById(id)).withSelfRel());
+		List<Requisicao> listaRequisicoes = service.findAll();
+		for (Requisicao Requisicao : listaRequisicoes) {
+			Long id = Requisicao.getId();
+			Requisicao.add(linkTo(methodOn(RequisicaoResource.class).findById(id)).withSelfRel());
 		}
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok().body(listaRequisicoes);
 	}
 
 	@GetMapping(value = "/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Requisicao> findById(@PathVariable Long id) {
 		Requisicao dto = service.findById(id);
-		dto.add(linkTo(methodOn(ProductOrderResource.class).findAll()).withRel("Lista de Produtos"));
+		dto.add(linkTo(methodOn(RequisicaoResource.class).findAll()).withRel("Lista de Produtos"));
 		return ResponseEntity.ok().body(dto);
 	}
 

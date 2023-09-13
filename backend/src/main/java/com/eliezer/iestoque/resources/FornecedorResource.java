@@ -24,10 +24,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Tag(name = "Supplier endpoint")
+@Tag(name = "Funcionario endpoint")
 @RestController
-@RequestMapping(value = "/suppliers")
-public class SupplierResource {
+@RequestMapping(value = "/funcionarios")
+public class FornecedorResource {
 
     @Autowired
     private FornecedorService service;
@@ -38,7 +38,7 @@ public class SupplierResource {
         
         for(FornecedorDTO supplierDTO : list) {
         	Long id = supplierDTO.getId();
-        	supplierDTO.add(linkTo(methodOn(SupplierResource.class).findById(id)).withSelfRel());      	
+        	supplierDTO.add(linkTo(methodOn(FornecedorResource.class).findById(id)).withSelfRel());      	
         }
         
         return ResponseEntity.ok().body(list);
@@ -54,7 +54,7 @@ public class SupplierResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<FornecedorDTO> findById(@PathVariable Long id) {
         FornecedorDTO dto = service.findById(id);    
-        dto.add(linkTo(methodOn(SupplierResource.class).findAll()).withRel("Lista de Fornecedores"));      
+        dto.add(linkTo(methodOn(FornecedorResource.class).findAll()).withRel("Lista de Fornecedores"));      
         return ResponseEntity.ok().body(dto);
     }
 

@@ -1,7 +1,7 @@
 package com.eliezer.iestoque.resources;
 
-import com.eliezer.iestoque.dto.DepartamentoDTO;
-import com.eliezer.iestoque.services.DepartamentoService;
+import com.eliezer.iestoque.dto.GrupoDTO;
+import com.eliezer.iestoque.services.GrupoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -12,34 +12,34 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Department endpoint")
+@Tag(name = "Grupo endpoint")
 @RestController
-@RequestMapping(value = "/departments")
-public class DepartmentResource {
+@RequestMapping(value = "/grupos")
+public class GrupoResource {
 
     @Autowired
-    private DepartamentoService service;
+    private GrupoService service;
 
     @GetMapping
-    public ResponseEntity<List<DepartamentoDTO>> findAll() {
-        List<DepartamentoDTO> list = service.findAll();
+    public ResponseEntity<List<GrupoDTO>> findAll() {
+        List<GrupoDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DepartamentoDTO> findById(@PathVariable Long id) {
-        DepartamentoDTO dto = service.findById(id);
+    public ResponseEntity<GrupoDTO> findById(@PathVariable Long id) {
+        GrupoDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<DepartamentoDTO> insert(@RequestBody DepartamentoDTO dto) {
+    public ResponseEntity<GrupoDTO> insert(@RequestBody GrupoDTO dto) {
         dto = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<DepartamentoDTO> update(@PathVariable Long id, @RequestBody DepartamentoDTO dto) {
+    public ResponseEntity<GrupoDTO> update(@PathVariable Long id, @RequestBody GrupoDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
