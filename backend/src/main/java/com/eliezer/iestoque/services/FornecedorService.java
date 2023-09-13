@@ -17,7 +17,6 @@ import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.projections.FornecedorProdutoProjection;
 import com.eliezer.iestoque.repositories.EnderecoRepository;
 import com.eliezer.iestoque.repositories.FornecedorRepository;
-import com.eliezer.iestoque.resources.EnderecoResource;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,7 +24,7 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class FornecedorService {
 
-    public static final String MSG_NOT_FOUND = "ID do Fornecedor não encontrado: ";
+    public static final String MSG_NOT_FOUND = "Fornecedor Id not found: ";
 
     @Autowired
     private FornecedorRepository fornecedorRepository;

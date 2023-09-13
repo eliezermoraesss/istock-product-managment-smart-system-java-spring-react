@@ -1,7 +1,7 @@
 package com.eliezer.iestoque.resources;
 
 import com.eliezer.iestoque.dto.DepartamentoDTO;
-import com.eliezer.iestoque.services.DepartmentService;
+import com.eliezer.iestoque.services.DepartamentoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class DepartmentResource {
 
     @Autowired
-    private DepartmentService service;
+    private DepartamentoService service;
 
     @GetMapping
     public ResponseEntity<List<DepartamentoDTO>> findAll() {

@@ -21,36 +21,36 @@ public class NcmService {
     public static final String MSG_NOT_FOUND = "Ncm Id not found: ";
 
     @Autowired
-    public NcmRepository repository;
+    public NcmRepository ncmRepository;
 
     @Transactional
     public List<NcmDTO> findAll() {
-        List<Ncm> Ncms = repository.findAll();
-        return Ncms.stream().map(x -> new NcmDTO(x)).toList();
+        List<Ncm> ncms = ncmRepository.findAll();
+        return ncms.stream().map(x -> new NcmDTO(x)).toList();
     }
 
     @Transactional
     public NcmDTO findById(Long id) {
-        Optional<Ncm> obj = repository.findById(id);
-        Ncm entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new NcmDTO(entity);
+        Optional<Ncm> ncmOptional = ncmRepository.findById(id);
+        Ncm ncm = ncmOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new NcmDTO(ncm);
     }
 
     @Transactional
     public NcmDTO insert(NcmDTO dto) {
-        Ncm entity = new Ncm();
-        BeanUtils.copyProperties(dto, entity);
-        entity = repository.save(entity);
-        return new NcmDTO(entity);
+        Ncm ncm = new Ncm();
+        BeanUtils.copyProperties(dto, ncm);
+        ncm = ncmRepository.save(ncm);
+        return new NcmDTO(ncm);
     }
 
     @Transactional
     public NcmDTO update(Long id, NcmDTO dto) {
         try {
-            Ncm entity = repository.getReferenceById(id);
-            BeanUtils.copyProperties(dto, entity, "id");
-            entity = repository.save(entity);
-            return new NcmDTO(entity);
+            Ncm ncm = ncmRepository.getReferenceById(id);
+            BeanUtils.copyProperties(dto, ncm, "id");
+            ncm = ncmRepository.save(ncm);
+            return new NcmDTO(ncm);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
@@ -58,7 +58,7 @@ public class NcmService {
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            ncmRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
         } catch (DataIntegrityViolationException e) {

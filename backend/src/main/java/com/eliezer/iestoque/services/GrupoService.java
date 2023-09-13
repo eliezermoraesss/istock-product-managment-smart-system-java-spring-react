@@ -16,41 +16,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GroupService {
+public class GrupoService {
 
-    public static final String MSG_NOT_FOUND = "Group Id not found: ";
+    public static final String MSG_NOT_FOUND = "Grupo Id not found: ";
 
     @Autowired
-    public GrupoRepository repository;
+    public GrupoRepository grupoRepository;
 
     @Transactional
     public List<GrupoDTO> findAll() {
-        List<Grupo> Groups = repository.findAll();
-        return Groups.stream().map(x -> new GrupoDTO(x)).toList();
+        List<Grupo> grupos = grupoRepository.findAll();
+        return grupos.stream().map(x -> new GrupoDTO(x)).toList();
     }
 
     @Transactional
     public GrupoDTO findById(Long id) {
-        Optional<Grupo> obj = repository.findById(id);
-        Grupo entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new GrupoDTO(entity);
+        Optional<Grupo> grupoOptional = grupoRepository.findById(id);
+        Grupo grupo = grupoOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new GrupoDTO(grupo);
     }
 
     @Transactional
     public GrupoDTO insert(GrupoDTO dto) {
-        Grupo entity = new Grupo();
-        BeanUtils.copyProperties(dto, entity);
-        entity = repository.save(entity);
-        return new GrupoDTO(entity);
+        Grupo grupo = new Grupo();
+        BeanUtils.copyProperties(dto, grupo);
+        grupo = grupoRepository.save(grupo);
+        return new GrupoDTO(grupo);
     }
 
     @Transactional
     public GrupoDTO update(Long id, GrupoDTO dto) {
         try {
-            Grupo entity = repository.getReferenceById(id);
-            BeanUtils.copyProperties(dto, entity, "id");
-            entity = repository.save(entity);
-            return new GrupoDTO(entity);
+            Grupo grupo = grupoRepository.getReferenceById(id);
+            BeanUtils.copyProperties(dto, grupo, "id");
+            grupo = grupoRepository.save(grupo);
+            return new GrupoDTO(grupo);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
@@ -58,7 +58,7 @@ public class GroupService {
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            grupoRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
         } catch (DataIntegrityViolationException e) {

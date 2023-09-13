@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.iestoque.entities.Requisicao;
-import com.eliezer.iestoque.services.ProductOrderService;
+import com.eliezer.iestoque.services.RequisicaoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -32,7 +32,7 @@ import jakarta.validation.Valid;
 public class ProductOrderResource {
 
 	@Autowired
-	private ProductOrderService service;
+	private RequisicaoService service;
 
 	@PostMapping(value = "/add")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
@@ -40,7 +40,7 @@ public class ProductOrderResource {
 			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId,
 			@RequestParam(value = "quant", defaultValue = "0") BigDecimal quantity) {
-		service.addToProductOrder(productOrderId, productId, quantity);
+		service.addToRequisicao(productOrderId, productId, quantity);
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 
@@ -49,7 +49,7 @@ public class ProductOrderResource {
 	public ResponseEntity<Void> removeProductOrder(
 			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
 			@RequestParam(value = "prod", defaultValue = "0") Long productId) {
-		service.removeProductOrder(productOrderId, productId);
+		service.removeRequisicao(productOrderId, productId);
 		return ResponseEntity.noContent().build();
 	}
 

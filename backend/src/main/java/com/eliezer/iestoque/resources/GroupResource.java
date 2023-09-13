@@ -1,7 +1,7 @@
 package com.eliezer.iestoque.resources;
 
 import com.eliezer.iestoque.dto.GrupoDTO;
-import com.eliezer.iestoque.services.GroupService;
+import com.eliezer.iestoque.services.GrupoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class GroupResource {
 
     @Autowired
-    private GroupService service;
+    private GrupoService service;
 
     @GetMapping
     public ResponseEntity<List<GrupoDTO>> findAll() {

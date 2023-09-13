@@ -16,42 +16,42 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DepartmentService {
+public class DepartamentoService {
 
-    public static final String MSG_NOT_FOUND = "Department Id not found: ";
+    public static final String MSG_NOT_FOUND = "Departamento Id not found: ";
 
     @Autowired
-    public DepartamentoRepository repository;
+    public DepartamentoRepository departamentoRepository;
 
     @Transactional
     public List<DepartamentoDTO> findAll() {
-        List<Departamento> departments = repository.findAll();
-        return departments.stream().map(x -> new DepartamentoDTO(x)).toList();
+        List<Departamento> departamentos = departamentoRepository.findAll();
+        return departamentos.stream().map(x -> new DepartamentoDTO(x)).toList();
     }
 
     @Transactional
 
     public DepartamentoDTO findById(Long id) {
-        Optional<Departamento> obj = repository.findById(id);
-        Departamento entity = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-        return new DepartamentoDTO(entity);
+        Optional<Departamento> obj = departamentoRepository.findById(id);
+        Departamento departamento = obj.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+        return new DepartamentoDTO(departamento);
     }
 
     @Transactional
     public DepartamentoDTO insert(DepartamentoDTO dto) {
-        Departamento entity = new Departamento();
-        BeanUtils.copyProperties(dto, entity);
-        entity = repository.save(entity);
-        return new DepartamentoDTO(entity);
+        Departamento departamento = new Departamento();
+        BeanUtils.copyProperties(dto, departamento);
+        departamento = departamentoRepository.save(departamento);
+        return new DepartamentoDTO(departamento);
     }
 
     @Transactional
     public DepartamentoDTO update(Long id, DepartamentoDTO dto) {
         try {
-            Departamento entity = repository.getReferenceById(id);
-            BeanUtils.copyProperties(dto, entity, "id");
-            entity = repository.save(entity);
-            return new DepartamentoDTO(entity);
+            Departamento departamento = departamentoRepository.getReferenceById(id);
+            BeanUtils.copyProperties(dto, departamento, "id");
+            departamento = departamentoRepository.save(departamento);
+            return new DepartamentoDTO(departamento);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
         }
@@ -59,7 +59,7 @@ public class DepartmentService {
 
     public void delete(Long id) {
         try {
-            repository.deleteById(id);
+            departamentoRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
         } catch (DataIntegrityViolationException e) {

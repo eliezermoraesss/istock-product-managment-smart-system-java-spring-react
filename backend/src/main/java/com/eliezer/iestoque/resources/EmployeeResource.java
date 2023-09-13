@@ -1,7 +1,7 @@
 package com.eliezer.iestoque.resources;
 
 import com.eliezer.iestoque.dto.FuncionarioDTO;
-import com.eliezer.iestoque.services.EmployeeService;
+import com.eliezer.iestoque.services.FuncionarioService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class EmployeeResource {
 
     @Autowired
-    private EmployeeService service;
+    private FuncionarioService service;
 
     @GetMapping
     public ResponseEntity<List<FuncionarioDTO>> findAll() {
