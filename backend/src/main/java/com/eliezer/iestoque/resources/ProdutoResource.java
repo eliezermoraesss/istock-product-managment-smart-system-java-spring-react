@@ -59,7 +59,7 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(produtos);
 	}
 	
-	@GetMapping(value = "/descricao-preco")
+	@GetMapping(value = "/localizar")
 	public ResponseEntity<List<ProdutoDTO>> findByDescricaoOrPreco(
 			@RequestParam(value = "descricao", defaultValue = "") String descricao,
 			@RequestParam(value = "preco", defaultValue = "0") BigDecimal preco) {

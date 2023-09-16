@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eliezer.iestoque.dto.RequisicaoDTO;
 import com.eliezer.iestoque.entities.Requisicao;
 import com.eliezer.iestoque.services.RequisicaoService;
 
@@ -34,22 +35,22 @@ public class RequisicaoResource {
 	@Autowired
 	private RequisicaoService service;
 
-	@PostMapping(value = "/add")
+	@PostMapping(value = "/adicionar")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Void> addToRequisicao(
-			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
-			@RequestParam(value = "prod", defaultValue = "0") Long productId,
-			@RequestParam(value = "quant", defaultValue = "0") BigDecimal quantity) {
-		service.addToRequisicao(productOrderId, productId, quantity);
+	public ResponseEntity<Void> adicionarItemNaRequisicao(
+			@RequestParam(value = "requisicao", defaultValue = "0") Long requisicaoId,
+			@RequestParam(value = "produto", defaultValue = "0") Long produtoId,
+			@RequestParam(value = "quantidade", defaultValue = "0") BigDecimal quantidade) {
+		service.adicionarItemNaRequisicao(requisicaoId, produtoId, quantidade);
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 
-	@DeleteMapping(value = "/remove")
+	@DeleteMapping(value = "/remover")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Void> removeRequisicao(
-			@RequestParam(value = "order", defaultValue = "0") Long productOrderId,
-			@RequestParam(value = "prod", defaultValue = "0") Long productId) {
-		service.removeRequisicao(productOrderId, productId);
+	public ResponseEntity<Void> removerItemDaRequisicao(
+			@RequestParam(value = "requisicao", defaultValue = "0") Long requisicaoId,
+			@RequestParam(value = "produto", defaultValue = "0") Long produtoId) {
+		service.removerItemDaRequisicao(requisicaoId, produtoId);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -74,7 +75,7 @@ public class RequisicaoResource {
 
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Requisicao> insert(@Valid @RequestBody Requisicao dto) {
+	public ResponseEntity<RequisicaoDTO> insert(@Valid @RequestBody RequisicaoDTO dto) {
 		dto = service.insert(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	}

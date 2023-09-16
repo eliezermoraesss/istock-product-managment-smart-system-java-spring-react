@@ -11,12 +11,16 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eliezer.iestoque.dto.FuncionarioDTO;
 import com.eliezer.iestoque.dto.ProdutoMinDTO;
+import com.eliezer.iestoque.dto.RequisicaoDTO;
+import com.eliezer.iestoque.entities.Funcionario;
 import com.eliezer.iestoque.entities.ItemRequisicao;
 import com.eliezer.iestoque.entities.ItemRequisicaoPK;
 import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.entities.Requisicao;
 import com.eliezer.iestoque.enums.StatusRequisicao;
+import com.eliezer.iestoque.repositories.FuncionarioRepository;
 import com.eliezer.iestoque.repositories.ItemRequisicaoRepository;
 import com.eliezer.iestoque.repositories.RequisicaoRepository;
 import com.eliezer.iestoque.services.exceptions.BusinessException;
@@ -29,6 +33,7 @@ public class RequisicaoService {
 
 	public static final String MSG_NOT_FOUND = "Requisicao not found: ";
 	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
+	public static final String MSG_NOT_FOUND_EMPLOYEE = "Funcionario not found: ";
 	public static final String MSG_SUCCESS = "";
 	public static final String MSG_CANCEL = "";
 
@@ -40,13 +45,16 @@ public class RequisicaoService {
 
 	@Autowired
 	private ItemRequisicaoRepository itemRequisicaoRepository;
+	
+	@Autowired
+	private FuncionarioRepository funcionarioRepository;
 
 	@Transactional
 	public String updateProductQuantity(Long requisicaoId, StatusRequisicao  status) {
-		if (status == StatusRequisicao.EFETIVADA) {		
+		if (status == StatusRequisicao.FINALIZADO) {		
 			Requisicao requisicao = findById(requisicaoId);			
 			return "Requisição finalizada com sucesso!";
-		} else if (status == StatusRequisicao.CANCELADA) {
+		} else if (status == StatusRequisicao.CANCELADO) {
 			Requisicao requisicao = findById(requisicaoId);			
 			return "Requisição cancelada com sucesso!";
 		} else {
@@ -55,7 +63,7 @@ public class RequisicaoService {
 	}
 
 	@Transactional
-	public void addToRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
+	public void adicionarItemNaRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
 		Requisicao requisicao = findById(requisicaoId);
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
 		Produto produto = new Produto();
@@ -69,7 +77,7 @@ public class RequisicaoService {
 	}
 
 	@Transactional
-	public void removeRequisicao(Long requisicaoId, Long produtoId) {
+	public void removerItemDaRequisicao(Long requisicaoId, Long produtoId) {
 		Requisicao requisicao = findById(requisicaoId);
 		produtoService.findById(produtoId);
 
@@ -96,8 +104,13 @@ public class RequisicaoService {
 	}
 
 	@Transactional
-	public Requisicao insert(Requisicao requisicao) {
-		return requisicaoRepository.save(requisicao);
+	public RequisicaoDTO insert(RequisicaoDTO dto) {
+		Requisicao requisicao = new Requisicao();
+		Funcionario funcionario = funcionarioRepository.findById(dto.getFuncionario().getId()).orElseThrow(() -> 
+		new ResourceNotFoundException(MSG_NOT_FOUND_EMPLOYEE));
+		requisicao.setFuncionario(funcionario);
+		requisicao = requisicaoRepository.save(requisicao);
+		return new RequisicaoDTO(requisicao);
 	}
 
 	@Transactional
