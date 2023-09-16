@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eliezer.iestoque.dto.FuncionarioDTO;
 import com.eliezer.iestoque.dto.ProdutoMinDTO;
 import com.eliezer.iestoque.dto.RequisicaoDTO;
 import com.eliezer.iestoque.entities.Funcionario;
@@ -22,6 +21,7 @@ import com.eliezer.iestoque.entities.Requisicao;
 import com.eliezer.iestoque.enums.StatusRequisicao;
 import com.eliezer.iestoque.repositories.FuncionarioRepository;
 import com.eliezer.iestoque.repositories.ItemRequisicaoRepository;
+import com.eliezer.iestoque.repositories.ProdutoRepository;
 import com.eliezer.iestoque.repositories.RequisicaoRepository;
 import com.eliezer.iestoque.services.exceptions.BusinessException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
@@ -34,28 +34,56 @@ public class RequisicaoService {
 	public static final String MSG_NOT_FOUND = "Requisicao not found: ";
 	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
 	public static final String MSG_NOT_FOUND_EMPLOYEE = "Funcionario not found: ";
+	public static final String INSUFFICIENT_STOCK_MESSAGE = "O estoque deste produto não é suficiente para atender à quantidade requisitada!";
 	public static final String MSG_SUCCESS = "";
 	public static final String MSG_CANCEL = "";
 
+	
 	@Autowired
 	private ProdutoService produtoService;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
 
 	@Autowired
 	private RequisicaoRepository requisicaoRepository;
 
 	@Autowired
 	private ItemRequisicaoRepository itemRequisicaoRepository;
-	
+
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
 
+	@SuppressWarnings("unused")
 	@Transactional
-	public String updateProductQuantity(Long requisicaoId, StatusRequisicao  status) {
-		if (status == StatusRequisicao.FINALIZADO) {		
-			Requisicao requisicao = findById(requisicaoId);			
+	public String fecharRequisicao(Long requisicaoId, StatusRequisicao status) {
+		if (status == StatusRequisicao.FINALIZADO) {
+			Requisicao requisicao = findById(requisicaoId);
+			requisicao.setStatus(StatusRequisicao.FINALIZADO);
+
+			List<ItemRequisicao> itensRequisicao = itemRequisicaoRepository.findAll();
+
+			for (ItemRequisicao item : itensRequisicao) {
+				if (item.getId().getRequisicaoId().equals(requisicaoId)) {
+					Produto produto = produtoRepository.findById(item.getProduto().getId())
+							.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+					BigDecimal quantidadeEstoque = produto.getQuantidade();
+					BigDecimal quantidadeRequisitada = item.getQuantidade();
+
+					if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
+						BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque
+								.subtract(quantidadeRequisitada);
+						produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
+						produtoRepository.save(produto);
+					} else {
+						throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
+					}
+				}
+			}
+
 			return "Requisição finalizada com sucesso!";
 		} else if (status == StatusRequisicao.CANCELADO) {
-			Requisicao requisicao = findById(requisicaoId);			
+			Requisicao requisicao = findById(requisicaoId);
 			return "Requisição cancelada com sucesso!";
 		} else {
 			throw new BusinessException(MSG_NOT_FOUND);
@@ -66,7 +94,21 @@ public class RequisicaoService {
 	public void adicionarItemNaRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
 		Requisicao requisicao = findById(requisicaoId);
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
-		Produto produto = new Produto();
+		
+		Produto produto = produtoRepository.findById(produtoId)
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+		BigDecimal quantidadeEstoque = produtoMinDTO.getQuantidade();
+		BigDecimal quantidadeRequisitada = quantidade;
+		
+		if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
+			BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque
+					.subtract(quantidadeRequisitada);
+			produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
+			produtoRepository.save(produto);
+		} else {
+			throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
+		}
+		
 		BeanUtils.copyProperties(produtoMinDTO, produto);
 
 		ItemRequisicaoPK requisicaoItemPK = new ItemRequisicaoPK(requisicaoId, produtoId);
@@ -93,7 +135,8 @@ public class RequisicaoService {
 	@Transactional(readOnly = true)
 	public List<Requisicao> findAll() {
 		List<Requisicao> requisicaos = requisicaoRepository.findAll();
-		return requisicaos.stream().map(x -> new Requisicao(x.getId(), x.getFuncionario(), x.getItensRequisicao())).toList();
+		return requisicaos.stream().map(x -> new Requisicao(x.getId(), x.getFuncionario(), x.getItensRequisicao()))
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
@@ -106,9 +149,10 @@ public class RequisicaoService {
 	@Transactional
 	public RequisicaoDTO insert(RequisicaoDTO dto) {
 		Requisicao requisicao = new Requisicao();
-		Funcionario funcionario = funcionarioRepository.findById(dto.getFuncionario().getId()).orElseThrow(() -> 
-		new ResourceNotFoundException(MSG_NOT_FOUND_EMPLOYEE));
+		Funcionario funcionario = funcionarioRepository.findById(dto.getFuncionario().getId())
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_EMPLOYEE));
 		requisicao.setFuncionario(funcionario);
+		requisicao.setStatus(dto.getStatus());
 		requisicao = requisicaoRepository.save(requisicao);
 		return new RequisicaoDTO(requisicao);
 	}

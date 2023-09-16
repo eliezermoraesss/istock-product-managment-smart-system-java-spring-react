@@ -21,6 +21,9 @@ public class ItemRequisicaoPK {
 		this.requisicaoId = requisicaoId;
 		this.produtoId = produtoId;
 	}
+	public ItemRequisicaoPK(Long requisicaoId) {
+		this.requisicaoId = requisicaoId;
+	}
 
 	public Long getRequisicaoId() {
 		return requisicaoId;

@@ -70,6 +70,7 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 
 	public ProdutoDTO(Produto produto) {
 		BeanUtils.copyProperties(produto, this);
+		quantidade = produto.getQuantidade();
 		grupo = new GrupoDTO(produto.getGrupo());
 	}
 

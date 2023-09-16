@@ -36,5 +36,6 @@ public class ProdutoMinDTO extends RepresentationModel<ProdutoMinDTO> implements
 
 	public ProdutoMinDTO(Produto produto) {
 		BeanUtils.copyProperties(produto, this);
+		this.quantidade = produto.getQuantidade();
 	}
 }

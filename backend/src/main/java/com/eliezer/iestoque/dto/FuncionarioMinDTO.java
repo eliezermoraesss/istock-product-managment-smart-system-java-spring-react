@@ -21,7 +21,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FuncionarioDTO implements Serializable {
+public class FuncionarioMinDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -34,18 +34,10 @@ public class FuncionarioDTO implements Serializable {
     private String nome;
     private DepartamentoMinDTO departamento;
     private UserDTO usuario;
-    private Set<RequisicaoDTO> requisicoes;
 
-    public FuncionarioDTO(Funcionario funcionario) {
+    public FuncionarioMinDTO(Funcionario funcionario) {
         BeanUtils.copyProperties(funcionario, this);
         departamento = new DepartamentoMinDTO(funcionario.getDepartamento());
         usuario = new UserDTO(funcionario.getUsuario());
-    }
-    
-    public FuncionarioDTO(Funcionario funcionario, Set<Requisicao> requisicoes) {
-        BeanUtils.copyProperties(funcionario, this);
-        departamento = new DepartamentoMinDTO(funcionario.getDepartamento());
-        usuario = new UserDTO(funcionario.getUsuario());
-        requisicoes.forEach(requisicao -> this.requisicoes.add(new RequisicaoDTO(requisicao)));
     }
 }

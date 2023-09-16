@@ -7,6 +7,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Getter
 @Setter
 @Builder
@@ -33,6 +35,7 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User usuario;
     
+    @JsonBackReference
     @OneToOne(mappedBy = "funcionario")
     private Requisicao requisicao;
 

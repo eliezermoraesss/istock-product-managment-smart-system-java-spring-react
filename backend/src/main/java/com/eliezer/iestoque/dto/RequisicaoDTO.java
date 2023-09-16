@@ -10,20 +10,20 @@ import com.eliezer.iestoque.enums.StatusRequisicao;
 public class RequisicaoDTO {
 	
 	private Long id;
-	private FuncionarioDTO funcionario;
+	private FuncionarioMinDTO funcionario;
 	private StatusRequisicao status;
 	private Set<ItemRequisicaoDTO> itensRequisicao = new HashSet<>();
 	
 	public RequisicaoDTO() {
 	}
 	
-	public RequisicaoDTO(Long id, FuncionarioDTO funcionario, Set<ItemRequisicao> itensRequisicao) {
+	public RequisicaoDTO(Long id, FuncionarioMinDTO funcionario, Set<ItemRequisicao> itensRequisicao) {
 		this.id = id;
 		this.funcionario = funcionario;
 		itensRequisicao.forEach(or -> this.itensRequisicao.add(new ItemRequisicaoDTO(or)));
 	}
 
-	public RequisicaoDTO(Long id, FuncionarioDTO funcionario, StatusRequisicao status, Set<ItemRequisicao> itensRequisicao) {
+	public RequisicaoDTO(Long id, FuncionarioMinDTO funcionario, StatusRequisicao status, Set<ItemRequisicao> itensRequisicao) {
 		this.id = id;
 		this.funcionario = funcionario;
 		this.status = status;
@@ -32,12 +32,13 @@ public class RequisicaoDTO {
 
 	public RequisicaoDTO(Requisicao requisicao) {
 		id = requisicao.getId();
-		funcionario = new FuncionarioDTO(requisicao.getFuncionario());	
+		funcionario = new FuncionarioMinDTO(requisicao.getFuncionario());	
+		status = requisicao.getStatus();
 	}
 	
 	public RequisicaoDTO(Requisicao requisicao, Set<ItemRequisicao> items) {
 		id = requisicao.getId();
-		funcionario = new FuncionarioDTO(requisicao.getFuncionario());
+		funcionario = new FuncionarioMinDTO(requisicao.getFuncionario());
 		items.forEach(item -> this.itensRequisicao.add(new ItemRequisicaoDTO(item)));
 	}
 
@@ -49,11 +50,11 @@ public class RequisicaoDTO {
 		this.id = id;
 	}
 
-	public FuncionarioDTO getFuncionario() {
+	public FuncionarioMinDTO getFuncionario() {
 		return funcionario;
 	}
 
-	public void setFuncionario(FuncionarioDTO funcionario) {
+	public void setFuncionario(FuncionarioMinDTO funcionario) {
 		this.funcionario = funcionario;
 	}
 
