@@ -94,21 +94,7 @@ public class RequisicaoService {
 	public void adicionarItemNaRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
 		Requisicao requisicao = findById(requisicaoId);
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
-		
-		Produto produto = produtoRepository.findById(produtoId)
-				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
-		BigDecimal quantidadeEstoque = produtoMinDTO.getQuantidade();
-		BigDecimal quantidadeRequisitada = quantidade;
-		
-		if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
-			BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque
-					.subtract(quantidadeRequisitada);
-			produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
-			produtoRepository.save(produto);
-		} else {
-			throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
-		}
-		
+		Produto produto = new Produto();
 		BeanUtils.copyProperties(produtoMinDTO, produto);
 
 		ItemRequisicaoPK requisicaoItemPK = new ItemRequisicaoPK(requisicaoId, produtoId);
