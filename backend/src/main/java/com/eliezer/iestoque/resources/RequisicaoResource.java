@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.iestoque.dto.RequisicaoDTO;
 import com.eliezer.iestoque.entities.Requisicao;
+import com.eliezer.iestoque.enums.StatusRequisicao;
 import com.eliezer.iestoque.services.RequisicaoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +36,12 @@ public class RequisicaoResource {
 
 	@Autowired
 	private RequisicaoService service;
+	
+	@PatchMapping(value = "/{id}/{status}")
+	public ResponseEntity<String> fecharRequisicao(@PathVariable Long id, @PathVariable String status) {		
+		String mensagemFechamentoRequisicao = service.fecharRequisicao(id, status);
+		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
+	}
 
 	@PostMapping(value = "/adicionar")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")

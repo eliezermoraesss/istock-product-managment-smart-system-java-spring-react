@@ -35,13 +35,10 @@ public class RequisicaoService {
 	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
 	public static final String MSG_NOT_FOUND_EMPLOYEE = "Funcionario not found: ";
 	public static final String INSUFFICIENT_STOCK_MESSAGE = "O estoque deste produto não é suficiente para atender à quantidade requisitada!";
-	public static final String MSG_SUCCESS = "";
-	public static final String MSG_CANCEL = "";
 
-	
 	@Autowired
 	private ProdutoService produtoService;
-	
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
@@ -56,8 +53,8 @@ public class RequisicaoService {
 
 	@SuppressWarnings("unused")
 	@Transactional
-	public String fecharRequisicao(Long requisicaoId, StatusRequisicao status) {
-		if (status == StatusRequisicao.FINALIZADO) {
+	public String fecharRequisicao(Long requisicaoId, String status) {
+		if (StatusRequisicao.valueOf(status.toUpperCase()) == StatusRequisicao.FINALIZADO) {
 			Requisicao requisicao = findById(requisicaoId);
 			requisicao.setStatus(StatusRequisicao.FINALIZADO);
 
@@ -82,9 +79,15 @@ public class RequisicaoService {
 			}
 
 			return "Requisição finalizada com sucesso!";
-		} else if (status == StatusRequisicao.CANCELADO) {
+
+		} else if (StatusRequisicao.valueOf(status.toUpperCase()) == StatusRequisicao.CANCELADO) {
 			Requisicao requisicao = findById(requisicaoId);
-			return "Requisição cancelada com sucesso!";
+			if (requisicao.getStatus().equals(StatusRequisicao.FINALIZADO)) {
+				return "Não é possível cancelar uma Requisição que já está FINALIZADA!";
+			} else {
+				requisicao.setStatus(StatusRequisicao.CANCELADO);
+				return "Requisição cancelada com sucesso!";
+			}
 		} else {
 			throw new BusinessException(MSG_NOT_FOUND);
 		}
