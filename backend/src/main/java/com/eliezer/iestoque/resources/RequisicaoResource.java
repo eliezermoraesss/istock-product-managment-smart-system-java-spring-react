@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.iestoque.dto.RequisicaoDTO;
 import com.eliezer.iestoque.entities.Requisicao;
-import com.eliezer.iestoque.enums.StatusRequisicao;
 import com.eliezer.iestoque.services.RequisicaoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,9 +36,15 @@ public class RequisicaoResource {
 	@Autowired
 	private RequisicaoService service;
 	
-	@PatchMapping(value = "/{id}/{status}")
-	public ResponseEntity<String> fecharRequisicao(@PathVariable Long id, @PathVariable String status) {		
-		String mensagemFechamentoRequisicao = service.fecharRequisicao(id, status);
+	@PatchMapping(value = "/{id}/finalizar")
+	public ResponseEntity<String> finalizarRequisicao(@PathVariable Long id) {		
+		String mensagemFechamentoRequisicao = service.finalizarRequisicao(id);
+		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
+	}
+	
+	@PatchMapping(value = "/{id}/cancelar")
+	public ResponseEntity<String> cancelarRequisicao(@PathVariable Long id) {		
+		String mensagemFechamentoRequisicao = service.cancelarRequisicao(id);
 		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
 	}
 

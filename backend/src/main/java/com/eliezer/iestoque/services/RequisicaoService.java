@@ -51,45 +51,67 @@ public class RequisicaoService {
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
 
-	@SuppressWarnings("unused")
 	@Transactional
-	public String fecharRequisicao(Long requisicaoId, String status) {
-		if (StatusRequisicao.valueOf(status.toUpperCase()) == StatusRequisicao.FINALIZADO) {
-			Requisicao requisicao = findById(requisicaoId);
+	public String finalizarRequisicao(Long requisicaoId) {
+
+		Requisicao requisicao = findById(requisicaoId);
+
+		if (requisicao.getStatus().equals(StatusRequisicao.ABERTO)) {
 			requisicao.setStatus(StatusRequisicao.FINALIZADO);
+			subtrairProdutoDoEstoque(requisicaoId);
+			return "Requisição finalizada com sucesso!";
+		} else {
+			return "Requisição não pode ser finalizada. STATUS = " + requisicao.getStatus();
+		}
+	}
 
-			List<ItemRequisicao> itensRequisicao = itemRequisicaoRepository.findAll();
+	@Transactional
+	public String cancelarRequisicao(Long requisicaoId) {
+		Requisicao requisicao = findById(requisicaoId);
+		if (requisicao.getStatus().equals(StatusRequisicao.FINALIZADO)) {
+			requisicao.setStatus(StatusRequisicao.CANCELADO);
+			estornarProdutoParaEstoque(requisicaoId);
+			return "Requisição cancelada com sucesso e produtos devolvidos ao estoque!";
+		} else {
+			return "Requisição não pode ser finalizada. STATUS = " + requisicao.getStatus();
+		}
+	}
 
-			for (ItemRequisicao item : itensRequisicao) {
-				if (item.getId().getRequisicaoId().equals(requisicaoId)) {
-					Produto produto = produtoRepository.findById(item.getProduto().getId())
-							.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
-					BigDecimal quantidadeEstoque = produto.getQuantidade();
-					BigDecimal quantidadeRequisitada = item.getQuantidade();
+	@Transactional
+	public void subtrairProdutoDoEstoque(Long requisicaoId) {
+		List<ItemRequisicao> itensRequisicao = itemRequisicaoRepository.findAll();
+		for (ItemRequisicao item : itensRequisicao) {
+			if (item.getId().getRequisicaoId().equals(requisicaoId)) {
+				Produto produto = produtoRepository.findById(item.getProduto().getId())
+						.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+				BigDecimal quantidadeEstoque = produto.getQuantidade();
+				BigDecimal quantidadeRequisitada = item.getQuantidade();
 
-					if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
-						BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque
-								.subtract(quantidadeRequisitada);
-						produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
-						produtoRepository.save(produto);
-					} else {
-						throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
-					}
+				if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
+					BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque.subtract(quantidadeRequisitada);
+					produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
+					produtoRepository.save(produto);
+				} else {
+					throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
 				}
 			}
+		}
+	}
 
-			return "Requisição finalizada com sucesso!";
+	@Transactional
+	public void estornarProdutoParaEstoque(Long requisicaoId) {
+		List<ItemRequisicao> itensRequisicao = itemRequisicaoRepository.findAll();
+		for (ItemRequisicao item : itensRequisicao) {
+			if (item.getId().getRequisicaoId().equals(requisicaoId)) {
+				Produto produto = produtoRepository.findById(item.getProduto().getId())
+						.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
+				BigDecimal quantidadeEstoque = produto.getQuantidade();
+				BigDecimal quantidadeRequisitada = item.getQuantidade();
 
-		} else if (StatusRequisicao.valueOf(status.toUpperCase()) == StatusRequisicao.CANCELADO) {
-			Requisicao requisicao = findById(requisicaoId);
-			if (requisicao.getStatus().equals(StatusRequisicao.FINALIZADO)) {
-				return "Não é possível cancelar uma Requisição que já está FINALIZADA!";
-			} else {
-				requisicao.setStatus(StatusRequisicao.CANCELADO);
-				return "Requisição cancelada com sucesso!";
+				BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque.add(quantidadeRequisitada);
+				produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
+				produtoRepository.save(produto);
 			}
-		} else {
-			throw new BusinessException(MSG_NOT_FOUND);
 		}
 	}
 
