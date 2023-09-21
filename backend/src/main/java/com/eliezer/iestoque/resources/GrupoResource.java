@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Grupo endpoint")
+@Tag(name = "Grupo")
 @RestController
 @RequestMapping(value = "/grupos")
 public class GrupoResource {

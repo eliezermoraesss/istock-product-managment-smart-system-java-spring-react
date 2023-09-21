@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Tag(name = "Funcionario endpoint")
+@Tag(name = "Fornecedores")
 @RestController
 @RequestMapping(value = "/fornecedores")
 public class FornecedorResource {

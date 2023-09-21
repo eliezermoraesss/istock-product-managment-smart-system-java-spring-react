@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Funcionario endpoint")
+@Tag(name = "Funcionario")
 @RestController
 @RequestMapping(value = "/funcionarios")
 public class FuncionarioResource {

@@ -28,7 +28,7 @@ import com.eliezer.iestoque.services.RequisicaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Requisicao endpoint")
+@Tag(name = "Requisicao")
 @RestController
 @RequestMapping(value = "/requisicoes")
 public class RequisicaoResource {

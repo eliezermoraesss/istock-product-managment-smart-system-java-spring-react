@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Departamento endpoint")
+@Tag(name = "Departamento")
 @RestController
 @RequestMapping(value = "/departamentos")
 public class DepartamentoResource {

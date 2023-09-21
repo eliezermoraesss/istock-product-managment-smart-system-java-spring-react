@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Produto endpoint")
+@Tag(name = "Produto")
 @RestController
 @RequestMapping(value = "/produtos")
 public class ProdutoResource {

@@ -19,7 +19,7 @@ import com.eliezer.iestoque.services.EnderecoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Endereco endpoint")
+@Tag(name = "Endereco")
 @RestController
 @RequestMapping(value = "/endereco")
 public class EnderecoResource {

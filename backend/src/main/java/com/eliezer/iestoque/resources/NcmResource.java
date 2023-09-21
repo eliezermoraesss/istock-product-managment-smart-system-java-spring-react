@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "NCM endpoint")
+@Tag(name = "NCM")
 @RestController
 @RequestMapping(value = "/ncms")
 public class NcmResource {

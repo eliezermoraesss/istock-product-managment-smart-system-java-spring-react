@@ -25,7 +25,7 @@ import com.eliezer.iestoque.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "User endpoint")
+@Tag(name = "User")
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {

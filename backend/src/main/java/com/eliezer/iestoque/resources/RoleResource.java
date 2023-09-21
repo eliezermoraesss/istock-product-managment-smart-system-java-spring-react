@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Role endpoint")
+@Tag(name = "Role")
 @RestController
 @RequestMapping(value = "/Roles")
 public class RoleResource {

@@ -20,6 +20,7 @@ import com.eliezer.iestoque.entities.Fornecedor;
 import com.eliezer.iestoque.repositories.GrupoRepository;
 import com.eliezer.iestoque.repositories.ProdutoRepository;
 import com.eliezer.iestoque.repositories.FornecedorRepository;
+import com.eliezer.iestoque.services.exceptions.BusinessException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +29,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class ProdutoService {
 
 	public static final String MSG_NOT_FOUND = "ID do Produto não encontrado: ";
+	public static final String INSUFFICIENT_STOCK_MESSAGE = "Quantidade indisponível no estoque!";
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
@@ -38,15 +40,30 @@ public class ProdutoService {
 	@Autowired
 	private GrupoRepository groupRepository;
 
+	@Transactional
+	public void verificarDisponibilidadeProdutoEstoque(Long id, BigDecimal quantidadeRequisitada) {
+		Optional<Produto> produto = produtoRepository.findById(id);
+		if (produto != null) {
+			BigDecimal quantidadeEstoque = produto.get().getQuantidade();
+			if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
+			} else {
+				throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);			
+			}
+		} else {
+			throw new ResourceNotFoundException(MSG_NOT_FOUND);
+		}
+	}
+
 	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findAll() {
 		List<Produto> produtos = produtoRepository.findAll();
 		return produtos.stream().map(x -> new ProdutoDTO(x, x.getFornecedores())).toList();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findByDescricaoOrPreco(String descricao, BigDecimal price) {
-		List<Produto> produtos = produtoRepository.findByDescricaoContainingIgnoreCaseOrPrecoOrderByPrecoDesc(descricao, price);
+		List<Produto> produtos = produtoRepository.findByDescricaoContainingIgnoreCaseOrPrecoOrderByPrecoDesc(descricao,
+				price);
 		return produtos.stream().map(x -> new ProdutoDTO(x, x.getFornecedores())).toList();
 	}
 
@@ -73,8 +90,8 @@ public class ProdutoService {
 	@Transactional
 	public ProdutoDTO insert(ProdutoDTO dto) {
 		Produto produto = new Produto();
-		Grupo produtoGroup = groupRepository.findById(dto.getGrupo().getId()).orElseThrow(() ->
-				new ResourceNotFoundException("Group Id not found: " + dto.getGrupo().getId()));
+		Grupo produtoGroup = groupRepository.findById(dto.getGrupo().getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Group Id not found: " + dto.getGrupo().getId()));
 		produto.setGrupo(produtoGroup);
 		BeanUtils.copyProperties(dto, produto);
 		copyDtoToEntity(dto, produto);
@@ -86,8 +103,8 @@ public class ProdutoService {
 	public ProdutoDTO update(Long id, ProdutoDTO dto) {
 		try {
 			Produto produto = produtoRepository.getReferenceById(id);
-			Grupo produtoGroup = groupRepository.findById(dto.getGrupo().getId()).orElseThrow(() ->
-					new ResourceNotFoundException("Group Id not found: " + dto.getGrupo().getId()));
+			Grupo produtoGroup = groupRepository.findById(dto.getGrupo().getId())
+					.orElseThrow(() -> new ResourceNotFoundException("Group Id not found: " + dto.getGrupo().getId()));
 			produto.setGrupo(produtoGroup);
 			BeanUtils.copyProperties(dto, produto, "id");
 			copyDtoToEntity(dto, produto);
@@ -101,7 +118,7 @@ public class ProdutoService {
 	@Transactional
 	public void delete(Long id) {
 		try {
-			if(produtoRepository.findById(id).isPresent()){
+			if (produtoRepository.findById(id).isPresent()) {
 				produtoRepository.deleteById(id);
 			} else {
 				throw new ResourceNotFoundException(MSG_NOT_FOUND + id);

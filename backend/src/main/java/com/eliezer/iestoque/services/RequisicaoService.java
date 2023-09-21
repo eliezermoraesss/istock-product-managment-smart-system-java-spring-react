@@ -34,7 +34,7 @@ public class RequisicaoService {
 	public static final String MSG_NOT_FOUND = "Requisicao not found: ";
 	public static final String MSG_NOT_FOUND_PRODUCT = "Product not found: ";
 	public static final String MSG_NOT_FOUND_EMPLOYEE = "Funcionario not found: ";
-	public static final String INSUFFICIENT_STOCK_MESSAGE = "O estoque deste produto não é suficiente para atender à quantidade requisitada!";
+	public static final String MSG_FAIL_ADD_REQUEST = "Requisição não disponível. STATUS = ";
 
 	@Autowired
 	private ProdutoService produtoService;
@@ -73,7 +73,7 @@ public class RequisicaoService {
 			estornarProdutoParaEstoque(requisicaoId);
 			return "Requisição cancelada com sucesso e produtos devolvidos ao estoque!";
 		} else {
-			return "Requisição não pode ser finalizada. STATUS = " + requisicao.getStatus();
+			return "Requisição não pode ser cancelada. STATUS = " + requisicao.getStatus();
 		}
 	}
 
@@ -87,13 +87,10 @@ public class RequisicaoService {
 				BigDecimal quantidadeEstoque = produto.getQuantidade();
 				BigDecimal quantidadeRequisitada = item.getQuantidade();
 
-				if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
-					BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque.subtract(quantidadeRequisitada);
-					produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
-					produtoRepository.save(produto);
-				} else {
-					throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
-				}
+				BigDecimal novaQuantidadeEmEstoqueBigDecimal = quantidadeEstoque.subtract(quantidadeRequisitada);
+				produto.setQuantidade(novaQuantidadeEmEstoqueBigDecimal);
+				produtoRepository.save(produto);
+
 			}
 		}
 	}
@@ -119,6 +116,10 @@ public class RequisicaoService {
 	public void adicionarItemNaRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
 		Requisicao requisicao = findById(requisicaoId);
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
+
+		verificarStatusRequisicao(requisicaoId);
+		produtoService.verificarDisponibilidadeProdutoEstoque(produtoId, quantidade);
+
 		Produto produto = new Produto();
 		BeanUtils.copyProperties(produtoMinDTO, produto);
 
@@ -132,7 +133,8 @@ public class RequisicaoService {
 	@Transactional
 	public void removerItemDaRequisicao(Long requisicaoId, Long produtoId) {
 		Requisicao requisicao = findById(requisicaoId);
-		produtoService.findById(produtoId);
+		produtoService.findById(produtoId);	
+		verificarStatusRequisicao(requisicaoId);
 
 		ItemRequisicaoPK requisicaoItemPK = new ItemRequisicaoPK(requisicaoId, produtoId);
 		ItemRequisicao requisicaoItem = itemRequisicaoRepository.findById(requisicaoItemPK)
@@ -141,6 +143,14 @@ public class RequisicaoService {
 		requisicao.getItensRequisicao().remove(requisicaoItem);
 		itemRequisicaoRepository.delete(requisicaoItem);
 		requisicaoRepository.save(requisicao);
+	}
+
+	@Transactional
+	public void verificarStatusRequisicao(Long requisicaoId) {
+		Requisicao requisicao = findById(requisicaoId);
+		if (requisicao.getStatus() != StatusRequisicao.ABERTO) {
+			throw new BusinessException(MSG_FAIL_ADD_REQUEST + requisicao.getStatus());
+		}
 	}
 
 	@Transactional(readOnly = true)
