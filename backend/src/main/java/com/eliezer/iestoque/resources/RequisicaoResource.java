@@ -80,9 +80,9 @@ public class RequisicaoResource {
 
 	@GetMapping(value = "/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Requisicao> findById(@PathVariable Long id) {
-		Requisicao dto = service.findById(id);
-		//dto.add(linkTo(methodOn(RequisicaoResource.class).findAll()).withRel("Lista de Produtos"));
+	public ResponseEntity<RequisicaoDTO> findById(@PathVariable Long id) {
+		RequisicaoDTO dto = service.findById(id);
+		dto.add(linkTo(methodOn(RequisicaoResource.class).findAll()).withRel("Lista de Produtos"));
 		return ResponseEntity.ok().body(dto);
 	}
 

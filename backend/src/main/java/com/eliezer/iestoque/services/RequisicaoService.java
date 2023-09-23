@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -55,26 +56,26 @@ public class RequisicaoService {
 	@Transactional
 	public String finalizarRequisicao(Long requisicaoId) {
 
-		Requisicao requisicao = findById(requisicaoId);
+		RequisicaoDTO requisicaoDto = findById(requisicaoId);
 
-		if (requisicao.getStatus().equals(StatusRequisicao.ABERTO)) {
-			requisicao.setStatus(StatusRequisicao.FINALIZADO);
+		if (requisicaoDto.getStatus().equals(StatusRequisicao.ABERTO)) {
+			requisicaoDto.setStatus(StatusRequisicao.FINALIZADO);
 			subtrairProdutoDoEstoque(requisicaoId);
 			return "Requisição finalizada com sucesso!";
 		} else {
-			return "Requisição não pode ser finalizada. STATUS = " + requisicao.getStatus();
+			return "Requisição não pode ser finalizada. STATUS = " + requisicaoDto.getStatus();
 		}
 	}
 
 	@Transactional
 	public String cancelarRequisicao(Long requisicaoId) {
-		Requisicao requisicao = findById(requisicaoId);
-		if (requisicao.getStatus().equals(StatusRequisicao.FINALIZADO)) {
-			requisicao.setStatus(StatusRequisicao.CANCELADO);
+		RequisicaoDTO requisicaoDto = findById(requisicaoId);
+		if (requisicaoDto.getStatus().equals(StatusRequisicao.FINALIZADO)) {
+			requisicaoDto.setStatus(StatusRequisicao.CANCELADO);
 			estornarProdutoParaEstoque(requisicaoId);
 			return "Requisição cancelada com sucesso e produtos devolvidos ao estoque!";
 		} else {
-			return "Requisição não pode ser cancelada. STATUS = " + requisicao.getStatus();
+			return "Requisição não pode ser cancelada. STATUS = " + requisicaoDto.getStatus();
 		}
 	}
 
@@ -115,7 +116,9 @@ public class RequisicaoService {
 
 	@Transactional
 	public void adicionarItemNaRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
-		Requisicao requisicao = findById(requisicaoId);
+		RequisicaoDTO requisicaoDto = findById(requisicaoId);
+		ModelMapper modelMapper = new ModelMapper();
+		Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
 
 		verificarStatusRequisicao(requisicaoId);
@@ -133,7 +136,8 @@ public class RequisicaoService {
 
 	@Transactional
 	public void removerItemDaRequisicao(Long requisicaoId, Long produtoId) {
-		Requisicao requisicao = findById(requisicaoId);
+		RequisicaoDTO requisicaoDto = findById(requisicaoId);
+		ModelMapper modelMapper = new ModelMapper();
 		produtoService.findById(produtoId);	
 		verificarStatusRequisicao(requisicaoId);
 
@@ -141,14 +145,17 @@ public class RequisicaoService {
 		ItemRequisicao requisicaoItem = itemRequisicaoRepository.findById(requisicaoItemPK)
 				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
 
-		requisicao.getItensRequisicao().remove(requisicaoItem);
+		requisicaoDto.getItensRequisicao().remove(requisicaoItem);
 		itemRequisicaoRepository.delete(requisicaoItem);
+
+		Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
+
 		requisicaoRepository.save(requisicao);
 	}
 
 	@Transactional(readOnly = true)
 	public void verificarStatusRequisicao(Long requisicaoId) {
-		Requisicao requisicao = findById(requisicaoId);
+		RequisicaoDTO requisicao = findById(requisicaoId);
 		if (requisicao.getStatus() != StatusRequisicao.ABERTO) {
 			throw new BusinessException(MSG_FAIL_ADD_REQUEST + requisicao.getStatus());
 		}
@@ -162,9 +169,10 @@ public class RequisicaoService {
 	}
 
 	@Transactional(readOnly = true)
-	public Requisicao findById(Long id) {
-		Optional<Requisicao> requisicaoOptional = requisicaoRepository.findById(id);
-		return requisicaoOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+	public RequisicaoDTO findById(Long id) {
+		ModelMapper modelMapper = new ModelMapper();
+		Requisicao requisicao = requisicaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+		return modelMapper.map(requisicao, RequisicaoDTO.class);
 	}
 
 	@Transactional
