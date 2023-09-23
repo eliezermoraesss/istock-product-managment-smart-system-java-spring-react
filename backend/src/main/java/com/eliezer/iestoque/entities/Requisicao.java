@@ -1,5 +1,6 @@
 package com.eliezer.iestoque.entities;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,11 +23,14 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_requisicao")
-public class Requisicao extends RepresentationModel<Requisicao> {
+public class Requisicao {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant dataDeRequisicao;
 	
 	@ManyToOne
 	@JoinColumn(name = "funcionario_id")
@@ -42,15 +46,16 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 	public Requisicao() {
 	}
 
-	public Requisicao(Long id, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao) {
+	public Requisicao(Long id, Instant dataDeRequisicao, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao) {
 		this.id = id;
+		this.dataDeRequisicao = dataDeRequisicao;
 		this.funcionario = funcionario;
 		itemRequisicao.forEach(orderItem -> this.itensRequisicao.add(new ItemRequisicao()));
 	}
 
-	public Requisicao(Long id, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itemRequisicao) {
-		super();
+	public Requisicao(Long id, Instant dataDeRequisicao, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itemRequisicao) {
 		this.id = id;
+		this.dataDeRequisicao = dataDeRequisicao;
 		this.funcionario = funcionario;
 		this.status = status;
 		this.itensRequisicao = itemRequisicao;
@@ -62,6 +67,14 @@ public class Requisicao extends RepresentationModel<Requisicao> {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Instant getDataDeRequisicao() {
+		return dataDeRequisicao;
+	}
+
+	public void setDataDeRequisicao(Instant dataDeRequisicao) {
+		this.dataDeRequisicao = dataDeRequisicao;
 	}
 
 	public Funcionario getFuncionario() {

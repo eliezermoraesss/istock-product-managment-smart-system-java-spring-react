@@ -1,6 +1,7 @@
 package com.eliezer.iestoque.services;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -145,7 +146,7 @@ public class RequisicaoService {
 		requisicaoRepository.save(requisicao);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void verificarStatusRequisicao(Long requisicaoId) {
 		Requisicao requisicao = findById(requisicaoId);
 		if (requisicao.getStatus() != StatusRequisicao.ABERTO) {
@@ -154,17 +155,16 @@ public class RequisicaoService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Requisicao> findAll() {
-		List<Requisicao> requisicaos = requisicaoRepository.findAll();
-		return requisicaos.stream().map(x -> new Requisicao(x.getId(), x.getFuncionario(), x.getItensRequisicao()))
+	public List<RequisicaoDTO> findAll() {
+		List<Requisicao> requisicoes = requisicaoRepository.findAll();
+		return requisicoes.stream().map(x -> new RequisicaoDTO(x, x.getItensRequisicao()))
 				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public Requisicao findById(Long id) {
 		Optional<Requisicao> requisicaoOptional = requisicaoRepository.findById(id);
-		Requisicao requisicao = requisicaoOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-		return requisicao;
+		return requisicaoOptional.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
 	}
 
 	@Transactional
@@ -172,6 +172,7 @@ public class RequisicaoService {
 		Requisicao requisicao = new Requisicao();
 		Funcionario funcionario = funcionarioRepository.findById(dto.getFuncionario().getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_EMPLOYEE));
+		requisicao.setDataDeRequisicao(Instant.now());
 		requisicao.setFuncionario(funcionario);
 		requisicao.setStatus(dto.getStatus());
 		requisicao = requisicaoRepository.save(requisicao);

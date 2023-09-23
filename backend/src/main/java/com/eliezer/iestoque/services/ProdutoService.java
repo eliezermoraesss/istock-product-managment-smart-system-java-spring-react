@@ -40,17 +40,12 @@ public class ProdutoService {
 	@Autowired
 	private GrupoRepository groupRepository;
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void verificarDisponibilidadeProdutoEstoque(Long id, BigDecimal quantidadeRequisitada) {
-		Optional<Produto> produto = produtoRepository.findById(id);
-		if (produto != null) {
-			BigDecimal quantidadeEstoque = produto.get().getQuantidade();
-			if (quantidadeEstoque.compareTo(quantidadeRequisitada) >= 0) {
-			} else {
-				throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);			
-			}
-		} else {
-			throw new ResourceNotFoundException(MSG_NOT_FOUND);
+		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
+		BigDecimal quantidadeEstoque = produto.getQuantidade();
+		if (quantidadeEstoque.compareTo(quantidadeRequisitada) <= 0) {
+			throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
 		}
 	}
 

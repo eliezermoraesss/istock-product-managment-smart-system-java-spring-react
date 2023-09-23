@@ -69,11 +69,11 @@ public class RequisicaoResource {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<List<Requisicao>> findAll() {
-		List<Requisicao> listaRequisicoes = service.findAll();
-		for (Requisicao Requisicao : listaRequisicoes) {
-			Long id = Requisicao.getId();
-			Requisicao.add(linkTo(methodOn(RequisicaoResource.class).findById(id)).withSelfRel());
+	public ResponseEntity<List<RequisicaoDTO>> findAll() {
+		List<RequisicaoDTO> listaRequisicoes = service.findAll();
+		for (RequisicaoDTO requisicao : listaRequisicoes) {
+			Long id = requisicao.getId();
+			requisicao.add(linkTo(methodOn(RequisicaoResource.class).findById(id)).withSelfRel());
 		}
 		return ResponseEntity.ok().body(listaRequisicoes);
 	}
@@ -82,7 +82,7 @@ public class RequisicaoResource {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Requisicao> findById(@PathVariable Long id) {
 		Requisicao dto = service.findById(id);
-		dto.add(linkTo(methodOn(RequisicaoResource.class).findAll()).withRel("Lista de Produtos"));
+		//dto.add(linkTo(methodOn(RequisicaoResource.class).findAll()).withRel("Lista de Produtos"));
 		return ResponseEntity.ok().body(dto);
 	}
 
