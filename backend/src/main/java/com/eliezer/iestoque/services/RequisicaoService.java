@@ -61,6 +61,9 @@ public class RequisicaoService {
 		if (requisicaoDto.getStatus().equals(StatusRequisicao.ABERTO)) {
 			requisicaoDto.setStatus(StatusRequisicao.FINALIZADO);
 			subtrairProdutoDoEstoque(requisicaoId);
+			ModelMapper modelMapper = new ModelMapper();
+			Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
+			requisicaoRepository.save(requisicao);		
 			return "Requisição finalizada com sucesso!";
 		} else {
 			return "Requisição não pode ser finalizada. STATUS = " + requisicaoDto.getStatus();
@@ -73,6 +76,9 @@ public class RequisicaoService {
 		if (requisicaoDto.getStatus().equals(StatusRequisicao.FINALIZADO)) {
 			requisicaoDto.setStatus(StatusRequisicao.CANCELADO);
 			estornarProdutoParaEstoque(requisicaoId);
+			ModelMapper modelMapper = new ModelMapper();
+			Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
+			requisicaoRepository.save(requisicao);	
 			return "Requisição cancelada com sucesso e produtos devolvidos ao estoque!";
 		} else {
 			return "Requisição não pode ser cancelada. STATUS = " + requisicaoDto.getStatus();
