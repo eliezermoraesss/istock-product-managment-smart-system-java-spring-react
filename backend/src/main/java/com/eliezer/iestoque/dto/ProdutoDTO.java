@@ -47,6 +47,10 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 	@Positive(message = "A quantidade deve ser um valor positivo")
 	@NotNull(message = "Campo requerido")
 	private BigDecimal quantidade;
+	
+	@Positive(message = "A quantidade mínima do pruduto deve ser um valor positivo")
+	@NotNull(message = "Campo requerido")
+	private BigDecimal quantidadeMinimaEstoque;
 
 	@Positive(message = "O preço deve ser um valor positivo")
 	private BigDecimal preco;
@@ -66,6 +70,7 @@ public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Seria
 	@Size(min = 2, max = 3, message = "Deve ter 2 ou 3 caracteres")
 	@NotNull(message = "Campo requerido")
 	private String unidadeMedida;
+	
 	private Set<FornecedorDTO> fornecedores = new HashSet<>();
 
 	public ProdutoDTO(Produto produto) {

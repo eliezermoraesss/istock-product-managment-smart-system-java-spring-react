@@ -91,7 +91,7 @@ public class ProdutoService {
 		BeanUtils.copyProperties(dto, produto);
 		copyDtoToEntity(dto, produto);
 		produto = produtoRepository.save(produto);
-		return new ProdutoDTO(produto, produto.getFornecedores());
+		return new ProdutoDTO(produto);
 	}
 
 	@Transactional
@@ -104,7 +104,7 @@ public class ProdutoService {
 			BeanUtils.copyProperties(dto, produto, "id");
 			copyDtoToEntity(dto, produto);
 			produto = produtoRepository.save(produto);
-			return new ProdutoDTO(produto, produto.getFornecedores());
+			return new ProdutoDTO(produto);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
 		}

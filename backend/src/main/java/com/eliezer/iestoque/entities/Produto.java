@@ -47,10 +47,12 @@ public class Produto implements Serializable {
 	@Column(unique = true)
 	private String codigo;
 
-	@Column(unique = true, columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String descricao;
 
 	private BigDecimal quantidade;
+	
+	private BigDecimal quantidadeMinimaEstoque;
 
 	private BigDecimal preco;
 
