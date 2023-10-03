@@ -23,6 +23,6 @@ public class UnidadeDTO implements Serializable {
     public UnidadeDTO(Unidade unidade) {
         this.id = unidade.getId();
         this.codigo = unidade.getCodigo();
-        this.descricao = unidade.getDescription();
+        this.descricao = unidade.getDescricao();
     }
 }

@@ -41,15 +41,6 @@ public class ProdutoService {
 	private GrupoRepository groupRepository;
 
 	@Transactional(readOnly = true)
-	public void verificarDisponibilidadeProdutoEstoque(Long id, BigDecimal quantidadeRequisitada) {
-		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
-		BigDecimal quantidadeEstoque = produto.getQuantidade();
-		if (quantidadeEstoque.compareTo(quantidadeRequisitada) <= 0) {
-			throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
-		}
-	}
-
-	@Transactional(readOnly = true)
 	public List<ProdutoDTO> findAll() {
 		List<Produto> produtos = produtoRepository.findAll();
 		return produtos.stream().map(x -> new ProdutoDTO(x, x.getFornecedores())).toList();
@@ -130,6 +121,15 @@ public class ProdutoService {
 		for (FornecedorDTO fornecedorDTO : dto.getFornecedores()) {
 			Fornecedor fornecedor = fornecedorRepository.getReferenceById(fornecedorDTO.getId());
 			produto.getFornecedores().add(fornecedor);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	public void verificarDisponibilidadeProdutoEstoque(Long id, BigDecimal quantidadeRequisitada) {
+		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND));
+		BigDecimal quantidadeEstoque = produto.getQuantidade();
+		if (quantidadeEstoque.compareTo(quantidadeRequisitada) < 0) {
+			throw new BusinessException(INSUFFICIENT_STOCK_MESSAGE);
 		}
 	}
 }

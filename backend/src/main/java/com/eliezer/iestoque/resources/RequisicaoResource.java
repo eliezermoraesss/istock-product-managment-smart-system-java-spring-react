@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.eliezer.iestoque.entities.ItemRequisicao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,37 +37,6 @@ public class RequisicaoResource {
 	@Autowired
 	private RequisicaoService service;
 	
-	@PatchMapping(value = "/{id}/finalizar")
-	public ResponseEntity<String> finalizarRequisicao(@PathVariable Long id) {		
-		String mensagemFechamentoRequisicao = service.finalizarRequisicao(id);
-		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
-	}
-	
-	@PatchMapping(value = "/{id}/cancelar")
-	public ResponseEntity<String> cancelarRequisicao(@PathVariable Long id) {		
-		String mensagemFechamentoRequisicao = service.cancelarRequisicao(id);
-		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
-	}
-
-	@PostMapping(value = "/adicionar")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Void> adicionarItemNaRequisicao(
-			@RequestParam(value = "requisicao", defaultValue = "0") Long requisicaoId,
-			@RequestParam(value = "produto", defaultValue = "0") Long produtoId,
-			@RequestParam(value = "quantidade", defaultValue = "0") BigDecimal quantidade) {
-		service.adicionarItemNaRequisicao(requisicaoId, produtoId, quantidade);
-		return ResponseEntity.status(HttpStatus.CREATED).body(null);
-	}
-
-	@DeleteMapping(value = "/remover")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
-	public ResponseEntity<Void> removerItemDaRequisicao(
-			@RequestParam(value = "requisicao", defaultValue = "0") Long requisicaoId,
-			@RequestParam(value = "produto", defaultValue = "0") Long produtoId) {
-		service.removerItemDaRequisicao(requisicaoId, produtoId);
-		return ResponseEntity.noContent().build();
-	}
-
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<RequisicaoDTO>> findAll() {
@@ -104,6 +74,37 @@ public class RequisicaoResource {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PatchMapping(value = "/{id}/finalizar")
+	public ResponseEntity<String> finalizarRequisicao(@PathVariable Long id) {
+		String mensagemFechamentoRequisicao = service.finalizarRequisicao(id);
+		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
+	}
+
+	@PatchMapping(value = "/{id}/cancelar")
+	public ResponseEntity<String> cancelarRequisicao(@PathVariable Long id) {
+		String mensagemFechamentoRequisicao = service.cancelarRequisicao(id);
+		return ResponseEntity.ok().body(mensagemFechamentoRequisicao);
+	}
+
+	@PostMapping(value = "/adicionar")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
+	public ResponseEntity<Void> adicionarItemNaRequisicao(
+			@RequestParam(value = "requisicao", defaultValue = "0") Long requisicaoId,
+			@RequestParam(value = "produto", defaultValue = "0") Long produtoId,
+			@RequestParam(value = "quantidade", defaultValue = "0") BigDecimal quantidade) {
+		service.adicionarItemNaRequisicao(requisicaoId, produtoId, quantidade);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@DeleteMapping(value = "/remover")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
+	public ResponseEntity<Void> removerItemDaRequisicao(
+			@RequestParam(value = "requisicao", defaultValue = "0") Long requisicaoId,
+			@RequestParam(value = "produto", defaultValue = "0") Long produtoId) {
+		service.removerItemDaRequisicao(requisicaoId, produtoId);
 		return ResponseEntity.noContent().build();
 	}
 }

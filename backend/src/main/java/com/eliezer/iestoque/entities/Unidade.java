@@ -23,7 +23,7 @@ public class Unidade implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String codigo;
-    private String description;
+    private String descricao;
 
     @Override
     public boolean equals(Object o) {

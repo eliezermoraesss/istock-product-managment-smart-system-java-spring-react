@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.springframework.hateoas.RepresentationModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.eliezer.iestoque.enums.StatusRequisicao;
 
