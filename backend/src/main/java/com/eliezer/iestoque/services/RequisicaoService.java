@@ -53,6 +53,56 @@ public class RequisicaoService {
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
 
+	@Transactional(readOnly = true)
+	public List<RequisicaoDTO> findAll() {
+		List<Requisicao> requisicoes = requisicaoRepository.findAll();
+		return requisicoes.stream().map(x -> new RequisicaoDTO(x, x.getItensRequisicao()))
+				.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public RequisicaoDTO findById(Long id) {
+		Requisicao requisicao = requisicaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
+		return new RequisicaoDTO(requisicao, requisicao.getItensRequisicao());
+	}
+
+	@Transactional
+	public RequisicaoDTO insert(RequisicaoDTO dto) {
+		Requisicao requisicao = new Requisicao();
+		Funcionario funcionario = funcionarioRepository.findById(dto.getFuncionario().getId())
+				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_EMPLOYEE));
+		requisicao.setDataDeRequisicao(Instant.now());
+		requisicao.setFuncionario(funcionario);
+		requisicao.setStatus(dto.getStatus());
+		return new RequisicaoDTO(requisicaoRepository.save(requisicao));
+	}
+
+	@Transactional
+	public Requisicao update(Long id, Requisicao dto) {
+		try {
+			Requisicao requisicao = requisicaoRepository.getReferenceById(id);
+			requisicao = requisicaoRepository.save(requisicao);
+			return requisicao;
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
+		}
+	}
+
+	@Transactional
+	public void delete(Long id) {
+		try {
+			if (requisicaoRepository.findById(id).isPresent()) {
+				requisicaoRepository.deleteById(id);
+			} else {
+				throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
+			}
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
+		} catch (DataIntegrityViolationException e) {
+			throw new ResourceNotFoundException("Integrity violation - " + e.getMessage());
+		}
+	}
+
 	@Transactional
 	public String finalizarRequisicao(Long requisicaoId) {
 
@@ -63,7 +113,7 @@ public class RequisicaoService {
 			subtrairProdutoDoEstoque(requisicaoId);
 			ModelMapper modelMapper = new ModelMapper();
 			Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
-			requisicaoRepository.save(requisicao);		
+			requisicaoRepository.save(requisicao);
 			return "Requisição finalizada com sucesso!";
 		} else {
 			return "Requisição não pode ser finalizada. STATUS = " + requisicaoDto.getStatus();
@@ -78,7 +128,7 @@ public class RequisicaoService {
 			estornarProdutoParaEstoque(requisicaoId);
 			ModelMapper modelMapper = new ModelMapper();
 			Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
-			requisicaoRepository.save(requisicao);	
+			requisicaoRepository.save(requisicao);
 			return "Requisição cancelada com sucesso e produtos devolvidos ao estoque!";
 		} else {
 			return "Requisição não pode ser cancelada. STATUS = " + requisicaoDto.getStatus();
@@ -144,7 +194,7 @@ public class RequisicaoService {
 	public void removerItemDaRequisicao(Long requisicaoId, Long produtoId) {
 		RequisicaoDTO requisicaoDto = findById(requisicaoId);
 		ModelMapper modelMapper = new ModelMapper();
-		produtoService.findById(produtoId);	
+		produtoService.findById(produtoId);
 		verificarStatusRequisicao(requisicaoId);
 
 		ItemRequisicaoPK requisicaoItemPK = new ItemRequisicaoPK(requisicaoId, produtoId);
@@ -164,58 +214,6 @@ public class RequisicaoService {
 		RequisicaoDTO requisicao = findById(requisicaoId);
 		if (requisicao.getStatus() != StatusRequisicao.ABERTO) {
 			throw new BusinessException(MSG_FAIL_ADD_REQUEST + requisicao.getStatus());
-		}
-	}
-
-	@Transactional(readOnly = true)
-	public List<RequisicaoDTO> findAll() {
-		List<Requisicao> requisicoes = requisicaoRepository.findAll();
-		return requisicoes.stream().map(x -> new RequisicaoDTO(x, x.getItensRequisicao()))
-				.toList();
-	}
-
-	@Transactional(readOnly = true)
-	public RequisicaoDTO findById(Long id) {
-		ModelMapper modelMapper = new ModelMapper();
-		Requisicao requisicao = requisicaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND + id));
-		return modelMapper.map(requisicao, RequisicaoDTO.class);
-	}
-
-	@Transactional
-	public RequisicaoDTO insert(RequisicaoDTO dto) {
-		Requisicao requisicao = new Requisicao();
-		Funcionario funcionario = funcionarioRepository.findById(dto.getFuncionario().getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_EMPLOYEE));
-		requisicao.setDataDeRequisicao(Instant.now());
-		requisicao.setFuncionario(funcionario);
-		requisicao.setStatus(dto.getStatus());
-		requisicao = requisicaoRepository.save(requisicao);
-		return new RequisicaoDTO(requisicao);
-	}
-
-	@Transactional
-	public Requisicao update(Long id, Requisicao dto) {
-		try {
-			Requisicao requisicao = requisicaoRepository.getReferenceById(id);
-			requisicao = requisicaoRepository.save(requisicao);
-			return requisicao;
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
-		}
-	}
-
-	@Transactional
-	public void delete(Long id) {
-		try {
-			if (requisicaoRepository.findById(id).isPresent()) {
-				requisicaoRepository.deleteById(id);
-			} else {
-				throw new ResourceNotFoundException(MSG_NOT_FOUND + id);
-			}
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(MSG_NOT_FOUND + id + " - " + e.getMessage());
-		} catch (DataIntegrityViolationException e) {
-			throw new ResourceNotFoundException("Integrity violation - " + e.getMessage());
 		}
 	}
 }
