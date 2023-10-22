@@ -2,6 +2,7 @@ package com.eliezer.iestoque.entities;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -27,15 +28,21 @@ public class ItemRequisicao {
 	private Produto produto;
 
 	private BigDecimal quantidade;
-
+	
+	private BigDecimal valorUnitario;
+	
+	private BigDecimal subTotal;
+	
 	public ItemRequisicao() {
 	}
 
-	public ItemRequisicao(ItemRequisicaoPK id, Requisicao productOrder, Produto product, BigDecimal quantity) {
+	public ItemRequisicao(ItemRequisicaoPK id, Requisicao requisicao, Produto produto, BigDecimal quantidade, BigDecimal valorUnitario) {
 		this.id = id;
-		this.requisicao = productOrder;
-		this.produto = product;
-		this.quantidade = quantity;
+		this.requisicao = requisicao;
+		this.produto = produto;
+		this.quantidade = quantidade;
+		this.valorUnitario = valorUnitario;
+		this.subTotal = quantidade.multiply(valorUnitario);
 	}
 
 	public ItemRequisicaoPK getId() {
@@ -68,5 +75,21 @@ public class ItemRequisicao {
 
 	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
 	}
 }

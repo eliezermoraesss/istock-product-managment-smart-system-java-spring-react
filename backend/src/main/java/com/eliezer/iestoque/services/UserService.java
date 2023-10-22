@@ -3,7 +3,6 @@ package com.eliezer.iestoque.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.eliezer.iestoque.dto.UserUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eliezer.iestoque.dto.RoleDTO;
 import com.eliezer.iestoque.dto.UserDTO;
 import com.eliezer.iestoque.dto.UserInsertDTO;
+import com.eliezer.iestoque.dto.UserUpdateDTO;
 import com.eliezer.iestoque.entities.Role;
 import com.eliezer.iestoque.entities.User;
 import com.eliezer.iestoque.projections.UserDetailsProjection;
@@ -26,7 +26,6 @@ import com.eliezer.iestoque.repositories.RoleRepository;
 import com.eliezer.iestoque.repositories.UserRepository;
 import com.eliezer.iestoque.services.exceptions.DataBaseException;
 import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
-import com.eliezer.iestoque.utils.PasswordVerification;
 
 import jakarta.persistence.EntityNotFoundException;
 

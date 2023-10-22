@@ -23,14 +23,14 @@ public class RequisicaoDTO extends RepresentationModel<RequisicaoDTO> {
 
 	public RequisicaoDTO(Requisicao requisicao) {
 		id = requisicao.getId();
-		dataDeRequisicao = requisicao.getDataDeRequisicao();
+		setDataDeRequisicao(requisicao.getDataDeRequisicao());
 		funcionario = new FuncionarioMinDTO(requisicao.getFuncionario());	
 		status = requisicao.getStatus();
 	}
 	
 	public RequisicaoDTO(Requisicao requisicao, Set<ItemRequisicao> items) {
 		id = requisicao.getId();
-		dataDeRequisicao = requisicao.getDataDeRequisicao();
+		setDataDeRequisicao(requisicao.getDataDeRequisicao());
 		funcionario = new FuncionarioMinDTO(requisicao.getFuncionario());
 		status = requisicao.getStatus();
 		items.forEach(item -> this.itensRequisicao.add(new ItemRequisicaoDTO(item)));
@@ -38,7 +38,7 @@ public class RequisicaoDTO extends RepresentationModel<RequisicaoDTO> {
 
 	public RequisicaoDTO(Long id, Instant dataDeRequisicao, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itensRequisicao) {
 		this.id = id;
-		this.dataDeRequisicao = dataDeRequisicao;
+		this.setDataDeRequisicao(dataDeRequisicao);
 		this.funcionario = new FuncionarioMinDTO(funcionario);
 		this.status = status;
 		itensRequisicao.forEach(or -> this.itensRequisicao.add(new ItemRequisicaoDTO(or)));
@@ -74,5 +74,13 @@ public class RequisicaoDTO extends RepresentationModel<RequisicaoDTO> {
 
 	public void setItensRequisicao(Set<ItemRequisicaoDTO> itensRequisicao) {
 		this.itensRequisicao = itensRequisicao;
+	}
+
+	public Instant getDataDeRequisicao() {
+		return dataDeRequisicao;
+	}
+
+	public void setDataDeRequisicao(Instant dataDeRequisicao) {
+		this.dataDeRequisicao = dataDeRequisicao;
 	}
 }

@@ -3,7 +3,6 @@ package com.eliezer.iestoque.services;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -173,23 +172,24 @@ public class RequisicaoService {
 	@Transactional
 	public void adicionarItemNaRequisicao(Long requisicaoId, Long produtoId, BigDecimal quantidade) {
 		RequisicaoDTO requisicaoDto = findById(requisicaoId);
-		ModelMapper modelMapper = new ModelMapper();
-		Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
+		ModelMapper modelMapperRequisicao = new ModelMapper();
+		Requisicao requisicao = modelMapperRequisicao.map(requisicaoDto, Requisicao.class);
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
 
 		verificarStatusRequisicao(requisicaoId);
 		produtoService.verificarDisponibilidadeProdutoEstoque(produtoId, quantidade);
 
-		Produto produto = new Produto();
-		BeanUtils.copyProperties(produtoMinDTO, produto);
+		ModelMapper modelMapperProduto = new ModelMapper();
+		Produto produto = modelMapperProduto.map(produtoMinDTO, Produto.class);
 
 		ItemRequisicaoPK requisicaoItemPK = new ItemRequisicaoPK(requisicaoId, produtoId);
-		ItemRequisicao requisicaoItem = new ItemRequisicao(requisicaoItemPK, requisicao, produto, quantidade);
+		ItemRequisicao requisicaoItem = new ItemRequisicao(requisicaoItemPK, requisicao, produto, quantidade, produto.getPreco());
 		itemRequisicaoRepository.save(requisicaoItem);
 		requisicao.getItensRequisicao().add(requisicaoItem);
 		requisicaoRepository.save(requisicao);
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Transactional
 	public void removerItemDaRequisicao(Long requisicaoId, Long produtoId) {
 		RequisicaoDTO requisicaoDto = findById(requisicaoId);

@@ -13,6 +13,8 @@ public class ItemRequisicaoDTO {
 	private RequisicaoDTO requisicao;
 	private ProdutoDTO produto;
 	private BigDecimal quantidade;
+	private BigDecimal valorUnitario;
+	private BigDecimal subTotal;
 	
 	public ItemRequisicaoDTO() {
 	}
@@ -22,13 +24,17 @@ public class ItemRequisicaoDTO {
 		requisicao = new RequisicaoDTO(itemRequisicao.getRequisicao());
 		produto = new ProdutoDTO(itemRequisicao.getProduto());
 		quantidade = itemRequisicao.getQuantidade();
+		valorUnitario = itemRequisicao.getValorUnitario();
+		subTotal = itemRequisicao.getSubTotal();	
 	}
 	
-	public ItemRequisicaoDTO(ItemRequisicaoPK id, Requisicao requisicao, Produto produto, BigDecimal quantidade) {
+	public ItemRequisicaoDTO(ItemRequisicaoPK id, Requisicao requisicao, Produto produto, BigDecimal quantidade, BigDecimal valorUnitario) {
 		this.id = id;
 		this.requisicao = new RequisicaoDTO(requisicao);
 		this.produto = new ProdutoDTO(produto);
 		this.quantidade = quantidade;
+		this.valorUnitario = valorUnitario;
+		this.subTotal = quantidade.multiply(valorUnitario);
 	}
 
 	public ItemRequisicaoPK getId() {
@@ -61,5 +67,21 @@ public class ItemRequisicaoDTO {
 
 	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
 	}
 }
