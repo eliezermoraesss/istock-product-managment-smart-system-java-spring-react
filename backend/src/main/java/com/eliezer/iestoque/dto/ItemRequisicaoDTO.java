@@ -6,14 +6,25 @@ import com.eliezer.iestoque.entities.ItemRequisicao;
 import com.eliezer.iestoque.entities.ItemRequisicaoPK;
 import com.eliezer.iestoque.entities.Produto;
 import com.eliezer.iestoque.entities.Requisicao;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class ItemRequisicaoDTO {
 	
 	private ItemRequisicaoPK id;
 	private RequisicaoDTO requisicao;
 	private ProdutoDTO produto;
+
+	@Positive(message = "A quantidade deve ser um valor positivo")
+	@NotNull(message = "Campo requerido")
 	private BigDecimal quantidade;
+
+	@Positive(message = "O valorUnitario deve ser um valor positivo")
+	@NotNull(message = "Campo requerido")
 	private BigDecimal valorUnitario;
+
+	@Positive(message = "O subTotal deve ser um valor positivo")
+	@NotNull(message = "Campo requerido")
 	private BigDecimal subTotal;
 	
 	public ItemRequisicaoDTO() {

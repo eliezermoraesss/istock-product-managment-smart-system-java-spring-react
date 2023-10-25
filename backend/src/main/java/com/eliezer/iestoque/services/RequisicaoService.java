@@ -2,8 +2,10 @@ package com.eliezer.iestoque.services;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+@Slf4j
 @Service
 public class RequisicaoService {
 
@@ -73,6 +76,7 @@ public class RequisicaoService {
 		requisicao.setDataDeRequisicao(Instant.now());
 		requisicao.setFuncionario(funcionario);
 		requisicao.setStatus(dto.getStatus());
+		requisicao.setValorTotal(BigDecimal.ZERO);
 		return new RequisicaoDTO(requisicaoRepository.save(requisicao));
 	}
 
@@ -174,6 +178,7 @@ public class RequisicaoService {
 		RequisicaoDTO requisicaoDto = findById(requisicaoId);
 		ModelMapper modelMapperRequisicao = new ModelMapper();
 		Requisicao requisicao = modelMapperRequisicao.map(requisicaoDto, Requisicao.class);
+
 		ProdutoMinDTO produtoMinDTO = produtoService.findById(produtoId);
 
 		verificarStatusRequisicao(requisicaoId);
@@ -185,7 +190,10 @@ public class RequisicaoService {
 		ItemRequisicaoPK requisicaoItemPK = new ItemRequisicaoPK(requisicaoId, produtoId);
 		ItemRequisicao requisicaoItem = new ItemRequisicao(requisicaoItemPK, requisicao, produto, quantidade, produto.getPreco());
 		itemRequisicaoRepository.save(requisicaoItem);
+
 		requisicao.getItensRequisicao().add(requisicaoItem);
+		BigDecimal valorTotalAtualizado = calcularValorTotalDaRequisicao(requisicaoId);
+		requisicao.setValorTotal(valorTotalAtualizado);
 		requisicaoRepository.save(requisicao);
 	}
 
@@ -205,11 +213,22 @@ public class RequisicaoService {
 		itemRequisicaoRepository.delete(requisicaoItem);
 
 		Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
-
 		requisicaoRepository.save(requisicao);
 	}
 
 	@Transactional(readOnly = true)
+	public BigDecimal calcularValorTotalDaRequisicao(Long requisicaoId) {
+		BigDecimal valorTotal = BigDecimal.ZERO;
+		List<ItemRequisicao> itemsRequisicao = itemRequisicaoRepository.findAll();
+
+		for (ItemRequisicao item : itemsRequisicao) {
+			if (item.getId().getRequisicaoId().equals(requisicaoId)) {
+				valorTotal = valorTotal.add(item.getSubTotal());
+			}
+		}
+		return valorTotal;
+	}
+
 	public void verificarStatusRequisicao(Long requisicaoId) {
 		RequisicaoDTO requisicao = findById(requisicaoId);
 		if (requisicao.getStatus() != StatusRequisicao.ABERTO) {

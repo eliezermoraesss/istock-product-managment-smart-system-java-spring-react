@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "tb_item_requisicao")
@@ -27,10 +28,16 @@ public class ItemRequisicao {
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
 
+	@Positive(message = "A quantidade deve ser um valor positivo")
+	@Column(nullable = false)
 	private BigDecimal quantidade;
-	
+
+	@Positive(message = "O valor unitário deve ser um valor positivo")
+	@Column(nullable = false)
 	private BigDecimal valorUnitario;
-	
+
+	@Positive(message = "O sub-total deve ser um valor positivo")
+	@Column(nullable = false)
 	private BigDecimal subTotal;
 	
 	public ItemRequisicao() {

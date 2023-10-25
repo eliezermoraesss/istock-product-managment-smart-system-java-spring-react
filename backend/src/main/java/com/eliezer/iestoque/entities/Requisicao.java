@@ -1,5 +1,6 @@
 package com.eliezer.iestoque.entities;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -43,22 +44,27 @@ public class Requisicao {
 	@OneToMany(mappedBy = "requisicao")
 	private Set<ItemRequisicao> itensRequisicao = new HashSet<>();
 
+	@Column(nullable = false)
+	private BigDecimal valorTotal;
+
 	public Requisicao() {
 	}
 
-	public Requisicao(Long id, Instant dataDeRequisicao, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao) {
+	public Requisicao(Long id, Instant dataDeRequisicao, Funcionario funcionario, Set<ItemRequisicao> itemRequisicao, BigDecimal valorTotal) {
 		this.id = id;
 		this.dataDeRequisicao = dataDeRequisicao;
 		this.funcionario = funcionario;
 		itemRequisicao.forEach(orderItem -> this.itensRequisicao.add(new ItemRequisicao()));
+		this.valorTotal = valorTotal;
 	}
 
-	public Requisicao(Long id, Instant dataDeRequisicao, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itemRequisicao) {
+	public Requisicao(Long id, Instant dataDeRequisicao, Funcionario funcionario, StatusRequisicao status, Set<ItemRequisicao> itemRequisicao, BigDecimal valorTotal) {
 		this.id = id;
 		this.dataDeRequisicao = dataDeRequisicao;
 		this.funcionario = funcionario;
 		this.status = status;
 		this.itensRequisicao = itemRequisicao;
+		this.valorTotal = valorTotal;
 	}
 
 	public Long getId() {
@@ -99,6 +105,14 @@ public class Requisicao {
 
 	public void setItensRequisicao(Set<ItemRequisicao> itensRequisicao) {
 		this.itensRequisicao = itensRequisicao;
+	}
+
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
 	}
 
 	@Override
