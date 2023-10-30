@@ -192,8 +192,7 @@ public class RequisicaoService {
 		itemRequisicaoRepository.save(requisicaoItem);
 
 		requisicao.getItensRequisicao().add(requisicaoItem);
-		BigDecimal valorTotalAtualizado = calcularValorTotalDaRequisicao(requisicaoId);
-		requisicao.setValorTotal(valorTotalAtualizado);
+		requisicao.setValorTotal(calcularValorTotalDaRequisicao(requisicaoId));
 		requisicaoRepository.save(requisicao);
 	}
 
@@ -211,8 +210,8 @@ public class RequisicaoService {
 
 		requisicaoDto.getItensRequisicao().remove(requisicaoItem);
 		itemRequisicaoRepository.delete(requisicaoItem);
-
 		Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
+		requisicao.setValorTotal(calcularValorTotalDaRequisicao(requisicaoId));
 		requisicaoRepository.save(requisicao);
 	}
 
