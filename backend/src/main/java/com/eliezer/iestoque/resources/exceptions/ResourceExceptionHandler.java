@@ -2,6 +2,7 @@ package com.eliezer.iestoque.resources.exceptions;
 
 import java.time.Instant;
 
+import com.eliezer.iestoque.services.exceptions.EmailException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,6 +98,13 @@ public class ResourceExceptionHandler {
             err.addError(f.getField(), f.getDefaultMessage());
         }
 
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler({EmailException.class})
+    public ResponseEntity<StandardError> email(EmailException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), "Email error", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 }
