@@ -2,12 +2,9 @@ package com.eliezer.iestoque.services;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -31,7 +28,6 @@ import com.eliezer.iestoque.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
-@Slf4j
 @Service
 public class RequisicaoService {
 
@@ -132,7 +128,7 @@ public class RequisicaoService {
 			ModelMapper modelMapper = new ModelMapper();
 			Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
 			requisicaoRepository.save(requisicao);
-			return "Requisição cancelada com sucesso e produtos devolvidos ao estoque!";
+			return "Requisição cancelada com sucesso!";
 		} else {
 			return "Requisição não pode ser cancelada. STATUS = " + requisicaoDto.getStatus();
 		}
@@ -209,9 +205,11 @@ public class RequisicaoService {
 				.orElseThrow(() -> new ResourceNotFoundException(MSG_NOT_FOUND_PRODUCT));
 
 		requisicaoDto.getItensRequisicao().remove(requisicaoItem);
+		BigDecimal valorItemRemovido = requisicaoItem.getSubTotal();
 		itemRequisicaoRepository.delete(requisicaoItem);
+
 		Requisicao requisicao = modelMapper.map(requisicaoDto, Requisicao.class);
-		requisicao.setValorTotal(calcularValorTotalDaRequisicao(requisicaoId));
+		requisicao.setValorTotal(requisicao.getValorTotal().subtract(valorItemRemovido));
 		requisicaoRepository.save(requisicao);
 	}
 
