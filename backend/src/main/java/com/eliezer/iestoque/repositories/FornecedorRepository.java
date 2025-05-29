@@ -14,7 +14,7 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
             FROM tb_produto
             INNER JOIN tb_produto_fornecedor ON tb_produto.id = tb_produto_fornecedor.produto_id
             INNER JOIN tb_fornecedor ON tb_fornecedor.id = tb_produto_fornecedor.fornecedor_id
-            WHERE tb_produto.descricao LIKE CONCAT('%',:nomeProduto,'%')
+            WHERE LOWER(tb_produto.descricao) LIKE CONCAT('%', LOWER(:nomeProduto),'%')
             """)
     List<FornecedorProdutoProjection> findFornecedorByProduto(String nomeProduto);
 }

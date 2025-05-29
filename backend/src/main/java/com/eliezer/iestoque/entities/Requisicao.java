@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.eliezer.iestoque.enums.StatusRequisicao;
 
 import jakarta.persistence.Column;

@@ -1,4 +1,4 @@
- package com.eliezer.iestoque.resources;
+package com.eliezer.iestoque.resources;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
